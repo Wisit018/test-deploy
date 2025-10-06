@@ -54,10 +54,32 @@ app.use((req, res, next) => {
 // Health check
 app.get('/health', async (req, res) => {
   try {
-    await pool.query('SELECT 1');
-    res.json({ status: 'ok' });
+    // Basic server health check
+    const healthData = {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      environment: process.env.NODE_ENV || 'development',
+      platform: process.env.RAILWAY_ENVIRONMENT ? 'railway' : 'local'
+    };
+
+    // Try database connection if available
+    try {
+      await pool.query('SELECT 1');
+      healthData.database = 'connected';
+    } catch (dbErr) {
+      healthData.database = 'disconnected';
+      healthData.dbError = dbErr.message;
+    }
+
+    res.json(healthData);
   } catch (err) {
-    res.status(500).json({ status: 'error', error: err.message });
+    console.error('Health check error:', err);
+    res.status(500).json({ 
+      status: 'error', 
+      error: err.message,
+      timestamp: new Date().toISOString()
+    });
   }
 });
 
@@ -320,36 +342,71 @@ const MAX_PORT_RETRIES = Number(process.env.PORT_RETRY_LIMIT || 10);
 // Railway environment detection
 const isRailway = process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_STATIC_URL;
 
+// Enhanced logging
+console.log('🚀 Starting Siamdrug Application...');
+console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+console.log(`Platform: ${isRailway ? 'Railway' : 'Local'}`);
+console.log(`Port: ${DEFAULT_PORT}`);
+console.log(`Host: ${HOST}`);
+
 async function bootstrap() {
-  await ensureLegacyTables(pool);
-  await ensureAuthTables(pool);
-  const optionSeedResults = await seedOptionTablesFromDbf(pool, console);
-  optionSeedResults.forEach((result) => {
-    if (result.skipped) {
-      const extra = typeof result.existing === 'number' ? ' existing=' + result.existing : '';
-      console.log(`Skipped seeding ${result.tableName} (${result.reason})${extra}`);
-    } else {
-      console.log(`Seeded ${result.tableName} with ${result.inserted} records`);
-    }
-  });
+  try {
+    console.log('📊 Initializing database tables...');
+    await ensureLegacyTables(pool);
+    await ensureAuthTables(pool);
+    
+    console.log('🌱 Seeding option tables...');
+    const optionSeedResults = await seedOptionTablesFromDbf(pool, console);
+    optionSeedResults.forEach((result) => {
+      if (result.skipped) {
+        const extra = typeof result.existing === 'number' ? ' existing=' + result.existing : '';
+        console.log(`Skipped seeding ${result.tableName} (${result.reason})${extra}`);
+      } else {
+        console.log(`Seeded ${result.tableName} with ${result.inserted} records`);
+      }
+    });
+    
+    console.log('✅ Database initialization completed');
+  } catch (error) {
+    console.error('❌ Database initialization failed:', error.message);
+    console.log('⚠️  Continuing without database initialization...');
+  }
 }
 
 function startServer(port, attemptsLeft) {
   const server = app.listen(port, HOST, () => {
-    console.log(`Server running on http://${HOST}:${port}`);
+    console.log(`✅ Server running on http://${HOST}:${port}`);
     if (isRailway) {
       console.log('🚂 Running on Railway platform');
     }
+    console.log('🔍 Health check available at: /health');
   });
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE' && attemptsLeft > 0) {
-      console.log(`Port ${port} is in use, trying ${port + 1}...`);
+      console.log(`⚠️  Port ${port} is in use, trying ${port + 1}...`);
       startServer(port + 1, attemptsLeft - 1);
     } else {
-      console.error('Failed to start server:', err);
+      console.error('❌ Failed to start server:', err);
       process.exit(1);
     }
+  });
+
+  // Graceful shutdown
+  process.on('SIGTERM', () => {
+    console.log('🛑 SIGTERM received, shutting down gracefully...');
+    server.close(() => {
+      console.log('✅ Server closed');
+      process.exit(0);
+    });
+  });
+
+  process.on('SIGINT', () => {
+    console.log('🛑 SIGINT received, shutting down gracefully...');
+    server.close(() => {
+      console.log('✅ Server closed');
+      process.exit(0);
+    });
   });
 }
 

@@ -101,6 +101,39 @@ DB_NAME=your_database_name
 3. ตรวจสอบ database connection
 4. ตรวจสอบ health check endpoint
 
+#### แก้ไขปัญหา Health Check ล้มเหลว
+
+หากเจอปัญหา "Healthcheck failed!" ให้ตรวจสอบ:
+
+1. **Environment Variables**: ตรวจสอบว่าตั้งค่าถูกต้องแล้ว
+   ```bash
+   DB_HOST=your_mysql_host
+   DB_PORT=3306
+   DB_USER=your_username
+   DB_PASSWORD=your_password
+   DB_NAME=your_database_name
+   SESSION_SECRET=your_secure_secret
+   NODE_ENV=production
+   ```
+
+2. **Database Connection**: ตรวจสอบว่า database service ทำงานอยู่
+3. **Port Configuration**: ตรวจสอบว่า PORT environment variable ถูกต้อง
+4. **Logs**: ดู logs ใน Railway dashboard เพื่อหาสาเหตุ
+
+#### การแก้ไขปัญหาเฉพาะ
+
+**ปัญหา**: Health check ล้มเหลว
+**วิธีแก้**: 
+- ใช้ Dockerfile แทน Nixpacks
+- เพิ่ม healthcheckTimeout เป็น 300 วินาที
+- ตรวจสอบว่า `/health` endpoint ทำงานได้
+
+**ปัญหา**: Database connection ล้มเหลว
+**วิธีแก้**:
+- ตรวจสอบ environment variables
+- ใช้ Railway MySQL service
+- หรือใช้ external MySQL service
+
 ### 8. Production Considerations
 
 - เปลี่ยน `SESSION_SECRET` เป็นค่าที่ปลอดภัย
