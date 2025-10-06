@@ -317,6 +317,9 @@ const DEFAULT_PORT = Number(process.env.PORT || 3000);
 const HOST = process.env.HOST || '0.0.0.0';
 const MAX_PORT_RETRIES = Number(process.env.PORT_RETRY_LIMIT || 10);
 
+// Railway environment detection
+const isRailway = process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_STATIC_URL;
+
 async function bootstrap() {
   await ensureLegacyTables(pool);
   await ensureAuthTables(pool);
@@ -334,6 +337,9 @@ async function bootstrap() {
 function startServer(port, attemptsLeft) {
   const server = app.listen(port, HOST, () => {
     console.log(`Server running on http://${HOST}:${port}`);
+    if (isRailway) {
+      console.log('🚂 Running on Railway platform');
+    }
   });
 
   server.on('error', (err) => {

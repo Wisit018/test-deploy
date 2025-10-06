@@ -7,6 +7,7 @@ Overview
 - Uses `mysql2/promise` with a pooled connection
 - Includes CRUD samples for `products` and additional demo entities
 - Optional single-binary build with `pkg`
+- **Ready for Railway deployment** 🚂
 
 Requirements
 ------------
@@ -16,7 +17,7 @@ Requirements
 Setup
 -----
 1. Install dependencies (`npm install`)
-2. Copy environment template (`copy .env.example .env`) and update DB credentials
+2. Copy environment template (`copy env.example .env`) and update DB credentials
 3. Create the database tables (see **Database Schema**)
 
 Run
@@ -24,6 +25,12 @@ Run
 - Development: `npm run dev`
 - Production: `npm start`
 - Default URL: http://localhost:3000
+
+Deployment
+---------
+- **Railway**: See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions
+- **Docker**: Use `docker-compose up` for local testing
+- **Manual**: Follow the setup instructions above
 
 Routes (Selected)
 -----------------
