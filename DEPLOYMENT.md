@@ -60,11 +60,27 @@ railway up
 
 ### 4. ตั้งค่า Database
 
-#### ใช้ Railway MySQL Service
+#### ใช้ Railway MySQL Service (แนะนำ)
 
-1. ใน Railway dashboard คลิก "New Service" > "Database" > "MySQL"
-2. Railway จะสร้าง MySQL database ให้อัตโนมัติ
-3. คัดลอก connection string ไปตั้งค่า environment variables
+1. **สร้าง MySQL Service**:
+   - ใน Railway dashboard คลิก "New Service" > "Database" > "MySQL"
+   - Railway จะสร้าง MySQL database ให้อัตโนมัติ
+
+2. **ตั้งค่า Environment Variables**:
+   - Railway จะสร้าง environment variables อัตโนมัติ:
+     - `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`
+   - ตั้งค่าในแอปพลิเคชัน:
+     ```
+     DB_HOST=${{MYSQL_HOST}}
+     DB_PORT=${{MYSQL_PORT}}
+     DB_USER=${{MYSQL_USER}}
+     DB_PASSWORD=${{MYSQL_PASSWORD}}
+     DB_NAME=${{MYSQL_DATABASE}}
+     ```
+
+3. **Setup Database Tables**:
+   - ใช้ script: `npm run setup:db`
+   - หรือใช้: `npm run railway:setup`
 
 #### ใช้ External MySQL
 
@@ -77,6 +93,24 @@ DB_USER=your_username
 DB_PASSWORD=your_password
 DB_NAME=your_database_name
 ```
+
+#### การ Setup Database Tables
+
+หลังจากตั้งค่า database แล้ว:
+
+1. **ใช้ Setup Script**:
+   ```bash
+   npm run setup:db
+   ```
+
+2. **หรือใช้ Railway Setup**:
+   ```bash
+   npm run railway:setup
+   ```
+
+3. **ตรวจสอบการตั้งค่า**:
+   - เข้าไปที่ `/health` endpoint
+   - ควรจะเห็น `"database": "connected"`
 
 ### 5. การตรวจสอบ Deployment
 

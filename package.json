@@ -10,7 +10,9 @@
     "build:pkg": "pkg . --out-path dist -t node18-win-x64,node18-linux-x64,node18-macos-x64",
     "postinstall": "echo 'Installation completed successfully'",
     "railway:start": "./start.sh",
-    "railway:health": "curl -f http://localhost:3000/health || exit 1"
+    "railway:health": "curl -f http://localhost:3000/health || exit 1",
+    "setup:db": "node setup-database.js",
+    "railway:setup": "npm run setup:db && npm start"
   },
   "keywords": [
     "express",
