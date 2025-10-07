@@ -754,20 +754,12 @@ router.post('/api/save-workflow', async (req, res, next) => {
               // ใช้ข้อมูลจาก Step 2 ถ้ามี
               if (deliveryData.day) {
                 const deliveryDate = new Date(deliveryData.day);
-                const day = deliveryDate.getDate().toString().padStart(2, '0');
-                const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-                const month = months[deliveryDate.getMonth()];
-                const year = deliveryDate.getFullYear().toString().slice(-2);
-                return `${day}-${month}-${year}`;
+                return deliveryDate.toISOString().slice(0, 10); // YYYY-MM-DD format
               }
               // ถ้าไม่มีข้อมูลจาก Step 2 ให้ใช้ +1 วัน
               const tomorrow = new Date(now);
               tomorrow.setDate(tomorrow.getDate() + 1);
-              const day = tomorrow.getDate().toString().padStart(2, '0');
-              const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-              const month = months[tomorrow.getMonth()];
-              const year = tomorrow.getFullYear().toString().slice(-2);
-              return `${day}-${month}-${year}`;
+              return tomorrow.toISOString().slice(0, 10); // YYYY-MM-DD format
             })(), // วันที่ส่งจาก Step 2 หรือ +1 วันถ้าไม่มีข้อมูล
             appttime: deliveryData.timein || '16:00', // เวลาส่งจาก Step 2 หรือ 16:00 ถ้าไม่มีข้อมูล
       appttime1: '',
