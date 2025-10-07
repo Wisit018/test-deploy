@@ -825,25 +825,25 @@ router.post('/api/save-workflow', async (req, res, next) => {
       prnstidate: null, // เก็บค่า null
       prnstitime: '', // เก็บค่าว่าง
       prnfinan: 0, // เก็บค่า integer
-      prnfindate: '', // เก็บค่าว่าง
+      prnfindate: null, // เก็บค่า null
       prnfintime: '', // เก็บค่าว่าง
       payflag: '', // เก็บค่าว่าง
-      paydate: '', // เก็บค่าว่าง
+      paydate: null, // เก็บค่า null
       paytime: '', // เก็บค่าว่าง
       delvflag: '', // เก็บค่าว่าง
-      delvdate: '', // เก็บค่าว่าง
+      delvdate: null, // เก็บค่า null
       delvtime: '', // เก็บค่าว่าง
       taxinv: '', // เก็บค่าว่าง
       transfer: false, // เก็บค่าเป็น false โดยตั้งไว้เป็น false ไว้ก่อน
       scanflag: '', // เก็บค่าว่าง
-      scandate: '', // เก็บค่าว่าง
+      scandate: null, // เก็บค่า null
       scantime: '', // เก็บค่าว่าง
       scanby: '', // เก็บค่าว่าง
       feed: '', // เก็บค่าว่าง
       feedno: 0, // เก็บค่า integer
       feedback: '', // เก็บค่าว่าง
       feeddesc: '', // เก็บค่าว่าง
-      feeddate: '', // เก็บค่าว่าง
+      feeddate: null, // เก็บค่า null
       feedtime: '', // เก็บค่าว่าง
       feedid: 0, // เก็บค่า integer
       feedmemo: '',
@@ -862,7 +862,7 @@ router.post('/api/save-workflow', async (req, res, next) => {
       nkprint: 0, // เก็บค่า integer
       nkprintd: '', // เก็บค่าว่าง
       nkprintt: '', // เก็บค่าว่าง
-      routedate: '', // เก็บค่าว่าง
+      routedate: null, // เก็บค่า null
       editno: '', // ค่าเริ่มต้นคือค่าว่าง แต่ถ้าหากรายการนี้มีการแก้ไข อยากให้รันเลขแก้ไข ให้บอกว่าเป็นการแก้ไข
       editflag: false,
       cnflag: false,
