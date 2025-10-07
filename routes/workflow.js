@@ -824,7 +824,7 @@ router.post('/api/save-workflow', async (req, res, next) => {
       prnsticker: false,
       prnstidate: null, // เก็บค่า null
       prnstitime: '', // เก็บค่าว่าง
-      prnfinan: '', // เก็บค่าว่าง
+      prnfinan: 0, // เก็บค่า integer
       prnfindate: '', // เก็บค่าว่าง
       prnfintime: '', // เก็บค่าว่าง
       payflag: '', // เก็บค่าว่าง
@@ -840,26 +840,26 @@ router.post('/api/save-workflow', async (req, res, next) => {
       scantime: '', // เก็บค่าว่าง
       scanby: '', // เก็บค่าว่าง
       feed: '', // เก็บค่าว่าง
-      feedno: '', // เก็บค่าว่าง
+      feedno: 0, // เก็บค่า integer
       feedback: '', // เก็บค่าว่าง
       feeddesc: '', // เก็บค่าว่าง
       feeddate: '', // เก็บค่าว่าง
       feedtime: '', // เก็บค่าว่าง
-      feedid: '', // เก็บค่าว่าง
+      feedid: 0, // เก็บค่า integer
       feedmemo: '',
       weightloss: '', // เก็บค่าว่าง
       weight: '', // เก็บค่าว่าง
       remark1: productData.shipping.notify1 || '', // เก็บข้อมูลจาก แจ้งจัดของ 1 ใน step 4/5
       remark2: productData.shipping.notify2 || '', // เก็บข้อมูลจาก แจ้งจัดของ 2 ใน step 4/5
-      statusid: '', // เก็บค่าว่าง
+      statusid: 0, // เก็บค่า integer
       statusdesc: '', // เก็บค่าว่าง
       finish: '', // เก็บค่าว่าง
       mapstat: '', // เก็บค่าว่าง
-      uniqueid: '', // เก็บค่าว่าง
-      accprint: '', // เก็บค่าว่าง
+      uniqueid: 0, // เก็บค่า integer
+      accprint: 0, // เก็บค่า integer
       accprintd: '', // เก็บค่าว่าง
       accprintt: '', // เก็บค่าว่าง
-      nkprint: '', // เก็บค่าว่าง
+      nkprint: 0, // เก็บค่า integer
       nkprintd: '', // เก็บค่าว่าง
       nkprintt: '', // เก็บค่าว่าง
       routedate: '', // เก็บค่าว่าง
