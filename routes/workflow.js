@@ -827,15 +827,15 @@ router.post('/api/save-workflow', async (req, res, next) => {
       prnfinan: 0, // เก็บค่า integer
       prnfindate: null, // เก็บค่า null
       prnfintime: '', // เก็บค่าว่าง
-      payflag: '', // เก็บค่าว่าง
+      payflag: 0, // เก็บค่า integer
       paydate: null, // เก็บค่า null
       paytime: '', // เก็บค่าว่าง
-      delvflag: '', // เก็บค่าว่าง
+      delvflag: 0, // เก็บค่า integer
       delvdate: null, // เก็บค่า null
       delvtime: '', // เก็บค่าว่าง
       taxinv: '', // เก็บค่าว่าง
       transfer: false, // เก็บค่าเป็น false โดยตั้งไว้เป็น false ไว้ก่อน
-      scanflag: '', // เก็บค่าว่าง
+      scanflag: 0, // เก็บค่า integer
       scandate: null, // เก็บค่า null
       scantime: '', // เก็บค่าว่าง
       scanby: '', // เก็บค่าว่าง
