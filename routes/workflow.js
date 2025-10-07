@@ -860,7 +860,7 @@ router.post('/api/save-workflow', async (req, res, next) => {
       accprintd: null, // เก็บค่า null
       accprintt: 0, // เก็บค่า integer
       nkprint: 0, // เก็บค่า integer
-      nkprintd: 0, // เก็บค่า integer
+      nkprintd: null, // เก็บค่า null
       nkprintt: 0, // เก็บค่า integer
       routedate: null, // เก็บค่า null
       editno: 0, // เก็บค่า integer
