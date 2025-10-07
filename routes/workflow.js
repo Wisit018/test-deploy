@@ -839,7 +839,7 @@ router.post('/api/save-workflow', async (req, res, next) => {
       scandate: null, // เก็บค่า null
       scantime: '', // เก็บค่าว่าง
       scanby: '', // เก็บค่าว่าง
-      feed: '', // เก็บค่าว่าง
+      feed: 0, // เก็บค่า integer
       feedno: 0, // เก็บค่า integer
       feedback: '', // เก็บค่าว่าง
       feeddesc: '', // เก็บค่าว่าง
@@ -847,13 +847,13 @@ router.post('/api/save-workflow', async (req, res, next) => {
       feedtime: '', // เก็บค่าว่าง
       feedid: 0, // เก็บค่า integer
       feedmemo: '',
-      weightloss: '', // เก็บค่าว่าง
-      weight: '', // เก็บค่าว่าง
+      weightloss: 0, // เก็บค่า integer
+      weight: 0, // เก็บค่า integer
       remark1: productData.shipping.notify1 || '', // เก็บข้อมูลจาก แจ้งจัดของ 1 ใน step 4/5
       remark2: productData.shipping.notify2 || '', // เก็บข้อมูลจาก แจ้งจัดของ 2 ใน step 4/5
       statusid: 0, // เก็บค่า integer
       statusdesc: '', // เก็บค่าว่าง
-      finish: '', // เก็บค่าว่าง
+      finish: 0, // เก็บค่า integer
       mapstat: '', // เก็บค่าว่าง
       uniqueid: 0, // เก็บค่า integer
       accprint: 0, // เก็บค่า integer
