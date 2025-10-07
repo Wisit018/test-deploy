@@ -42,15 +42,23 @@ const sessionConfig = {
   saveUninitialized: false,
   cookie: { 
     httpOnly: true, 
-    secure: process.env.NODE_ENV === 'production', 
-    maxAge: 1000 * 60 * 60 * 24 
+    secure: false, // Set to false for Railway deployment
+    maxAge: 1000 * 60 * 60 * 24, // 24 hours
+    sameSite: 'lax' // Add sameSite for better compatibility
   },
+  name: 'siamdrug.sid' // Custom session name
 };
 
 // Use memory store for development, but warn in production
 if (process.env.NODE_ENV === 'production') {
   console.log('⚠️  Warning: Using memory store for sessions in production');
   console.log('💡 Consider using Redis or another persistent store for production');
+  console.log('🔧 Session config:', {
+    secure: sessionConfig.cookie.secure,
+    httpOnly: sessionConfig.cookie.httpOnly,
+    maxAge: sessionConfig.cookie.maxAge,
+    sameSite: sessionConfig.cookie.sameSite
+  });
 }
 
 app.use(session(sessionConfig));
@@ -58,6 +66,18 @@ app.use(session(sessionConfig));
 // Expose current user to views
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
+  
+  // Debug logging for session issues
+  if (process.env.NODE_ENV === 'production') {
+    console.log('🔍 Session debug:', {
+      sessionID: req.sessionID,
+      hasUser: !!req.session.user,
+      user: req.session.user ? { id: req.session.user.id, operator: req.session.user.operator } : null,
+      url: req.url,
+      method: req.method
+    });
+  }
+  
   next();
 });
 

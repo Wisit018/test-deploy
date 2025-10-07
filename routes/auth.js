@@ -135,6 +135,15 @@ router.post('/login', async (req, res, next) => {
       level: user.level,
     };
 
+    // Debug logging for login
+    console.log('✅ User logged in:', {
+      id: user.id,
+      operator: user.operator,
+      pn_id: user.pn_id,
+      level: user.level,
+      sessionID: req.sessionID
+    });
+
     const safeNext = nextPath && nextPath !== '/login' ? nextPath : '/';
     res.redirect(safeNext);
   } catch (err) {
