@@ -841,8 +841,8 @@ router.post('/api/save-workflow', async (req, res, next) => {
       scanby: '', // เก็บค่าว่าง
       feed: 0, // เก็บค่า integer
       feedno: 0, // เก็บค่า integer
-      feedback: '', // เก็บค่าว่าง
-      feeddesc: '', // เก็บค่าว่าง
+      feedback: 0, // เก็บค่า integer
+      feeddesc: 0, // เก็บค่า integer
       feeddate: null, // เก็บค่า null
       feedtime: '', // เก็บค่าว่าง
       feedid: 0, // เก็บค่า integer
@@ -852,18 +852,18 @@ router.post('/api/save-workflow', async (req, res, next) => {
       remark1: productData.shipping.notify1 || '', // เก็บข้อมูลจาก แจ้งจัดของ 1 ใน step 4/5
       remark2: productData.shipping.notify2 || '', // เก็บข้อมูลจาก แจ้งจัดของ 2 ใน step 4/5
       statusid: 0, // เก็บค่า integer
-      statusdesc: '', // เก็บค่าว่าง
+      statusdesc: 0, // เก็บค่า integer
       finish: 0, // เก็บค่า integer
-      mapstat: '', // เก็บค่าว่าง
+      mapstat: 0, // เก็บค่า integer
       uniqueid: 0, // เก็บค่า integer
       accprint: 0, // เก็บค่า integer
-      accprintd: '', // เก็บค่าว่าง
-      accprintt: '', // เก็บค่าว่าง
+      accprintd: 0, // เก็บค่า integer
+      accprintt: 0, // เก็บค่า integer
       nkprint: 0, // เก็บค่า integer
-      nkprintd: '', // เก็บค่าว่าง
-      nkprintt: '', // เก็บค่าว่าง
+      nkprintd: 0, // เก็บค่า integer
+      nkprintt: 0, // เก็บค่า integer
       routedate: null, // เก็บค่า null
-      editno: '', // ค่าเริ่มต้นคือค่าว่าง แต่ถ้าหากรายการนี้มีการแก้ไข อยากให้รันเลขแก้ไข ให้บอกว่าเป็นการแก้ไข
+      editno: 0, // เก็บค่า integer
       editflag: false,
       cnflag: false,
       emailaddr: customerData.email || '', // เก็บข้อมูลจาก อีเมล จากหน้า step 1/5
@@ -946,8 +946,22 @@ router.post('/api/save-workflow', async (req, res, next) => {
       const columns = Object.keys(deliveryRecord).map(col => `\`${col}\``).join(', ');
       const placeholders = Object.keys(deliveryRecord).map(() => '?').join(', ');
       
+      // Debug: Log all values being inserted
+      console.log('🔍 Debug - Values being inserted:');
+      console.log('Columns:', columns);
+      console.log('Sample record values:', Object.entries(deliveryRecord).slice(0, 10));
+      
       for (const record of recordsToInsert) {
         const values = Object.values(record);
+        
+        // Debug: Log problematic values
+        console.log('🔍 Debug - Record values:');
+        Object.entries(record).forEach(([key, value]) => {
+          if (value === '' && (key.includes('flag') || key.includes('id') || key.includes('no') || key.includes('type') || key.includes('count') || key.includes('feedback'))) {
+            console.log(`⚠️  Problematic field: ${key} = '${value}' (should be integer)`);
+          }
+        });
+        
         await pool.execute(
           `INSERT INTO legacy_deliveries (${columns}) VALUES (${placeholders})`,
           values
