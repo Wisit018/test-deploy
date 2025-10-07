@@ -597,12 +597,12 @@ router.post('/api/save-workflow', async (req, res, next) => {
       channeldes: mediaChannelData.channelName || '', // เก็บค่า channelname
       paytype: Number(paymentData.financeType) || 0, // เก็บค่า financetype
       paydesc: paymentData.financeDesc || '', // เก็บข้อมูลจาก ประเภทการชำระเงิน ที่เลือกใน step 5/5
-      paytype1: paymentData.payType1 || '',
+      paytype1: Number(paymentData.payType1) || 0,
       subpay1: paymentData.subPay1 || '',
       subpay2: paymentData.subPay2 || '',
       payment: true,
       payday: workDate,
-      cusbankno: paymentData.cusBankNo || '',
+      cusbankno: Number(paymentData.cusBankNo) || 0,
       cusbankna: paymentData.cusBankNa || '',
       cusbankbr: paymentData.cusBankBr || '',
       cusbankac: paymentData.cusBankAc || '',
@@ -610,7 +610,7 @@ router.post('/api/save-workflow', async (req, res, next) => {
       credit: paymentData.credit || false,
       credittype: Number(paymentData.creditType) || 0,
       creditdesc: paymentData.creditDesc || '',
-      creditno: paymentData.creditNo || '',
+      creditno: Number(paymentData.creditNo) || 0,
       creditexpm: paymentData.creditExpM || '',
       creditexpy: paymentData.creditExpY || '',
       creditref: paymentData.creditRef || '',
@@ -667,18 +667,18 @@ router.post('/api/save-workflow', async (req, res, next) => {
       deliverto: '', // ค่าว่าง
       userid: req.session.user?.pn_id || 'SYSTEM', // เก็บค่า pn_id ของคนเข้าสู่ระบบ
       username: req.session.user?.operator || 'System', // เก็บค่า ชื่อ operator ของคนเข้าสู่ระบบ
-      salerepid: customerData.salerepid || '', // เก็บค่า pn_id ของ พนักงานขาย
+      salerepid: Number(customerData.salerepid) || 0, // เก็บค่า pn_id ของ พนักงานขาย
       salename: customerData.salename || '', // เก็บค่า ชื่อ operator ในส่วนเพิ่มลูกค้าใหม่
       ring: '', // ค่าว่าง
       ringdesc: '', // ค่าว่าง
       routerun: '', // ค่าว่าง
-      routeno: '', // ค่าว่าง
+      routeno: 0, // เก็บค่า integer
       routedesc: '', // ค่าว่าง
       routedist: 0, // ค่า = 0
       routetimes: '', // ค่าว่าง
       milesp2p: 0, // ค่า = 0
       timesp2p: 0, // ค่า = 0
-      msnid: '', // ค่าว่าง
+      msnid: 0, // เก็บค่า integer
       msnname: '', // ค่าว่าง
       handtimes: '', // ค่าว่าง
       day: now.toLocaleDateString('en-US', { weekday: 'long' }), // วันทำรายการแบบ monday, tuesday, etc.
@@ -696,7 +696,7 @@ router.post('/api/save-workflow', async (req, res, next) => {
       total: total, // เหมือนเดิม
       freecode: 0, // ค่า = 0
       dscamt: 0, // ค่า = 0
-      transno: '', // ค่าว่าง
+      transno: 0, // เก็บค่า integer
       customerid: customerData.customerid || '', // ดึง customerid ของลูกค้าที่เลือก
       memcode: 0, // เก็บค่า = 0
       prename: customerData.prename || 'คุณ', // คำนำหน้าจาก step 1 หรือ "คุณ" ถ้าไม่มีข้อมูล
@@ -797,7 +797,7 @@ router.post('/api/save-workflow', async (req, res, next) => {
       autobrt9ti: '',
       autobrt9by: '',
       deliver: false,
-      deliverid: '',
+      deliverid: 0, // เก็บค่า integer
       deliverda: null,
       deliverti: '',
       deliverby: '',
@@ -817,7 +817,7 @@ router.post('/api/save-workflow', async (req, res, next) => {
       financeby: paymentData.accode || '', // ค่า accode ของตัวเลือกที่เลือกใน ประเภทการชำระเงิน step5/5
       prnorder: false,
       prnorddate: null, // เก็บค่า null
-      prnordtime: '',
+      prnordtime: 0, // เก็บค่า integer
       prnpick: false,
       prnpicdate: null, // เก็บค่า null
       prnpictime: '',
@@ -857,7 +857,7 @@ router.post('/api/save-workflow', async (req, res, next) => {
       mapstat: 0, // เก็บค่า integer
       uniqueid: 0, // เก็บค่า integer
       accprint: 0, // เก็บค่า integer
-      accprintd: 0, // เก็บค่า integer
+      accprintd: null, // เก็บค่า null
       accprintt: 0, // เก็บค่า integer
       nkprint: 0, // เก็บค่า integer
       nkprintd: 0, // เก็บค่า integer
