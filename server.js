@@ -35,15 +35,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Sessions (for demo/dev only; use persistent store in production)
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'change_this_dev_secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { httpOnly: true, secure: false, maxAge: 1000 * 60 * 60 * 24 },
-  })
-);
+// Sessions configuration
+const sessionConfig = {
+  secret: process.env.SESSION_SECRET || 'change_this_dev_secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    httpOnly: true, 
+    secure: process.env.NODE_ENV === 'production', 
+    maxAge: 1000 * 60 * 60 * 24 
+  },
+};
+
+// Use memory store for development, but warn in production
+if (process.env.NODE_ENV === 'production') {
+  console.log('⚠️  Warning: Using memory store for sessions in production');
+  console.log('💡 Consider using Redis or another persistent store for production');
+}
+
+app.use(session(sessionConfig));
 
 // Expose current user to views
 app.use((req, res, next) => {
