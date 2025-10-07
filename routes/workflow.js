@@ -682,13 +682,7 @@ router.post('/api/save-workflow', async (req, res, next) => {
       msnname: '', // ค่าว่าง
       handtimes: '', // ค่าว่าง
       day: now.toLocaleDateString('en-US', { weekday: 'long' }), // วันทำรายการแบบ monday, tuesday, etc.
-      date: (() => {
-        const day = now.getDate().toString().padStart(2, '0');
-        const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-        const month = months[now.getMonth()];
-        const year = now.getFullYear().toString().slice(-2);
-        return `${day}-${month}-${year}`;
-      })(), // วันที่ทำรายการ 15-sep-25
+      date: now.toISOString().slice(0, 10), // วันที่ทำรายการในรูปแบบ YYYY-MM-DD
       source: 5, // เก็บค่าทุกรายการคือ 5
       code: productData.products.length > 0 ? Number(productData.products[0].code) || 0 : 0, // code จากตารางของ product สินค้าที่เลือกไว้
       prdgroup: 0, // ค่า = 0
@@ -805,22 +799,22 @@ router.post('/api/save-workflow', async (req, res, next) => {
       apptremk2: '',
       aftdelical: false,
       aftdeliti: '',
-      aftdelida: '0000-00-00',
+      aftdelida: null,
       autobrt9: false,
-      autobrt9da: '0000-00-00',
+      autobrt9da: null,
       autobrt9ti: '',
       autobrt9by: '',
       deliver: false,
       deliverid: '',
-      deliverda: '0000-00-00',
+      deliverda: null,
       deliverti: '',
       deliverby: '',
       receive: false,
-      receiveda: '0000-00-00',
+      receiveda: null,
       receiveti: '',
       receiveby: '',
       update: false,
-      updateda: '0000-00-00',
+      updateda: null,
       updateti: '',
       updateby: '',
       finance: false,
@@ -830,13 +824,13 @@ router.post('/api/save-workflow', async (req, res, next) => {
       financeti: workTime, // เวลาที่บันทึกข้อมูล
       financeby: paymentData.accode || '', // ค่า accode ของตัวเลือกที่เลือกใน ประเภทการชำระเงิน step5/5
       prnorder: false,
-      prnorddate: '0000-00-00', // เก็บค่า 0000-00-00
+      prnorddate: null, // เก็บค่า null
       prnordtime: '',
       prnpick: false,
-      prnpicdate: '0000-00-00', // เก็บค่า 0000-00-00
+      prnpicdate: null, // เก็บค่า null
       prnpictime: '',
       prnsticker: false,
-      prnstidate: '0000-00-00', // เก็บค่า 0000-00-00
+      prnstidate: null, // เก็บค่า null
       prnstitime: '', // เก็บค่าว่าง
       prnfinan: '', // เก็บค่าว่าง
       prnfindate: '', // เก็บค่าว่าง
