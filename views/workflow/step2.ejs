@@ -1,6 +1,8 @@
 <% const pageTitle = title || 'สร้างรายการใหม่ – ขั้นตอนที่ 2'; %>
-<%- include('../layout', {
+<%- include('../workflow_layout', {
   title: pageTitle,
+  currentStep: 'step2',
+  customerId: customerId || '',
   body: include('./step2_content', {
     customerId: customerId || ''
   })
