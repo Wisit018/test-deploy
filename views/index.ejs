@@ -1,82 +1,37 @@
-<% const pageTitle = 'Dashboard'; %>
+<% const pageTitle = 'ยินดีต้อนรับ'; %>
 <%- include('layout', { title: pageTitle, body: `
-  <div class='row g-3'>
-    <div class='col-12 col-lg-8'>
+  <div class='row justify-content-center'>
+    <div class='col-12 col-md-8 col-lg-6'>
       <div class='card'>
-        <div class='card-header d-flex align-items-center gap-2'>
-          <i class='bi bi-list-ul'></i>
-          <strong>Products</strong>
-        </div>
-        <div class='card-body p-0'>
-          ${products && products.length ? `
-            <div class='table-responsive'>
-              <table class='table table-striped table-hover align-middle mb-0'>
-                <thead class='table-light'>
-                  <tr><th>ID</th><th>Name</th><th class='text-end'>Price</th><th>Created</th></tr>
-                </thead>
-                <tbody>
-                  ${products.map(p => `
-                    <tr>
-                      <td>${p.id}</td>
-                      <td>${p.name}</td>
-                      <td class='text-end'>${Number(p.price).toFixed(2)}</td>
-                      <td>${new Date(p.created_at).toLocaleString()}</td>
-                    </tr>
-                  `).join('')}
-                </tbody>
-              </table>
+        <div class='card-body text-center py-5'>
+          <i class='bi bi-shield-lock-fill text-primary' style='font-size: 4rem;'></i>
+          <h2 class='mt-3 mb-3'>ยินดีต้อนรับสู่ระบบ Siamdrug</h2>
+          <p class='text-body-secondary mb-4'>กรุณาเข้าสู่ระบบเพื่อใช้งาน</p>
+          ${typeof error !== 'undefined' && error ? `
+            <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+              <i class='bi bi-exclamation-triangle-fill me-2'></i>
+              ${error}
+              <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
             </div>
-          ` : `<div class='p-3 text-body-secondary'>No products yet.</div>`}
-        </div>
-      </div>
-    </div>
-    <div class='col-12 col-lg-4'>
-      <div class='card'>
-        <div class='card-header d-flex align-items-center gap-2'>
-          <i class='bi bi-plus-circle'></i>
-          <strong>Add Product</strong>
-        </div>
-        <div class='card-body'>
-          <form id='addForm' class='vstack gap-3'>
-            <div>
-              <label class='form-label'>Name</label>
-              <input type='text' class='form-control' name='name' required />
-            </div>
-            <div>
-              <label class='form-label'>Price</label>
-              <input type='number' class='form-control' name='price' step='0.01' required />
-            </div>
-            <div class='d-flex align-items-center gap-2'>
-              <button type='submit' class='btn btn-primary'>Create</button>
-              <span id='msg' class='text-body-secondary'></span>
-            </div>
-          </form>
+          ` : ''}
+          <div class='d-flex gap-2 justify-content-center'>
+            <a href='/register' class='btn btn-outline-primary'>
+              <i class='bi bi-person-plus me-2'></i>สมัครสมาชิก
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const form = document.getElementById('addForm');
-    const msg = document.getElementById('msg');
-    if (form) {
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        msg.textContent = '';
-        const data = Object.fromEntries(new FormData(form).entries());
-        try {
-          const res = await fetch('/api/products', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: data.name, price: Number(data.price) })
-          });
-          if (!res.ok) throw new Error('Request failed');
-          msg.textContent = 'Created! Reloading...';
-          setTimeout(() => window.location.reload(), 600);
-        } catch (err) {
-          msg.textContent = 'Error: ' + err.message;
-        }
-      });
+    // Auto-hide error message after 5 seconds
+    const alert = document.querySelector('.alert');
+    if (alert) {
+      setTimeout(() => {
+        const bsAlert = new bootstrap.Alert(alert);
+        bsAlert.close();
+      }, 5000);
     }
   </script>
 ` }) %>

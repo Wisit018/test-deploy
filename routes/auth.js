@@ -84,10 +84,14 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
-// Render login form
+// Render login form - redirect to home since login is now in header
 router.get('/login', (req, res) => {
-  const nextPath = typeof req.query.next === 'string' ? req.query.next : '';
-  res.render('auth/login', { error: null, values: {}, nextPath });
+  // If already logged in, redirect to home
+  if (req.session && req.session.user) {
+    return res.redirect('/');
+  }
+  // If not logged in, redirect to home where they can use header login
+  res.redirect('/');
 });
 
 // Handle login submission
@@ -97,14 +101,13 @@ router.post('/login', async (req, res, next) => {
     const pnIdValue = normalizePnId(pn_id);
     const passValue = trimValue(pass);
     const nextPath = typeof req.query.next === 'string' ? req.query.next : '';
-    const values = { pn_id: pnIdValue };
 
     if (!pnIdValue || !passValue) {
-      return res.status(400).render('auth/login', {
-        error: 'กรอกรหัสพนักงานและรหัสผ่าน',
-        values,
-        nextPath,
-      });
+      // For header login, redirect back with error message
+      if (req.headers.accept && req.headers.accept.includes('text/html')) {
+        return res.redirect('/?error=' + encodeURIComponent('กรอกรหัสพนักงานและรหัสผ่าน'));
+      }
+      return res.status(400).json({ error: 'กรอกรหัสพนักงานและรหัสผ่าน' });
     }
 
     const [rows] = await pool.execute(
@@ -112,20 +115,20 @@ router.post('/login', async (req, res, next) => {
       [pnIdValue]
     );
     if (!rows.length) {
-      return res.status(401).render('auth/login', {
-        error: 'รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง',
-        values,
-        nextPath,
-      });
+      // For header login, redirect back with error message
+      if (req.headers.accept && req.headers.accept.includes('text/html')) {
+        return res.redirect('/?error=' + encodeURIComponent('รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง'));
+      }
+      return res.status(401).json({ error: 'รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง' });
     }
 
     const user = rows[0];
     if (String(user.password_hash || '') !== passValue) {
-      return res.status(401).render('auth/login', {
-        error: 'รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง',
-        values,
-        nextPath,
-      });
+      // For header login, redirect back with error message
+      if (req.headers.accept && req.headers.accept.includes('text/html')) {
+        return res.redirect('/?error=' + encodeURIComponent('รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง'));
+      }
+      return res.status(401).json({ error: 'รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง' });
     }
 
     req.session.user = {
@@ -154,7 +157,7 @@ router.post('/login', async (req, res, next) => {
 // Logout
 router.get('/logout', (req, res) => {
   req.session.destroy(() => {
-    res.redirect('/login');
+    res.redirect('/');
   });
 });
 

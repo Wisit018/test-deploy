@@ -39,8 +39,16 @@
           <span class="me-2">สวัสดี, <%= user.operator %> (<%= user.level %>)</span>
           <a href="/logout" class="btn btn-outline-primary">ออกจากระบบ</a>
         <% } else { %>
-          <a href="/login" class="btn btn-outline-primary me-2">เข้าสู่ระบบ</a>
-          <a href="/register" class="btn btn-primary">สมัครสมาชิก</a>
+          <div class="d-flex align-items-center gap-2">
+            <form method="post" action="/login" class="d-flex align-items-center gap-2" style="flex-wrap: wrap;">
+              <input type="text" class="form-control form-control-sm" name="pn_id" placeholder="รหัสพนักงาน" pattern="\d{4}" inputmode="numeric" maxlength="4" required style="width: 100px;" />
+              <input type="password" class="form-control form-control-sm" name="pass" placeholder="รหัสผ่าน" pattern="\d{4}" inputmode="numeric" maxlength="4" required style="width: 100px;" />
+              <button type="submit" class="btn btn-primary btn-sm">
+                <i class="bi bi-box-arrow-in-right me-1"></i>เข้าสู่ระบบ
+              </button>
+            </form>
+            <a href="/register" class="btn btn-outline-primary btn-sm">สมัครสมาชิก</a>
+          </div>
         <% } %>
       </div>
     </div>

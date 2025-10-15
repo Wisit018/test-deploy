@@ -63,9 +63,14 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(session(sessionConfig));
 
-// Expose current user to views
+// Expose current user and error messages to views
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
+  
+  // Pass error message from query string to views
+  if (req.query.error) {
+    res.locals.error = req.query.error;
+  }
   
   // Debug logging for session issues
   if (process.env.NODE_ENV === 'production') {
@@ -336,8 +341,8 @@ app.use('/', authRouter);
 // Simple auth guard
 function requireAuth(req, res, next) {
   if (req.session && req.session.user) return next();
-  const nextUrl = encodeURIComponent(req.originalUrl || '/');
-  res.redirect(`/login?next=${nextUrl}`);
+  // Redirect to home where they can login via header
+  res.redirect('/');
 }
 
 // API auth guard - returns JSON error instead of redirect
@@ -346,11 +351,12 @@ function requireApiAuth(req, res, next) {
   res.status(401).json({ error: 'Authentication required' });
 }
 
-app.get('/', requireAuth, (req, res) => {
+app.get('/', (req, res) => {
+  // Redirect to workflow (home page)
   res.redirect('/workflow');
 });
 
-app.use('/workflow', requireAuth, workflowRouter);
+app.use('/workflow', workflowRouter);
 app.use('/dashboard', requireAuth, dashboardRouter);
 
 // Basic error handler
