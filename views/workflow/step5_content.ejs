@@ -157,6 +157,42 @@
           console.log('Shipping cost:', productData.shipping?.shippingCost);
           console.log('No charge flag:', productData.shipping?.noCharge);
           
+          // Get selected sales rep from sidebar first (most reliable)
+          let selectedSalesRep = '';
+          const sidebarSalesRepSelect = document.getElementById('sidebar-sales-rep');
+          console.log('🔍 Debug - sidebarSalesRepSelect found:', !!sidebarSalesRepSelect);
+          
+          if (sidebarSalesRepSelect && sidebarSalesRepSelect.value && sidebarSalesRepSelect.value !== '') {
+            selectedSalesRep = sidebarSalesRepSelect.value;
+            console.log('🔍 Debug - selectedSalesRep from sidebar:', selectedSalesRep);
+          } else {
+            // Fallback to localStorage
+            selectedSalesRep = localStorage.getItem('selectedSalesRep') || '';
+            console.log('🔍 Debug - selectedSalesRep from localStorage:', selectedSalesRep);
+          }
+          
+          // If still no data, use 0
+          if (!selectedSalesRep || selectedSalesRep === '' || selectedSalesRep === '0') {
+            selectedSalesRep = '0';
+            console.log('🔍 Debug - No sales rep selected, using 0');
+          }
+          
+          // Get sales rep options from the sidebar
+          const salesRepOptions = [];
+          if (sidebarSalesRepSelect) {
+            Array.from(sidebarSalesRepSelect.options).forEach(option => {
+              if (option.value) {
+                salesRepOptions.push({
+                  value: option.value,
+                  label: option.textContent
+                });
+              }
+            });
+          }
+          
+          console.log('🔍 Debug - salesRepOptions:', salesRepOptions);
+          console.log('🔍 Debug - selectedSalesRep final:', selectedSalesRep);
+          
           // Send to save API
           const response = await fetch('/workflow/api/save-workflow', {
             method: 'POST',
@@ -168,7 +204,9 @@
               deliveryData,
               mediaChannelData,
               productData,
-              paymentData
+              paymentData,
+              selectedSalesRep,
+              salesRepOptions
             })
           });
           

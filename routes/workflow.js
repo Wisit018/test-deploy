@@ -113,9 +113,12 @@ router.get('/', async (req, res, next) => {
 router.get('/step2', async (req, res, next) => {
   try {
     const customerId = typeof req.query.customerId === 'string' ? req.query.customerId : '';
+    const [users] = await pool.query('SELECT operator, pn_id FROM users WHERE pn_id IS NOT NULL ORDER BY operator ASC');
+    const salesRepOptions = mapSalesRepOptions(users);
     res.render('workflow/step2', {
       title: 'สร้างรายการใหม่ – กรอกข้อมูลจัดส่ง (ขั้นตอนที่ 2)',
       customerId,
+      salesRepOptions,
     });
   } catch (err) {
     next(err);
@@ -125,9 +128,12 @@ router.get('/step2', async (req, res, next) => {
 router.get('/step3', async (req, res, next) => {
   try {
     const customerId = typeof req.query.customerId === 'string' ? req.query.customerId : '';
+    const [users] = await pool.query('SELECT operator, pn_id FROM users WHERE pn_id IS NOT NULL ORDER BY operator ASC');
+    const salesRepOptions = mapSalesRepOptions(users);
     res.render('workflow/step3', {
       title: 'สร้างรายการใหม่ – เลือกสื่อและช่องทาง (ขั้นตอนที่ 3)',
       customerId,
+      salesRepOptions,
     });
   } catch (err) {
     next(err);
@@ -137,9 +143,12 @@ router.get('/step3', async (req, res, next) => {
 router.get('/step4', async (req, res, next) => {
   try {
     const customerId = typeof req.query.customerId === 'string' ? req.query.customerId : '';
+    const [users] = await pool.query('SELECT operator, pn_id FROM users WHERE pn_id IS NOT NULL ORDER BY operator ASC');
+    const salesRepOptions = mapSalesRepOptions(users);
     res.render('workflow/step4', {
       title: 'สร้างรายการใหม่ – เลือกสินค้าและการขนส่ง',
       customerId,
+      salesRepOptions,
     });
   } catch (err) {
     next(err);
@@ -149,9 +158,12 @@ router.get('/step4', async (req, res, next) => {
 router.get('/step5', async (req, res, next) => {
   try {
     const customerId = typeof req.query.customerId === 'string' ? req.query.customerId : '';
+    const [users] = await pool.query('SELECT operator, pn_id FROM users WHERE pn_id IS NOT NULL ORDER BY operator ASC');
+    const salesRepOptions = mapSalesRepOptions(users);
     res.render('workflow/step5', {
       title: 'สร้างรายการใหม่ – ข้อมูลการชำระเงิน (ขั้นตอนที่ 5)',
       customerId,
+      salesRepOptions,
     });
   } catch (err) {
     next(err);
@@ -667,8 +679,40 @@ router.post('/api/save-workflow', async (req, res, next) => {
       deliverto: '', // ค่าว่าง
       userid: req.session.user?.pn_id || 'SYSTEM', // เก็บค่า pn_id ของคนเข้าสู่ระบบ
       username: req.session.user?.operator || 'System', // เก็บค่า ชื่อ operator ของคนเข้าสู่ระบบ
-      salerepid: Number(customerData.salerepid) || 0, // เก็บค่า pn_id ของ พนักงานขาย
-      salename: customerData.salename || '', // เก็บค่า ชื่อ operator ในส่วนเพิ่มลูกค้าใหม่
+      salerepid: (() => {
+        // Debug: Log received data
+        console.log('🔍 Debug - selectedSalesRep from req.body:', req.body.selectedSalesRep);
+        console.log('🔍 Debug - salesRepOptions from req.body:', req.body.salesRepOptions);
+        console.log('🔍 Debug - customerData.salerepid:', customerData.salerepid);
+        
+        // ดึงข้อมูลพนักงานขายที่เลือกไว้จาก localStorage
+        const selectedSalesRep = req.body.selectedSalesRep;
+        if (selectedSalesRep && selectedSalesRep !== '' && selectedSalesRep !== '0') {
+          console.log('✅ Using selectedSalesRep from Tab:', selectedSalesRep);
+          return Number(selectedSalesRep);
+        }
+        
+        // ถ้าไม่มีข้อมูลจาก Tab ให้ใช้ค่าว่าง
+        console.log('⚠️ No selectedSalesRep from Tab, using 0');
+        return 0;
+      })(), // เก็บค่า pn_id ของ พนักงานขายจาก Tab
+      salename: (() => {
+        // ดึงข้อมูลพนักงานขายที่เลือกไว้จาก localStorage
+        const selectedSalesRep = req.body.selectedSalesRep;
+        const salesRepOptions = req.body.salesRepOptions || [];
+        
+        if (selectedSalesRep && selectedSalesRep !== '' && salesRepOptions.length > 0) {
+          const selectedRep = salesRepOptions.find(rep => rep.value === selectedSalesRep);
+          if (selectedRep) {
+            console.log('✅ Using salename from Tab:', selectedRep.label);
+            return selectedRep.label;
+          }
+        }
+        
+        // ถ้าไม่มีข้อมูลจาก Tab ให้ใช้ค่าว่าง
+        console.log('⚠️ No salename from Tab, using empty string');
+        return '';
+      })(), // เก็บค่า ชื่อ operator จาก Tab พนักงานขายที่ถูกเลือก
       ring: '', // ค่าว่าง
       ringdesc: '', // ค่าว่าง
       routerun: '', // ค่าว่าง
