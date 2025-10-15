@@ -49,7 +49,6 @@
       </div>
       <div class="card-footer d-flex flex-column flex-sm-row gap-2 align-items-stretch align-items-sm-center">
         <div class="flex-grow-1 text-muted" data-delivery-selected-summary>ยังไม่ได้เลือกรายการจัดส่ง</div>
-        <button type="button" class="btn btn-primary" data-delivery-next disabled>ไปขั้นตอนถัดไป</button>
       </div>
     </div>
   </div>
@@ -132,7 +131,10 @@
           </div>
 
           <div class="col-12 d-grid gap-2">
-            <button type="submit" class="btn btn-success" data-delivery-submit>บันทึกข้อมูลจัดส่งในรูปแบบร่าง</button>
+            <button type="submit" class="btn btn-success" data-delivery-submit>อัปเดตข้อมูลจัดส่ง</button>
+          </div>
+          <div class="col-12 d-grid gap-2">
+            <button type="button" class="btn btn-primary" data-delivery-next disabled>ไปขั้นตอนถัดไป</button>
           </div>
         </form>
       </div>
@@ -285,9 +287,10 @@
             ].filter(Boolean).join(' ') || '-';
         const checked = state.selectedId && String(state.selectedId) === String(item.id) ? 'checked' : '';
         const badge = item.isDraft ? '<span class="badge text-bg-warning ms-2">ร่าง</span>' : '';
-        const actions = item.isDraft
-          ? `<div class="btn-group btn-group-sm"><button type="button" class="btn btn-outline-secondary" data-edit-delivery="${item.id}">แก้ไข</button><button type="button" class="btn btn-outline-danger" data-delete-delivery="${item.id}">ลบ</button></div>`
-          : '';
+        const actions = `<div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-outline-secondary" data-edit-delivery="${item.id}">แก้ไข</button>
+            <button type="button" class="btn btn-outline-danger" data-delete-delivery="${item.id}">ลบ</button>
+          </div>`;
         return `
           <tr data-delivery-id="${item.id}" data-draft="${item.isDraft ? '1' : '0'}">
             <td><input type="radio" name="selectedDelivery" value="${item.id}" ${checked}></td>
@@ -382,7 +385,22 @@
           } else if (input.type === 'time') {
             input.value = record[key] ? String(record[key]).slice(0, 5) : '';
           } else {
-            input.value = record[key] == null ? '' : String(record[key]);
+            // Preserve leading zero for telephone-like fields
+            if (key === 'appttel') {
+              const raw = record[key];
+              let display = '';
+              if (raw != null) {
+                display = String(raw);
+                // If number came without leading 0 (common when stored as INT), add it back for display
+                const digits = display.replace(/\D/g, '');
+                if (digits && digits[0] !== '0') {
+                  display = '0' + display;
+                }
+              }
+              input.value = display;
+            } else {
+              input.value = record[key] == null ? '' : String(record[key]);
+            }
           }
         }
       });
@@ -478,37 +496,47 @@
       const isDraft = row.getAttribute('data-draft') === '1';
       const editBtn = event.target.closest('[data-edit-delivery]');
       if (editBtn) {
-        if (isDraft) {
-          const record = state.drafts.find((d) => String(d.id) === String(id));
-          if (record) {
-            populateForm(record);
-            state.editingId = record.id;
-            state.editingSourceId = null;
-            setFormMode('edit');
-            window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
-          }
-        } else {
-          const record = state.saved.find((d) => String(d.id) === String(id));
-          if (record) {
-            populateForm(record);
-            state.editingId = null;
-            state.editingSourceId = record.id;
-            setFormMode('edit');
-            state.selectedId = record.id;
-            handleSelect(record.id);
-            window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
-          }
+        const record = isDraft
+          ? state.drafts.find((d) => String(d.id) === String(id))
+          : state.saved.find((d) => String(d.id) === String(id));
+        if (record) {
+          populateForm(record);
+          state.editingId = isDraft ? record.id : null;
+          state.editingSourceId = isDraft ? null : record.id;
+          setFormMode('edit');
+          state.selectedId = record.id;
+          handleSelect(record.id);
+          window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
         }
         event.stopPropagation();
         return;
       }
       const deleteBtn = event.target.closest('[data-delete-delivery]');
       if (deleteBtn) {
-        if (!isDraft) {
-          alert('รายการที่บันทึกไว้ในระบบจะลบได้เมื่อจบทุกขั้นตอนเท่านั้น');
-        } else {
-          removeDraft(id);
+        if (!confirm('ยืนยันลบรายการจัดส่งนี้หรือไม่?')) {
+          event.stopPropagation();
+          return;
         }
+        if (isDraft) {
+          removeDraft(id);
+          event.stopPropagation();
+          return;
+        }
+        // Delete saved delivery via API
+        (async () => {
+          try {
+            const res = await fetch(`/workflow/api/customers/${encodeURIComponent(customerId)}/deliveries/${encodeURIComponent(id)}`, { method: 'DELETE' });
+            if (!res.ok) {
+              const txt = await res.text();
+              throw new Error(txt || 'ลบรายการไม่สำเร็จ');
+            }
+            // Refresh data after delete
+            await fetchData();
+            setSummary('ลบรายการแล้ว');
+          } catch (err) {
+            alert(err.message || 'เกิดข้อผิดพลาดขณะลบรายการ');
+          }
+        })();
         event.stopPropagation();
         return;
       }
