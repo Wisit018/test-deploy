@@ -13,8 +13,8 @@
 </div>
 
 <div class="row g-4">
-  <div class="col-12 col-xl-7">
-    <div class="card h-100">
+  <div class="col-12">
+    <div class="card mb-4">
       <div class="card-header">
         <div>
           <strong>เลือกลูกค้าที่มีอยู่</strong>
@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="card-body p-0">
-        <div class="table-responsive">
+        <div class="table-responsive customers-table-scroll">
           <table class="table table-hover table-sm align-middle mb-0" data-customers-table>
             <thead class="table-light">
               <tr>
@@ -46,10 +46,8 @@
         <button type="button" class="btn btn-primary" data-next-step disabled>ไปขั้นตอนถัดไป</button>
       </div>
     </div>
-  </div>
 
-  <div class="col-12 col-xl-5">
-    <div class="card h-100">
+    <div class="card">
       <div class="card-header d-flex justify-content-between align-items-center">
         <strong data-form-title>เพิ่มลูกค้าใหม่</strong>
         <button type="button" class="btn btn-sm btn-outline-secondary d-none" data-cancel-edit>ยกเลิกการแก้ไข</button>
@@ -680,3 +678,20 @@
     updateAddressControls();
   })();
 </script>
+
+<style>
+  /* Limit customers table body to ~10 rows height with scroll */
+  .customers-table-scroll {
+    max-height: 360px; /* approx 10 compact rows incl. header height */
+    overflow: auto;
+  }
+  .customers-table-scroll table {
+    margin-bottom: 0;
+  }
+  .customers-table-scroll thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--bs-body-bg);
+  }
+</style>

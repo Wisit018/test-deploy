@@ -16,8 +16,8 @@
     </div>
   </div>
 
-  <div class="col-12 col-xl-7">
-    <div class="card h-100">
+  <div class="col-12">
+    <div class="card mb-4">
       <div class="card-header d-flex flex-wrap gap-2 align-items-center justify-content-between">
         <div>
           <strong>ประวัติการจัดส่ง</strong>
@@ -54,8 +54,8 @@
     </div>
   </div>
 
-  <div class="col-12 col-xl-5">
-    <div class="card h-100">
+  <div class="col-12">
+    <div class="card">
       <div class="card-header d-flex justify-content-between align-items-center">
         <strong data-delivery-form-title>เพิ่มข้อมูลจัดส่งใหม่</strong>
         <button type="button" class="btn btn-sm btn-outline-secondary d-none" data-delivery-cancel-edit>ยกเลิกการแก้ไข</button>
@@ -71,15 +71,6 @@
           <div class="col-12 col-md-6">
             <label class="form-label">โทรศัพท์ *</label>
             <input type="tel" name="appttel" class="form-control" required maxlength="20">
-          </div>
-
-          <div class="col-12 col-md-6">
-            <label class="form-label">วันที่จัดส่ง</label>
-            <input type="date" name="day" class="form-control">
-          </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label">เวลาจัดส่ง</label>
-            <input type="time" name="timein" class="form-control">
           </div>
 
           <div class="col-12">
@@ -129,6 +120,15 @@
           <div class="col-12 col-md-6">
             <label class="form-label">รหัสไปรษณีย์</label>
             <input type="tel" name="zipcode1" class="form-control" maxlength="10" inputmode="numeric">
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label">วันที่จัดส่ง</label>
+            <input type="date" name="day" class="form-control">
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label">เวลาจัดส่ง</label>
+            <input type="time" name="timein" class="form-control">
           </div>
 
           <div class="col-12 d-grid gap-2">
@@ -270,7 +270,19 @@
         const date = item.day || item.workdate || '-';
         const time = item.timein || '-';
         const recipient = item.deliverto || '-';
-        const address = item.addr1 || '-';
+        // Prefer address-only fields; avoid using name (addr1)
+        const address = (item.addr2 && String(item.addr2).trim()) ? item.addr2
+          : (item.addr3 && String(item.addr3).trim()) ? item.addr3
+          : [
+              item.homenum1 || item.homenum,
+              item.mooban1 || item.moo,
+              item.road1 || item.road,
+              item.soi1 || item.soi,
+              item.kwang1 || item.kwang,
+              item.kate1 || item.kate,
+              item.province1 || item.province,
+              item.zipcode1 || item.zipcode
+            ].filter(Boolean).join(' ') || '-';
         const checked = state.selectedId && String(state.selectedId) === String(item.id) ? 'checked' : '';
         const badge = item.isDraft ? '<span class="badge text-bg-warning ms-2">ร่าง</span>' : '';
         const actions = item.isDraft
