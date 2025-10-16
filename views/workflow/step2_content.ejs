@@ -73,10 +73,6 @@
           </div>
 
           <div class="col-12">
-            <label class="form-label">ชื่อ-นามสกุล *</label>
-            <textarea name="addr1" class="form-control" rows="2" maxlength="255" required></textarea>
-          </div>
-          <div class="col-12">
             <label class="form-label">ที่อยู่บรรทัดหลัก</label>
             <textarea name="addr2" class="form-control" rows="2" maxlength="255"></textarea>
           </div>
@@ -130,11 +126,12 @@
             <input type="time" name="timein" class="form-control">
           </div>
 
-          <div class="col-12 d-grid gap-2">
-            <button type="submit" class="btn btn-success" data-delivery-submit>อัปเดตข้อมูลจัดส่ง</button>
-          </div>
-          <div class="col-12 d-grid gap-2">
-            <button type="button" class="btn btn-primary" data-delivery-next disabled>ไปขั้นตอนถัดไป</button>
+          <div class="col-12 d-flex justify-content-between gap-2">
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-success" data-delivery-new>New</button>
+              <button type="submit" class="btn btn-success" data-delivery-submit>Save</button>
+            </div>
+            <button type="button" class="btn btn-primary" data-delivery-next disabled>Next</button>
           </div>
         </form>
       </div>
@@ -154,6 +151,7 @@
     const nextBtn = document.querySelector('[data-delivery-next]');
     const form = document.querySelector('[data-delivery-form]');
     const submitBtn = form?.querySelector('[data-delivery-submit]');
+    const newDeliveryBtn = document.querySelector('[data-delivery-new]');
     const cancelBtn = document.querySelector('[data-delivery-cancel-edit]');
     const feedback = document.querySelector('[data-delivery-feedback]');
     const formTitle = document.querySelector('[data-delivery-form-title]');
@@ -221,11 +219,11 @@
     function setFormMode(mode) {
       if (!submitBtn || !formTitle) return;
       if (mode === 'edit') {
-        submitBtn.textContent = 'อัปเดตข้อมูลจัดส่ง (จะบันทึกเมื่อจบทุกขั้นตอน)';
+        submitBtn.textContent = 'Save';
         formTitle.textContent = 'แก้ไขข้อมูลจัดส่ง';
         cancelBtn?.classList.remove('d-none');
       } else {
-        submitBtn.textContent = 'เพิ่มข้อมูลจัดส่งใหม่ (จะบันทึกเมื่อจบทุกขั้นตอน)';
+        submitBtn.textContent = 'Save';
         formTitle.textContent = 'เพิ่มข้อมูลจัดส่งใหม่';
         cancelBtn?.classList.add('d-none');
       }
@@ -268,9 +266,8 @@
           phone = selectedDelivery.appttel;
         }
         
-        // Update address if available - prioritize delivery address fields
+        // Update address if available - prioritize delivery address fields (exclude addr1 which is name)
         const deliveryAddress = [
-          selectedDelivery.addr1,
           selectedDelivery.addr2, 
           selectedDelivery.addr3,
           selectedDelivery.homenum1,
@@ -344,7 +341,7 @@
         const checked = state.selectedId && String(state.selectedId) === String(item.id) ? 'checked' : '';
         const badge = item.isDraft ? '<span class="badge text-bg-warning ms-2">ร่าง</span>' : '';
         const actions = `<div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-outline-secondary" data-edit-delivery="${item.id}">แก้ไข</button>
+            <button type="button" class="btn btn-outline-secondary" data-edit-delivery="${item.id}">Edit</button>
             <button type="button" class="btn btn-outline-danger" data-delete-delivery="${item.id}">ลบ</button>
           </div>`;
         return `
@@ -608,6 +605,7 @@
 
     searchInput?.addEventListener('input', applyFilter);
     cancelBtn?.addEventListener('click', resetForm);
+    newDeliveryBtn?.addEventListener('click', resetForm);
 
     nextBtn?.addEventListener('click', () => {
       if (!state.selectedId) {
@@ -643,8 +641,8 @@
         payload[name] = trimmed === '' ? null : trimmed;
       });
 
-      if (!payload.deliverto || !payload.appttel || !payload.addr1) {
-        alert('กรุณากรอกข้อมูลผู้รับ เบอร์ติดต่อ และที่อยู่หลัก');
+      if (!payload.deliverto || !payload.appttel) {
+        alert('กรุณากรอกข้อมูลผู้รับ และเบอร์ติดต่อ');
         submitBtn?.removeAttribute('disabled');
         return;
       }
