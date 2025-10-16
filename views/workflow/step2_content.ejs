@@ -247,10 +247,47 @@
         preview.innerHTML = '<div class="text-danger">ไม่พบข้อมูลลูกค้า</div>';
         return;
       }
+      
+      // Get selected delivery data if available
+      const selectedDelivery = state.selectedId ? getCombinedList().find((d) => String(d.id) === String(state.selectedId)) : null;
+      
       const c = state.customer;
-      const fullName = [c.firstname, c.lastname].filter(Boolean).join(' ') || '(ไม่ระบุชื่อ)';
-      const phone = c.mobiletel || '-';
-      const address = [c.addr1, c.addr2, c.addr3, c.addr4, c.addr5].filter(Boolean).join('<br>') || '-';
+      let fullName = [c.firstname, c.lastname].filter(Boolean).join(' ') || '(ไม่ระบุชื่อ)';
+      let phone = c.mobiletel || '-';
+      let address = [c.addr1, c.addr2, c.addr3, c.addr4, c.addr5].filter(Boolean).join('<br>') || '-';
+      
+      // If we have selected delivery data, use it to update the preview
+      if (selectedDelivery) {
+        // Update recipient name if available
+        if (selectedDelivery.deliverto) {
+          fullName = selectedDelivery.deliverto;
+        }
+        
+        // Update phone if available
+        if (selectedDelivery.appttel) {
+          phone = selectedDelivery.appttel;
+        }
+        
+        // Update address if available - prioritize delivery address fields
+        const deliveryAddress = [
+          selectedDelivery.addr1,
+          selectedDelivery.addr2, 
+          selectedDelivery.addr3,
+          selectedDelivery.homenum1,
+          selectedDelivery.mooban1,
+          selectedDelivery.soi1,
+          selectedDelivery.road1,
+          selectedDelivery.kwang1,
+          selectedDelivery.kate1,
+          selectedDelivery.province1,
+          selectedDelivery.zipcode1
+        ].filter(Boolean).join('<br>');
+        
+        if (deliveryAddress) {
+          address = deliveryAddress;
+        }
+      }
+      
       preview.innerHTML = `
         <dl class="row mb-0">
           <dt class="col-sm-3">รหัสลูกค้า</dt><dd class="col-sm-9">${c.customerid || '-'}</dd>
@@ -321,6 +358,9 @@
     function handleSelect(id) {
       state.selectedId = id;
       const item = id ? getCombinedList().find((d) => String(d.id) === String(id)) : null;
+      
+      // Update customer preview with selected delivery data
+      renderCustomerInfo();
       
       // Populate form with selected delivery data
       if (id && item && form) {
@@ -615,6 +655,8 @@
       state.selectedId = draft.id;
       handleSelect(draft.id);
       applyFilter();
+      // Update customer preview after form submission
+      renderCustomerInfo();
       submitBtn?.removeAttribute('disabled');
     });
 

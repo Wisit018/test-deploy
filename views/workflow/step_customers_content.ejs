@@ -30,7 +30,7 @@
                 <th>รหัส</th>
                 <th>ชื่อ-สกุล</th>
                 <th>โทรศัพท์</th>
-                <th style="width:150px" class="text-end">การจัดการ</th>
+                <th style="width:150px" class="text-end">จัดการ</th>
               </tr>
             </thead>
             <tbody>
@@ -178,8 +178,11 @@
             <button type="button" class="btn btn-outline-danger btn-sm" data-toggle-ban>แบนลูกค้า</button>
           </div>
 
-          <div class="col-12 d-flex justify-content-between gap-2">
-            <button type="submit" class="btn btn-success" data-submit-btn>อัปเดตข้อมูลลูกค้า</button>
+          <div class="col-12 d-flex justify-content-between gap-2 mt-3">
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-outline-success" data-new-customer>New</button>
+              <button type="submit" class="btn btn-success" data-submit-btn>Save</button>
+            </div>
             <button type="button" class="btn btn-primary" data-next-step disabled>ไปขั้นตอนถัดไป</button>
           </div>
         </form>
@@ -207,6 +210,7 @@
     const nextBtn = document.querySelector('[data-next-step]');
     const form = document.querySelector('[data-customer-form]');
     const submitBtn = form?.querySelector('[data-submit-btn]');
+    const newCustomerBtn = document.querySelector('[data-new-customer]');
     const cancelEditBtn = document.querySelector('[data-cancel-edit]');
     const feedback = document.querySelector('[data-feedback]');
     const formTitle = document.querySelector('[data-form-title]');
@@ -225,11 +229,11 @@
     function setFormMode(mode) {
       if (!submitBtn || !formTitle) return;
       if (mode === 'edit') {
-        submitBtn.textContent = 'อัปเดตข้อมูลลูกค้า';
+        submitBtn.textContent = 'Save';
         formTitle.textContent = 'แก้ไขข้อมูลลูกค้า';
         cancelEditBtn?.classList.remove('d-none');
       } else {
-        submitBtn.textContent = 'บันทึกลูกค้าใหม่';
+        submitBtn.textContent = 'Save';
         formTitle.textContent = 'เพิ่มลูกค้าใหม่';
         cancelEditBtn?.classList.add('d-none');
       }
@@ -272,7 +276,7 @@
               <td>${phone}</td>
               <td class="text-end">
                 <div class="btn-group btn-group-sm">
-                  <button type="button" class="btn btn-outline-secondary" data-edit="${item.id}">แก้ไข</button>
+                  <button type="button" class="btn btn-outline-secondary" data-edit="${item.id}">Edit</button>
                   <button type="button" class="btn btn-outline-danger" data-delete="${item.id}">ลบ</button>
                 </div>
               </td>
@@ -445,6 +449,10 @@
       resetForm();
     });
 
+    newCustomerBtn?.addEventListener('click', () => {
+      resetForm();
+    });
+
     addAddressBtn?.addEventListener('click', () => {
       showNextAddressField();
     });
@@ -497,7 +505,7 @@
         const responseData = await res.json().catch(() => ({}));
         feedback?.classList.remove('d-none');
         if (state.editingId) {
-          feedback && (feedback.textContent = 'อัปเดตข้อมูลลูกค้าเรียบร้อย');
+          feedback && (feedback.textContent = 'บันทึกข้อมูลลูกค้าเรียบร้อย');
         } else {
           feedback && (feedback.textContent = 'เพิ่มลูกค้าใหม่เรียบร้อย');
           if (responseData && responseData.id) {
