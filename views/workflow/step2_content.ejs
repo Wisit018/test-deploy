@@ -288,13 +288,32 @@
         }
       }
       
+      // Show customer data vs delivery data separately
+      const customerAddress = [c.addr1, c.addr2, c.addr3, c.addr4, c.addr5].filter(Boolean).join('<br>') || '-';
+      const customerName = [c.firstname, c.lastname].filter(Boolean).join(' ') || '(ไม่ระบุชื่อ)';
+      const customerPhone = c.mobiletel || '-';
+      
       preview.innerHTML = `
-        <dl class="row mb-0">
-          <dt class="col-sm-3">รหัสลูกค้า</dt><dd class="col-sm-9">${c.customerid || '-'}</dd>
-          <dt class="col-sm-3">ชื่อ-สกุล</dt><dd class="col-sm-9">${fullName}</dd>
-          <dt class="col-sm-3">เบอร์ติดต่อ</dt><dd class="col-sm-9">${phone}</dd>
-          <dt class="col-sm-3">ที่อยู่</dt><dd class="col-sm-9">${address}</dd>
-        </dl>
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="text-primary mb-2">ข้อมูลลูกค้า</h6>
+            <dl class="row mb-0">
+              <dt class="col-sm-4">รหัสลูกค้า</dt><dd class="col-sm-8">${c.customerid || '-'}</dd>
+              <dt class="col-sm-4">ชื่อ-สกุล</dt><dd class="col-sm-8">${customerName}</dd>
+              <dt class="col-sm-4">เบอร์ติดต่อ</dt><dd class="col-sm-8">${customerPhone}</dd>
+              <dt class="col-sm-4">ที่อยู่</dt><dd class="col-sm-8">${customerAddress}</dd>
+            </dl>
+          </div>
+          <div class="col-md-6">
+            <h6 class="text-success mb-2">ข้อมูลจัดส่งที่เลือก</h6>
+            <dl class="row mb-0">
+              <dt class="col-sm-4">รหัสลูกค้า</dt><dd class="col-sm-8">${c.customerid || '-'}</dd>
+              <dt class="col-sm-4">ชื่อ-สกุล</dt><dd class="col-sm-8">${fullName}</dd>
+              <dt class="col-sm-4">เบอร์ติดต่อ</dt><dd class="col-sm-8">${phone}</dd>
+              <dt class="col-sm-4">ที่อยู่</dt><dd class="col-sm-8">${address}</dd>
+            </dl>
+          </div>
+        </div>
       `;
     }
 
