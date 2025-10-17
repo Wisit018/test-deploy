@@ -65,9 +65,10 @@
   </div>
 </div>
 
-<div class="row g-4">
-  <div class="col-12 col-xxl-8">
-    <div class="card h-100">
+<!-- รายการสินค้าที่เลือก - เต็มความกว้าง -->
+<div class="row g-4 mb-4">
+  <div class="col-12">
+    <div class="card">
       <div class="card-header d-flex flex-wrap gap-2 align-items-center">
         <div>
           <strong>รายการสินค้าที่เลือก</strong>
@@ -78,93 +79,32 @@
           <button type="button" class="btn btn-sm btn-outline-secondary" data-step4-product-import disabled>นำเข้าจากรายการเดิม</button>
         </div>
       </div>
-                  <div class="card-body">
-        <form class="row g-3 align-items-end mb-3" data-step4-product-form>
-          <!-- <div class="col-12">
-            <label class="form-label" for="step4ProductPicker">เลือกสินค้า</label>
-            <input type="text" class="form-control" id="step4ProductPicker" data-step4-product-picker placeholder="พิมพ์รหัสหรือชื่อสินค้าเพื่อเลือก" list="step4ProductOptions" autocomplete="off">
-            <datalist id="step4ProductOptions"></datalist>
-            <div class="form-text text-muted" data-step4-product-picker-status>ยังไม่ได้โหลดรายการสินค้า</div>
-            <input type="hidden" name="ebrandname">
-            <input type="hidden" name="sig_name">
-            <input type="hidden" name="unitsale">
-            <input type="hidden" name="cost">
-          </div> -->
-          <div class="col-12 col-md-3 col-lg-2">
-            <label class="form-label">รหัสสินค้า</label>
-            <input type="text" class="form-control" name="code" maxlength="50" placeholder="เช่น 66978">
-          </div>
-          <div class="col-12 col-md-5 col-lg-4">
-            <label class="form-label">ชื่อสินค้า *</label>
-            <input type="text" class="form-control" name="title" required placeholder="ระบุชื่อสินค้า">
-          </div>
-          <div class="col-6 col-md-2 col-lg-2">
-            <label class="form-label">ราคา *</label>
-            <input type="number" class="form-control" name="price" min="0" step="0.01" required placeholder="0.00">
-          </div>
-          <div class="col-6 col-md-2 col-lg-2">
-            <label class="form-label">จำนวน *</label>
-            <input type="number" class="form-control" name="qty" min="1" step="1" required value="1">
-          </div>
-          <div class="col-12 col-md-3 col-lg-2">
-            <label class="form-label">ส่วนลด</label>
-            <input type="number" class="form-control" name="discount" min="0" step="0.01" placeholder="0.00">
-          </div>
-          <div class="col-12 col-md-auto">
-            <button type="submit" class="btn btn-primary w-100" data-step4-product-add>เพิ่มสินค้า</button>
-          </div>
-        </form>
-        <div class="table-responsive mb-4">
-          <table class="table table-sm table-hover align-middle mb-0" data-step4-product-table>
-            <thead class="table-light">
-              <tr>
-                <th style="width:110px">รหัส</th>
-                <th>ชื่อสินค้า</th>
-                <th>แบรนด์</th>
-                <th>SIG</th>
-                <th style="width:110px">SIG</th>
-                <th class="text-end" style="width:110px">หน่วย</th>
-                <th class="text-end" style="width:110px">ราคา</th>
-                <th class="text-end" style="width:90px">จำนวน</th>
-                <th class="text-end" style="width:120px">ส่วนลด</th>
-                <th class="text-end" style="width:120px">ยอดรวม</th>
-                <th style="width:68px"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td colspan="11" class="text-center text-muted py-4">ยังไม่มีสินค้าในรายการ</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="card-body">
         <div class="mt-4">
           <h6 class="fw-semibold mb-2">เลือกรายการสินค้าจากระบบ</h6>
-          <div class="table-responsive" data-step4-product-catalog-wrap>
+          <div class="table-responsive" style="max-height: 400px; overflow-y: auto;" data-step4-product-catalog-wrap>
             <table class="table table-sm table-striped align-middle mb-0" data-step4-product-catalog>
-              <thead class="table-light">
+              <thead class="table-light sticky-top">
                 <tr>
-                  <th style="width:110px">รหัส</th>
-                  <th>แบรนด์</th>
-                  <th>ชื่อสินค้า</th>
-                  <th>SIG</th>
-                  <th style="width:110px">SIG</th>
-                  <th class="text-end" style="width:110px">หน่วย</th>
-                  <th class="text-end" style="width:110px">ราคา</th>
-                  <th class="text-end" style="width:90px"></th>
+                  <th style="width:42px"></th>
+                  <th style="width:110px">Code</th>
+                  <th>Title</th>
+                  <th class="text-end" style="width:110px">Price</th>
+                  <th class="text-end" style="width:90px">Qty</th>
+                  <th class="text-end" style="width:120px">Amount</th>
+                  <th style="width:68px"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td colspan="8" class="text-center text-muted py-3">กำลังโหลดข้อมูลสินค้า...</td>
+                  <td colspan="7" class="text-center text-muted py-3">กำลังโหลดข้อมูลสินค้า...</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      <div class="card-footer d-flex flex-wrap gap-2 justify-content-between align-items-center">
-        <div class="text-muted small">ข้อมูลทั้งหมดจะถูกบันทึกเมื่อดำเนินการครบทุกขั้นตอน</div>
+      <div class="card-footer d-flex flex-wrap gap-2 justify-content-end">
         <div class="d-flex gap-2">
           <button type="button" class="btn btn-sm btn-outline-danger" data-step4-product-clear>ล้างรายการ</button>
           <button type="button" class="btn btn-sm btn-outline-secondary" data-step4-product-export disabled>ส่งออก</button>
@@ -172,93 +112,100 @@
       </div>
     </div>
   </div>
+</div>
 
-  <div class="col-12 col-xxl-4 d-flex flex-column gap-3">
+<!-- การจัดส่งและการแจ้งเตือนลูกค้า - รวมกันเป็นกล่องเดียว -->
+<div class="row g-4">
+  <div class="col-12">
     <div class="card">
-      <div class="card-header">การจัดส่ง</div>
-      <div class="card-body">
-        <form class="row g-3" data-step4-shipping-form>
-
-          <div class="col-12 col-lg-6">
-            <label class="form-label">คูปองส่วนลด</label>
-            <select class="form-select" name="coupon">
-              <option value="">ไม่ใช้ Coupon</option>
-              <option value="COUPON 20.">COUPON 20.- FOLLOW SHOPEE SIAMDRUG</option>
-            </select>
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-6">
+            <strong style="white-space: nowrap;">การจัดส่ง</strong>
           </div>
-          <div class="col-12 col-lg-6">
-            <label class="form-label">ค่าจัดส่ง (บาท)</label>
-            <div class="input-group">
-              <input type="number" class="form-control" name="shippingCost" min="0" step="0.01" placeholder="0.00">
-              <span class="input-group-text">บาท</span>
-            </div>
+          <div class="col-md-6">
+            <strong></strong>
           </div>
-          <div class="col-12">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="1" id="step4NoCharge" data-step4-no-charge>
-              <label class="form-check-label" for="step4NoCharge">ไม่คิดค่าจัดส่ง</label>
-            </div>
-          </div>
-          <div class="col-12">
-            <label class="form-label">เลือกขนส่ง</label>
-            <div class="d-flex flex-column gap-2" data-step4-shipping-options>
-              <button type="button" class="btn btn-outline-primary" data-step4-shipping-toggle>กดเลือก</button>
-              <select class="form-select d-none" data-step4-shipping-select>
-                <option value="">เลือกขนส่ง</option>
-              </select>
-              <div class="text-muted small d-none" data-step4-shipping-empty>ไม่มีตัวเลือกขนส่ง</div>
-            </div>
-          </div>
-          <!-- <div class="col-12 col-lg-6">
-            <label class="form-label">จำนวนพัสดุ</label>
-            <input type="number" class="form-control" name="packageCount" min="1" step="1" placeholder="1">
-          </div>
-          <div class="col-12 col-lg-6">
-            <label class="form-label">ประเภทการจัดส่ง</label>
-            <select class="form-select" name="deliveryType">
-              <option value="standard">มาตรฐาน</option>
-              <option value="booster">Booster</option>
-              <option value="maintain">Maintain</option>
-            </select>
-          </div>
-          <div class="col-12">
-            <label class="form-label">หมายเหตุเพิ่มเติม</label>
-            <textarea class="form-control" rows="2" name="remark" placeholder="แจ้งรายละเอียดเพิ่มเติม"></textarea>
-          </div> -->
-        </form>
+        </div>
       </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">การแจ้งเตือนลูกค้า</div>
       <div class="card-body">
-        <div class="row g-3">
-          <div class="col-12 col-lg-6">
-            <label class="form-label">แจ้งจัดของ 1</label>
-            <input type="text" class="form-control" data-step4-notify1 placeholder="รายละเอียดแจ้งจัดของ 1">
-          </div>
-          <div class="col-12 col-lg-6">
-            <label class="form-label">แจ้งจัดของ 2</label>
-            <input type="text" class="form-control" data-step4-notify2 placeholder="รายละเอียดแจ้งจัดของ 2">
-          </div>
-          <div class="col-12">
-            <label class="form-label">อาการ / หมายเหตุ</label>
-            <textarea class="form-control" rows="2" data-step4-symptom placeholder="ระบุคำอธิบายเพิ่มเติม"></textarea>
-          </div>
-          <div class="col-12">
-            <label class="form-label d-block">ระดับ</label>
-            <div class="d-flex gap-3 flex-wrap" data-step4-urgency-group>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="urgencyLevel" value="normal" id="urgency-normal">
-                <label class="form-check-label" for="urgency-normal">ปกติ</label>
+        <div class="row">
+          <!-- การจัดส่ง -->
+          <div class="col-md-6">
+            <form class="row g-3" data-step4-shipping-form>
+              <div class="col-12">
+                <label class="form-label">คูปองส่วนลด</label>
+                <select class="form-select" name="coupon">
+                  <option value="">ไม่ใช้ Coupon</option>
+                  <option value="COUPON 20.">COUPON 20.- FOLLOW SHOPEE SIAMDRUG</option>
+                </select>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="urgencyLevel" value="booster" id="urgency-booster">
-                <label class="form-check-label" for="urgency-booster">Booster</label>
+              <div class="col-12">
+                <label class="form-label">เลือกขนส่ง</label>
+                <div class="table-responsive" style="max-height: 200px; overflow-y: auto;" data-step4-shipping-options>
+                  <table class="table table-sm table-hover align-middle mb-0">
+                    <thead class="table-light sticky-top">
+                      <tr>
+                        <th style="width:42px"></th>
+                        <th>ชื่อขนส่ง</th>
+                      </tr>
+                    </thead>
+                    <tbody data-step4-shipping-table>
+                      <tr>
+                        <td colspan="2" class="text-center text-muted py-3">กำลังโหลดข้อมูลขนส่ง...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="text-muted small d-none" data-step4-shipping-empty>ไม่มีตัวเลือกขนส่ง</div>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="urgencyLevel" value="maintain" id="urgency-maintain">
-                <label class="form-check-label" for="urgency-maintain">Maintain</label>
+              <div class="col-12">
+                <label class="form-label">ค่าจัดส่ง (บาท)</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" name="shippingCost" min="0" step="0.01" placeholder="0.00">
+                  <span class="input-group-text">บาท</span>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="1" id="step4NoCharge" data-step4-no-charge>
+                  <label class="form-check-label" for="step4NoCharge">ไม่คิดค่าจัดส่ง</label>
+                </div>
+              </div>
+            </form>
+          </div>
+          
+          <!-- การแจ้งเตือนลูกค้า -->
+          <div class="col-md-6">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label">แจ้งจัดของ 1</label>
+                <input type="text" class="form-control" data-step4-notify1 placeholder="รายละเอียดแจ้งจัดของ 1">
+              </div>
+              <div class="col-12">
+                <label class="form-label">แจ้งจัดของ 2</label>
+                <input type="text" class="form-control" data-step4-notify2 placeholder="รายละเอียดแจ้งจัดของ 2">
+              </div>
+              <div class="col-12">
+                <label class="form-label">อาการ / หมายเหตุ</label>
+                <textarea class="form-control" rows="2" data-step4-symptom placeholder="ระบุคำอธิบายเพิ่มเติม"></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label d-block">ระดับ</label>
+                <div class="d-flex gap-3 flex-wrap" data-step4-urgency-group>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="urgencyLevel" value="normal" id="urgency-normal">
+                    <label class="form-check-label" for="urgency-normal">วิธีทาน ปกติ</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="urgencyLevel" value="booster" id="urgency-booster">
+                    <label class="form-check-label" for="urgency-booster">Booster</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="urgencyLevel" value="maintain" id="urgency-maintain">
+                    <label class="form-check-label" for="urgency-maintain">Maintain</label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -268,8 +215,7 @@
   </div>
 </div>
 
-<div class="d-flex justify-content-between align-items-center mt-4">
-  <div class="text-muted small">ข้อมูลทั้งหมดจะถูกบันทึกเมื่อดำเนินการครบทุกขั้นตอน</div>
+<div class="d-flex justify-content-end align-items-center mt-4">
   <div class="d-flex gap-2">
     <a class="btn btn-outline-secondary" href="/workflow/step3?customerId=<%= customerId %>">ย้อนกลับ</a>
     <a class="btn btn-primary" href="/workflow/step5?customerId=<%= customerId %>">ไปขั้นตอนถัดไป</a>
@@ -288,13 +234,8 @@
     const keywordSummaryEl = document.querySelector('[data-step4-keyword-summary]');
     const followUpSummaryEl = document.querySelector('[data-step4-followup-summary]');
 
-    const productForm = document.querySelector('[data-step4-product-form]');
-    const productTableBody = document.querySelector('[data-step4-product-table] tbody');
     const productCatalogTableBody = document.querySelector('[data-step4-product-catalog] tbody');
     const productClearBtn = document.querySelector('[data-step4-product-clear]');
-    const productPickerInput = document.querySelector('[data-step4-product-picker]');
-    const productPickerStatus = document.querySelector('[data-step4-product-picker-status]');
-    const productPickerList = document.getElementById('step4ProductOptions');
     const productSearchInput = document.querySelector('[data-step4-product-search]');
 
     const summaryCountEl = document.querySelector('[data-step4-summary-count]');
@@ -307,6 +248,7 @@
     const shippingForm = document.querySelector('[data-step4-shipping-form]');
     const shippingToggleBtn = document.querySelector('[data-step4-shipping-toggle]');
     const shippingSelect = document.querySelector('[data-step4-shipping-select]');
+    const shippingTable = document.querySelector('[data-step4-shipping-table]');
     const shippingEmptyMessage = document.querySelector('[data-step4-shipping-empty]');
     const noChargeCheckbox = document.querySelector('[data-step4-no-charge]');
     const notifyInput1 = document.querySelector('[data-step4-notify1]');
@@ -466,9 +408,8 @@
     }
 
     function setProductPickerStatus(message) {
-      if (productPickerStatus) {
-        productPickerStatus.textContent = message;
-      }
+      // productPickerStatus element was removed, so we'll just log the message
+      console.log('📝 Product Picker Status:', message);
     }
 
     function renderProductPickerOptions(filterTerm, suppressStatus) {
@@ -502,56 +443,103 @@
     }
 
         function renderProductCatalog(filterTerm) {
-      if (!productCatalogTableBody) return;
+      console.log('🎨 renderProductCatalog called with filterTerm:', filterTerm);
+      console.log('📊 catalogState:', { loading: catalogState.loading, loaded: catalogState.loaded, productsCount: catalogState.products.length });
+      if (!productCatalogTableBody) {
+        console.log('❌ productCatalogTableBody not found');
+        return;
+      }
       if (catalogState.loading) {
-        productCatalogTableBody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">กำลังโหลดข้อมูลสินค้า...</td></tr>';
+        console.log('⏳ Still loading, showing loading message');
+        productCatalogTableBody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-3">กำลังโหลดข้อมูลสินค้า...</td></tr>';
+        return;
+      }
+      
+      // If not loaded yet, show loading message and try to load
+      if (!catalogState.loaded) {
+        console.log('⏳ Not loaded yet, showing loading message and triggering load');
+        productCatalogTableBody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-3">กำลังโหลดข้อมูลสินค้า...</td></tr>';
+        // Trigger load if not already loading
+        if (!catalogState.loading) {
+          loadProductCatalog();
+        }
         return;
       }
       const items = catalogState.products;
       const term = filterTerm ? filterTerm.trim().toLowerCase() : '';
+      console.log('📊 Items count:', items.length, 'Filter term:', term);
       if (!items.length) {
-        productCatalogTableBody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">ไม่มีรายการสินค้า</td></tr>';
+        console.log('❌ No items to display');
+        productCatalogTableBody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-3">ไม่มีรายการสินค้า</td></tr>';
         return;
       }
       const filtered = term ? items.filter(function(item){ return matchesProductTerm(item, term); }) : items;
+      console.log('🔍 Filtered items:', filtered.length, 'out of', items.length);
       if (!filtered.length) {
-        productCatalogTableBody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">ไม่พบสินค้าที่ตรงกับคำค้น</td></tr>';
+        console.log('❌ No filtered items found');
+        productCatalogTableBody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-3">ไม่พบสินค้าที่ตรงกับคำค้น</td></tr>';
         return;
       }
+      console.log('✅ Rendering', filtered.length, 'items');
       let rowsHtml = '';
       filtered.forEach(function(item){
         const key = item && item.id !== null && item.id !== undefined ? 'id:' + item.id : (item && item.code ? 'code:' + item.code : '');
-        const costValue = item && item.cost !== null && item.cost !== undefined ? Number(item.cost) : null;
         const priceValue = determineProductPrice(item);
-        const costDisplay = costValue !== null && Number.isFinite(costValue) ? formatCurrency(costValue) : '-';
         const priceDisplay = priceValue !== null && Number.isFinite(priceValue) ? formatCurrency(priceValue) : '-';
-        rowsHtml += '<tr data-catalog-row="' + escapeHtml(key) + '">';
+        
+        // Check if this product is already in the cart
+        const existingProduct = state.products.find(function(p){ 
+          return p.productId === item.id || p.code === item.code; 
+        });
+        const isSelected = !!existingProduct;
+        const selectedIcon = isSelected ? '▶' : '';
+        const selectedClass = isSelected ? 'table-active' : '';
+        const qty = existingProduct ? existingProduct.qty : 1;
+        const total = priceValue && Number.isFinite(priceValue) ? priceValue * qty : 0;
+        
+        rowsHtml += '<tr class="' + selectedClass + '" data-catalog-row="' + escapeHtml(key) + '">';
+        rowsHtml += '<td>' + selectedIcon + '</td>';
         rowsHtml += '<td>' + escapeHtml(item && item.code ? item.code : '-') + '</td>';
-        rowsHtml += '<td>' + escapeHtml(item && item.ebrandname ? item.ebrandname : '-') + '</td>';
         rowsHtml += '<td>' + escapeHtml(item && item.title ? item.title : '-') + '</td>';
-        rowsHtml += '<td>' + escapeHtml((item && (item.sigName || item.sig_name)) ? (item.sigName || item.sig_name) : '-') + '</td>';
-        rowsHtml += '<td>' + escapeHtml(item && item.unitsale ? item.unitsale : '-') + '</td>';
-        rowsHtml += '<td class="text-end">' + costDisplay + '</td>';
         rowsHtml += '<td class="text-end">' + priceDisplay + '</td>';
-        rowsHtml += '<td class="text-end"><button type="button" class="btn btn-sm btn-outline-primary" data-step4-catalog-select="' + escapeHtml(key) + '">เลือก</button></td>';
+        rowsHtml += '<td class="text-end">';
+        rowsHtml += '<input type="number" class="form-control form-control-sm" style="width: 80px;" min="1" step="1" value="' + qty + '" data-step4-catalog-qty="' + escapeHtml(key) + '">';
+        rowsHtml += '</td>';
+        rowsHtml += '<td class="text-end">' + formatCurrency(total) + '</td>';
+        rowsHtml += '<td class="text-end">';
+        if (isSelected) {
+          rowsHtml += '<button type="button" class="btn btn-sm btn-outline-danger" data-step4-catalog-remove="' + escapeHtml(key) + '">ลบ</button>';
+        } else {
+          rowsHtml += '<button type="button" class="btn btn-sm btn-outline-primary" data-step4-catalog-add="' + escapeHtml(key) + '">เพิ่ม</button>';
+        }
+        rowsHtml += '</td>';
         rowsHtml += '</tr>';
       });
+      console.log('🎨 Generated HTML length:', rowsHtml.length);
+      console.log('🎨 Setting innerHTML...');
       productCatalogTableBody.innerHTML = rowsHtml;
+      console.log('✅ Table updated successfully');
     }
 
     async function loadProductCatalog(options) {
-      if (catalogState.loading) return;
+      console.log('🚀 loadProductCatalog called with options:', options);
+      if (catalogState.loading) {
+        console.log('⏳ Already loading, skipping...');
+        return;
+      }
       if (!options) options = {};
       if (catalogState.loaded && !options.force) {
+        console.log('✅ Data already loaded, rendering...');
         const currentFilter = productSearchInput ? productSearchInput.value : '';
-        renderProductPickerOptions(productPickerInput ? productPickerInput.value : '', true);
         renderProductCatalog(currentFilter);
         return;
       }
+      console.log('🔄 Starting fresh load...');
+      console.log('🔄 Starting to load product catalog...');
       catalogState.loading = true;
       setProductPickerStatus('กำลังโหลดข้อมูลสินค้า...');
       if (productCatalogTableBody) {
-        productCatalogTableBody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">กำลังโหลดข้อมูลสินค้า...</td></tr>';
+        productCatalogTableBody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-3">กำลังโหลดข้อมูลสินค้า...</td></tr>';
       }
       try {
         const params = new URLSearchParams();
@@ -562,15 +550,23 @@
         const limit = options.limit && Number.isFinite(Number(options.limit)) ? Number(options.limit) : 1000;
         params.set('limit', String(limit));
         const query = params.toString();
-        const response = await fetch('/workflow/api/product-options' + (query ? '?' + query : ''));
+        const apiUrl = '/workflow/api/product-options' + (query ? '?' + query : '');
+        console.log('🌐 Fetching from API:', apiUrl);
+        const response = await fetch(apiUrl);
+        console.log('🔍 Product API Response:', response.status, response.statusText);
         if (!response.ok) {
           const message = await response.text();
+          console.error('❌ Product API Error:', message);
           throw new Error(message || 'โหลดข้อมูลสินค้าไม่สำเร็จ');
         }
         const data = await response.json();
+        console.log('📦 Product Data Loaded:', data.length, 'items');
+        console.log('📦 First few items:', data.slice(0, 3));
         const items = Array.isArray(data) ? data.map(normalizeProductRow).filter(function(item){ return !!item; }) : [];
+        console.log('📦 Normalized items:', items.length);
         catalogState.products = items;
         catalogState.loaded = true;
+        console.log('📦 Catalog state updated:', { loaded: catalogState.loaded, productsCount: catalogState.products.length });
         catalogState.lookupByCode.clear();
         catalogState.lookupById.clear();
         catalogState.lookupByTitle.clear();
@@ -598,25 +594,35 @@
           }
         });
         const currentFilter = productSearchInput ? productSearchInput.value : '';
-        renderProductPickerOptions(productPickerInput ? productPickerInput.value : '', true);
+        console.log('🎨 Calling renderProductCatalog with filter:', currentFilter);
         renderProductCatalog(currentFilter);
-        if (!productForm || !productForm.dataset || !productForm.dataset.selectedProductId) {
-          setProductPickerStatus('พิมพ์เพื่อค้นหาหรือเลือกจากรายการด้านล่าง');
-        }
-        if (state.lastSelectedProductId) {
-          const restored = catalogState.lookupById.get(String(state.lastSelectedProductId));
-          if (restored) {
-            applyProductSelectionFromProduct(restored, { setInputValue: true, updateStatus: false, skipPersist: true });
-          }
-        }
+        setProductPickerStatus('พิมพ์เพื่อค้นหาหรือเลือกจากรายการด้านล่าง');
+        
+        // Force render multiple times to ensure table is populated
+        setTimeout(function() {
+          console.log('🔄 Force render after data load (100ms)...');
+          renderProductCatalog(currentFilter);
+        }, 100);
+        
+        setTimeout(function() {
+          console.log('🔄 Force render after data load (300ms)...');
+          renderProductCatalog(currentFilter);
+        }, 300);
+        
+        setTimeout(function() {
+          console.log('🔄 Force render after data load (500ms)...');
+          renderProductCatalog(currentFilter);
+        }, 500);
       } catch (err) {
+        console.error('❌ Error loading product catalog:', err);
         catalogState.loaded = false;
         const message = err && err.message ? err.message : 'เกิดข้อผิดพลาดระหว่างโหลดสินค้า';
         if (productCatalogTableBody) {
-          productCatalogTableBody.innerHTML = '<tr><td colspan="8" class="text-center text-danger py-3">' + escapeHtml(message) + '</td></tr>';
+          productCatalogTableBody.innerHTML = '<tr><td colspan="7" class="text-center text-danger py-3">' + escapeHtml(message) + '</td></tr>';
         }
         setProductPickerStatus(message);
       } finally {
+        console.log('🏁 loadProductCatalog finished, loading:', catalogState.loading);
         catalogState.loading = false;
       }
     }
@@ -645,60 +651,12 @@
     }
 
     function applyProductSelectionFromProduct(product, options) {
-      if (!product || !productForm) return;
+      if (!product) return;
       if (!options) options = {};
       const inputValueMode = Object.prototype.hasOwnProperty.call(options, 'setInputValue') ? options.setInputValue : null;
       const updateStatus = options.updateStatus !== false;
       const skipPersist = !!options.skipPersist;
-      if (!productForm.dataset) {
-        productForm.dataset = {};
-      }
-      productForm.dataset.selectedProductId = product.id !== null && product.id !== undefined ? String(product.id) : '';
-      if (productForm.elements.code) {
-        productForm.elements.code.value = product.code || '';
-      }
-      if (productForm.elements.title) {
-        productForm.elements.title.value = product.title || '';
-      }
-      if (productForm.elements.ebrandname) {
-        productForm.elements.ebrandname.value = product.ebrandname || product.brand || '';
-      }
-      if (productForm.elements.sig_name) {
-        productForm.elements.sig_name.value = product.sigName || product.sig_name || '';
-      }
-      if (productForm.elements.unitsale) {
-        productForm.elements.unitsale.value = product.unitsale || '';
-      }
-      if (productForm.elements.cost) {
-        const costValue = product.cost !== null && product.cost !== undefined ? product.cost : '';
-        productForm.elements.cost.value = costValue === '' ? '' : costValue;
-      }
-      const priceValue = determineProductPrice(product);
-      if (productForm.elements.price) {
-        if (priceValue !== null && Number.isFinite(Number(priceValue))) {
-          productForm.elements.price.value = Number(priceValue).toFixed(2);
-        } else {
-          productForm.elements.price.value = '';
-        }
-      }
-      if (productForm.elements.qty) {
-        productForm.elements.qty.value = '1';
-      }
-      if (productForm.elements.discount) {
-        productForm.elements.discount.value = '0.00';
-      }
       const productLabel = buildProductOptionValue(product);
-      if (productPickerInput) {
-        switch (inputValueMode) {
-          case true:
-            productPickerInput.value = productLabel;
-            break;
-          case false:
-            break;
-          default:
-            productPickerInput.value = '';
-        }
-      }
       if (updateStatus) {
         setProductPickerStatus('เลือกสินค้า: ' + (product.title || product.code || '-'));
       }
@@ -707,7 +665,6 @@
       if (!skipPersist) {
         persistState();
       }
-      renderProductPickerOptions(productPickerInput ? productPickerInput.value : '', true);
     }
     async function applyProductSelectionByInput(rawValue) {
       const value = rawValue ? rawValue.trim() : '';
@@ -776,9 +733,6 @@
         
         if (!product) {
           setProductPickerStatus('ไม่พบสินค้า: ' + value + ' - ลองค้นหาในรายการด้านล่างหรือเพิ่มสินค้าใหม่');
-          if (productForm && productForm.dataset) {
-            productForm.dataset.selectedProductId = '';
-          }
           return;
         }
       }
@@ -786,34 +740,27 @@
     }
 
     function clearProductPickerSelection() {
-      if (productForm && productForm.dataset) {
-        productForm.dataset.selectedProductId = '';
-      }
-      if (productForm && productForm.elements) {
-        if (productForm.elements.ebrandname) productForm.elements.ebrandname.value = '';
-        if (productForm.elements.sig_name) productForm.elements.sig_name.value = '';
-        if (productForm.elements.unitsale) productForm.elements.unitsale.value = '';
-        if (productForm.elements.cost) productForm.elements.cost.value = '';
-      }
-      if (productPickerInput) {
-        productPickerInput.value = '';
-      }
       state.lastSelectedProductId = null;
       persistState();
       if (catalogState.loaded) {
         setProductPickerStatus('พิมพ์เพื่อค้นหาหรือเลือกจากรายการด้านล่าง');
-        renderProductPickerOptions('', true);
       } else {
         setProductPickerStatus('ยังไม่ได้ดึงข้อมูลสินค้า');
       }
     }
     function renderDeliverySummary() {
-      if (!deliverySummaryEl) return;
+      if (!deliverySummaryEl) {
+        console.log('❌ deliverySummaryEl not found');
+        return;
+      }
+      console.log('🔄 renderDeliverySummary called');
       let html = '<div class="text-muted">ยังไม่ได้เลือกข้อมูลจัดส่ง</div>';
       try {
         const raw = sessionStorage.getItem(deliveryKey);
+        console.log('🔍 Delivery Data from sessionStorage:', raw);
         if (raw) {
           const payload = JSON.parse(raw);
+          console.log('📦 Delivery Payload:', payload);
           const delivery = payload && payload.delivery ? payload.delivery.data : null;
           if (delivery) {
             const lines = [];
@@ -844,10 +791,13 @@
     }
 
     async function hydrateMediaSummary() {
+      console.log('🔄 hydrateMediaSummary called');
       let selection = null;
       try {
         const raw = sessionStorage.getItem(mediaSelectionKey);
+        console.log('🔍 Media/Channel Data from sessionStorage:', raw);
         if (raw) selection = JSON.parse(raw);
+        console.log('📦 Media/Channel Selection:', selection);
       } catch (err) {
         console.warn('step4: ไม่สามารถอ่านข้อมูลสื่อ/ช่องทาง', err);
       }
@@ -901,73 +851,93 @@
       }
     }
 
-    function updateShippingToggleLabel() {
-      if (!shippingToggleBtn) return;
-      if (!shippingOptions.length || !state.shipping.method) {
-        shippingToggleBtn.textContent = 'กดเลือก';
-        return;
-      }
-      const found = shippingOptions.find(function(option){ return option.id === state.shipping.method; });
-      shippingToggleBtn.textContent = found ? found.label : 'กดเลือก';
-    }
+    // updateShippingToggleLabel function removed - no longer needed with table selection
 
     function renderShippingOptions() {
-      if (!shippingSelect) return;
+      if (!shippingTable) return;
       if (!shippingOptions.length) {
-        shippingSelect.innerHTML = '<option value="">เลือกขนส่ง</option>';
-        shippingSelect.classList.add('d-none');
-        shippingSelect.disabled = true;
-        if (shippingToggleBtn) shippingToggleBtn.disabled = true;
+        shippingTable.innerHTML = '<tr><td colspan="2" class="text-center text-muted py-3">ไม่มีตัวเลือกขนส่ง</td></tr>';
         if (shippingEmptyMessage) shippingEmptyMessage.classList.remove('d-none');
-        updateShippingToggleLabel();
         return;
       }
-      const optionsHtml = ['<option value="">เลือกขนส่ง</option>'];
-      shippingOptions.forEach(function(option){
-        optionsHtml.push('<option value="' + option.id + '">' + option.label + '</option>');
-      });
-      shippingSelect.innerHTML = optionsHtml.join('');
-      shippingSelect.disabled = false;
-      if (shippingEmptyMessage) shippingEmptyMessage.classList.add('d-none');
-      if (shippingToggleBtn) shippingToggleBtn.disabled = false;
-      if (state.shipping.method && shippingOptions.some(function(option){ return option.id === state.shipping.method; })) {
-        shippingSelect.value = state.shipping.method;
-      } else {
-        shippingSelect.value = '';
-      }
-      updateShippingToggleLabel();
-    }
-    function renderProducts() {
-      if (!productTableBody) return;
-      if (!state.products.length) {
-        productTableBody.innerHTML = '<tr><td colspan="11" class="text-center text-muted py-4">ยังไม่มีสินค้าในรายการ</td></tr>';
-        return;
-      }
+      
       let rowsHtml = '';
-      state.products.forEach(function(item){
-        const price = Number(item.price) || 0;
-        const qty = Number(item.qty) || 0;
-        const discount = Number(item.discount) || 0;
-        const lineTotal = Math.max(price * qty - discount, 0);
-        const costValue = item.cost !== null && item.cost !== undefined ? Number(item.cost) : null;
-        const costDisplay = costValue !== null && Number.isFinite(costValue) ? formatCurrency(costValue) : '-';
-        rowsHtml += '<tr data-id="' + escapeHtml(item.id || '') + '">';
-        rowsHtml += '<td>' + escapeHtml(item.code || '-') + '</td>';
-        rowsHtml += '<td>' + escapeHtml(item.title || '-') + '</td>';
-        rowsHtml += '<td>' + escapeHtml(item.ebrandname || item.brand || '-') + '</td>';
-        rowsHtml += '<td>' + escapeHtml(item.sigName || item.sig_name || '-') + '</td>';
-        rowsHtml += '<td>' + escapeHtml(item.unitsale || '-') + '</td>';
-        rowsHtml += '<td class="text-end">' + costDisplay + '</td>';
-        rowsHtml += '<td class="text-end">' + formatCurrency(price) + '</td>';
-        rowsHtml += '<td class="text-end">' + qty + '</td>';
-        rowsHtml += '<td class="text-end">' + formatCurrency(discount) + '</td>';
-        rowsHtml += '<td class="text-end">' + formatCurrency(lineTotal) + '</td>';
-        rowsHtml += '<td class="text-end">';
-        rowsHtml += '<button type="button" class="btn btn-sm btn-outline-danger" data-step4-remove="' + escapeHtml(item.id || '') + '">ลบ</button>';
-        rowsHtml += '</td>';
+      shippingOptions.forEach(function(option){
+        const isSelected = state.shipping.method === option.id;
+        const selectedIcon = isSelected ? '▶' : '';
+        const selectedClass = isSelected ? 'table-active' : '';
+        
+        rowsHtml += '<tr class="' + selectedClass + '" data-shipping-option="' + escapeHtml(option.id) + '">';
+        rowsHtml += '<td>' + selectedIcon + '</td>';
+        rowsHtml += '<td>' + escapeHtml(option.label) + '</td>';
         rowsHtml += '</tr>';
       });
-      productTableBody.innerHTML = rowsHtml;
+      
+      shippingTable.innerHTML = rowsHtml;
+      if (shippingEmptyMessage) shippingEmptyMessage.classList.add('d-none');
+    }
+
+    function addProductToCart(product, qty) {
+      if (!product) return;
+      const priceValue = determineProductPrice(product);
+      if (priceValue === null || !Number.isFinite(priceValue)) {
+        alert('ไม่สามารถเพิ่มสินค้านี้ได้ เนื่องจากไม่มีราคา');
+        return;
+      }
+      
+      const existingIndex = state.products.findIndex(function(p){ 
+        return p.productId === product.id || p.code === product.code; 
+      });
+      
+      const productData = {
+        id: 'p-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+        productId: product.id,
+        code: product.code || '',
+        title: product.title || '',
+        ebrandname: product.ebrandname || product.brand || '',
+        sigName: product.sigName || product.sig_name || '',
+        unitsale: product.unitsale || '',
+        cost: product.cost !== null && product.cost !== undefined ? Number(product.cost) : null,
+        price: Number(priceValue),
+        qty: Number(qty) || 1,
+        discount: 0,
+      };
+      
+      if (existingIndex >= 0) {
+        state.products[existingIndex] = productData;
+      } else {
+        state.products.push(productData);
+      }
+      
+      renderProductCatalog(productSearchInput ? productSearchInput.value : '');
+      computeTotals();
+      persistState();
+    }
+    
+    function removeProductFromCart(product) {
+      if (!product) return;
+      const index = state.products.findIndex(function(p){ 
+        return p.productId === product.id || p.code === product.code; 
+      });
+      if (index >= 0) {
+        state.products.splice(index, 1);
+        renderProductCatalog(productSearchInput ? productSearchInput.value : '');
+        computeTotals();
+        persistState();
+      }
+    }
+    
+    function updateProductQuantity(product, qty) {
+      if (!product) return;
+      const index = state.products.findIndex(function(p){ 
+        return p.productId === product.id || p.code === product.code; 
+      });
+      if (index >= 0) {
+        state.products[index].qty = Number(qty) || 1;
+        renderProductCatalog(productSearchInput ? productSearchInput.value : '');
+        computeTotals();
+        persistState();
+      }
     }
 
     function computeTotals() {
@@ -1023,209 +993,126 @@
     }
     setProductPickerStatus('ยังไม่ได้ดึงข้อมูลรายการสินค้า');
 
-    if (productPickerInput) {
-      productPickerInput.addEventListener('focus', function(){
-        loadProductCatalog();
-      });
-      productPickerInput.addEventListener('input', function(){
-        if (catalogState.loaded) {
-          renderProductPickerOptions(productPickerInput.value, true);
-        }
-      });
-      productPickerInput.addEventListener('change', async function(){
-        await applyProductSelectionByInput(productPickerInput.value);
-      });
-      productPickerInput.addEventListener('keydown', async function(event){
-        if (event.key === 'Enter') {
-          event.preventDefault();
-          await applyProductSelectionByInput(productPickerInput.value);
-        }
-      });
-    }
 
     if (productSearchInput) {
+      console.log('🔍 Setting up product search input listeners...');
       productSearchInput.addEventListener('input', function(){
+        console.log('🔍 Product search input changed:', productSearchInput.value);
         if (catalogState.loaded) {
           const term = productSearchInput.value;
-          renderProductPickerOptions(term, false);
+          console.log('🔍 Rendering product catalog with search term:', term);
           renderProductCatalog(term);
+        } else {
+          console.log('⚠️ Catalog not loaded yet, forcing load...');
+          loadProductCatalog({ force: true, search: productSearchInput.value });
         }
       });
       productSearchInput.addEventListener('keydown', function(event){
         if (event.key === 'Enter') {
           event.preventDefault();
+          console.log('🔍 Enter pressed, loading product catalog...');
           loadProductCatalog({ force: true, search: productSearchInput.value });
         }
       });
       productSearchInput.addEventListener('blur', function(){
         if (!catalogState.loaded && productSearchInput.value.trim()) {
+          console.log('🔍 Search input blurred, loading product catalog...');
           loadProductCatalog({ force: true, search: productSearchInput.value });
         }
       });
+    } else {
+      console.log('❌ productSearchInput not found');
     }
 
-    if (productForm) {
-      productForm.addEventListener('submit', function(event){
-        event.preventDefault();
-        const formData = new FormData(productForm);
-        let title = String(formData.get('title') || '').trim();
-        let code = String(formData.get('code') || '').trim();
-        let price = Number(formData.get('price'));
-        const qty = Number(formData.get('qty'));
-        const discount = Number(formData.get('discount')) || 0;
-
-        let selectedProduct = null;
-        if (productForm.dataset && productForm.dataset.selectedProductId) {
-          const selectedId = String(productForm.dataset.selectedProductId);
-          if (selectedId && catalogState.lookupById.has(selectedId)) {
-            selectedProduct = catalogState.lookupById.get(selectedId);
-          }
-        }
-        if (!selectedProduct && code) {
-          const codeKey = code.trim();
-          if (codeKey && catalogState.lookupByCode.has(codeKey)) {
-            selectedProduct = catalogState.lookupByCode.get(codeKey);
-          }
-        }
-
-        if (selectedProduct) {
-          const selectedTitle = String(selectedProduct.title || '').trim();
-          if (!title && selectedTitle) {
-            title = selectedTitle;
-            if (productForm.elements.title) {
-              productForm.elements.title.value = selectedTitle;
-            }
-          }
-          const selectedCode = String(selectedProduct.code || '').trim();
-          if (selectedCode) {
-            code = selectedCode;
-            if (productForm.elements.code) {
-              productForm.elements.code.value = selectedCode;
-            }
-          }
-          const selectedPrice = determineProductPrice(selectedProduct);
-          if (selectedPrice !== null) {
-            price = selectedPrice;
-            if (productForm.elements.price) {
-              productForm.elements.price.value = selectedPrice;
-            }
-          }
-          if (productForm.elements.ebrandname) {
-            productForm.elements.ebrandname.value = selectedProduct.ebrandname || selectedProduct.brand || '';
-          }
-          if (productForm.elements.sig_name) {
-            productForm.elements.sig_name.value = selectedProduct.sigName || selectedProduct.sig_name || '';
-          }
-          if (productForm.elements.unitsale) {
-            productForm.elements.unitsale.value = selectedProduct.unitsale || '';
-          }
-          if (productForm.elements.cost) {
-            const costValue = selectedProduct.cost !== null && selectedProduct.cost !== undefined ? selectedProduct.cost : '';
-            productForm.elements.cost.value = costValue === '' ? '' : costValue;
-          }
-        }
-
-        if (!title) {
-          alert('กรุณาระบุชื่อสินค้า');
-          return;
-        }
-        if (!Number.isFinite(price) || price < 0) {
-          alert('กรอกราคาสินค้าให้ถูกต้อง');
-          return;
-        }
-        if (!Number.isFinite(qty) || qty <= 0) {
-          alert('กรอกจำนวนสินค้าให้ถูกต้อง');
-          return;
-        }
-
-        const product = {
-          id: 'p-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
-          productId: selectedProduct && selectedProduct.id !== null && selectedProduct.id !== undefined
-            ? selectedProduct.id
-            : (productForm.dataset ? productForm.dataset.selectedProductId || null : null),
-          code: code,
-          title: title,
-          ebrandname: selectedProduct ? (selectedProduct.ebrandname || selectedProduct.brand || '') : String(formData.get('ebrandname') || '').trim(),
-          sigName: selectedProduct ? (selectedProduct.sigName || selectedProduct.sig_name || '') : String(formData.get('sig_name') || '').trim(),
-          unitsale: selectedProduct ? (selectedProduct.unitsale || '') : String(formData.get('unitsale') || '').trim(),
-          cost: selectedProduct && selectedProduct.cost !== null && selectedProduct.cost !== undefined
-            ? Number(selectedProduct.cost)
-            : numberOrNull(formData.get('cost')),
-          price: Number(price),
-          qty: qty,
-          discount: discount,
-        };
-        state.products.push(product);
-        productForm.reset();
-        clearProductPickerSelection();
-        renderProducts();
-        computeTotals();
-        persistState();
-      });
-    }
 
     if (productCatalogTableBody) {
       productCatalogTableBody.addEventListener('click', function(event){
         const rawTarget = event.target;
         if (!rawTarget || !(rawTarget instanceof HTMLElement)) return;
-        const button = typeof rawTarget.closest === 'function' ? rawTarget.closest('[data-step4-catalog-select]') : (rawTarget.getAttribute('data-step4-catalog-select') ? rawTarget : null);
-        if (!button) return;
-        const key = button.getAttribute('data-step4-catalog-select') || '';
-        if (!key) return;
-        let product = null;
-        if (key.startsWith('id:')) {
-          const idKey = key.slice(3);
-          if (catalogState.lookupById.has(idKey)) {
-            product = catalogState.lookupById.get(idKey);
+        
+        // Handle add button
+        const addButton = rawTarget.closest('[data-step4-catalog-add]');
+        if (addButton) {
+          const key = addButton.getAttribute('data-step4-catalog-add') || '';
+          if (!key) return;
+          let product = null;
+          if (key.startsWith('id:')) {
+            const idKey = key.slice(3);
+            if (catalogState.lookupById.has(idKey)) {
+              product = catalogState.lookupById.get(idKey);
+            }
+          } else if (key.startsWith('code:')) {
+            const codeKey = key.slice(5);
+            if (catalogState.lookupByCode.has(codeKey)) {
+              product = catalogState.lookupByCode.get(codeKey);
+            }
           }
-        } else if (key.startsWith('code:')) {
-          const codeKey = key.slice(5);
-          if (catalogState.lookupByCode.has(codeKey)) {
-            product = catalogState.lookupByCode.get(codeKey);
+          if (product) {
+            const qtyInput = addButton.closest('tr').querySelector('[data-step4-catalog-qty]');
+            const qty = qtyInput ? Number(qtyInput.value) || 1 : 1;
+            addProductToCart(product, qty);
           }
-        } else {
-          if (catalogState.lookupById.has(key)) {
-            product = catalogState.lookupById.get(key);
-          } else if (catalogState.lookupByCode.has(key)) {
-            product = catalogState.lookupByCode.get(key);
-          }
+          return;
         }
-        if (!product) return;
-        applyProductSelectionFromProduct(product, { updateStatus: true });
-        if (productForm && productForm.elements.qty && (!productForm.elements.qty.value || Number(productForm.elements.qty.value) <= 0)) {
-          productForm.elements.qty.value = 1;
+        
+        // Handle remove button
+        const removeButton = rawTarget.closest('[data-step4-catalog-remove]');
+        if (removeButton) {
+          const key = removeButton.getAttribute('data-step4-catalog-remove') || '';
+          if (!key) return;
+          let product = null;
+          if (key.startsWith('id:')) {
+            const idKey = key.slice(3);
+            if (catalogState.lookupById.has(idKey)) {
+              product = catalogState.lookupById.get(idKey);
+            }
+          } else if (key.startsWith('code:')) {
+            const codeKey = key.slice(5);
+            if (catalogState.lookupByCode.has(codeKey)) {
+              product = catalogState.lookupByCode.get(codeKey);
+            }
+          }
+          if (product) {
+            removeProductFromCart(product);
+          }
+          return;
         }
-        if (productForm) {
-          try {
-            productForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          } catch (err) {
-            // ignore scroll errors
+      });
+      
+      // Handle quantity changes
+      productCatalogTableBody.addEventListener('input', function(event){
+        const target = event.target;
+        if (target && target.hasAttribute('data-step4-catalog-qty')) {
+          const key = target.getAttribute('data-step4-catalog-qty') || '';
+          const qty = Number(target.value) || 1;
+          if (key) {
+            let product = null;
+            if (key.startsWith('id:')) {
+              const idKey = key.slice(3);
+              if (catalogState.lookupById.has(idKey)) {
+                product = catalogState.lookupById.get(idKey);
+              }
+            } else if (key.startsWith('code:')) {
+              const codeKey = key.slice(5);
+              if (catalogState.lookupByCode.has(codeKey)) {
+                product = catalogState.lookupByCode.get(codeKey);
+              }
+            }
+            if (product) {
+              updateProductQuantity(product, qty);
+            }
           }
         }
       });
     }
 
-        if (productTableBody) {
-      productTableBody.addEventListener('click', function(event){
-        const target = event.target;
-        if (!target || !(target instanceof HTMLElement)) return;
-        const id = target.getAttribute('data-step4-remove');
-        if (!id) return;
-        const index = state.products.findIndex(function(item){ return String(item.id) === String(id); });
-        if (index === -1) return;
-        state.products.splice(index, 1);
-        renderProducts();
-        computeTotals();
-        persistState();
-      });
-    }
 
     if (productClearBtn) {
       productClearBtn.addEventListener('click', function(){
         if (!state.products.length) return;
         if (!confirm('ต้องการล้างรายการสินค้าทั้งหมดหรือไม่?')) return;
         state.products = [];
-        renderProducts();
+        renderProductCatalog();
         computeTotals();
         persistState();
       });
@@ -1239,16 +1126,22 @@
       });
     }
 
-    if (shippingToggleBtn && shippingSelect) {
-      shippingToggleBtn.addEventListener('click', function(){
-        const isHidden = shippingSelect.classList.contains('d-none');
-        shippingSelect.classList.toggle('d-none', !isHidden);
-        if (shippingEmptyMessage) shippingEmptyMessage.classList.add('d-none');
-        if (isHidden) {
-          shippingSelect.focus();
-        }
+    if (shippingTable) {
+      shippingTable.addEventListener('click', function(event){
+        const target = event.target.closest('[data-shipping-option]');
+        if (!target) return;
+        
+        const optionId = target.getAttribute('data-shipping-option');
+        if (!optionId) return;
+        
+        state.shipping.method = optionId;
+        persistState();
+        renderShippingOptions(); // Re-render to update selection
+        console.log('🚚 Shipping method selected:', optionId);
       });
     }
+
+    // Shipping toggle functionality removed - now using table selection
     if (shippingForm) {
       shippingForm.addEventListener('input', function(event){
         const target = event.target;
@@ -1313,13 +1206,88 @@
 
     // next button now navigates via anchor above
 
+    // Load data from previous steps
+    console.log('🔄 Initializing step4...');
+    console.log('🔍 Element checks:');
+    console.log('- deliverySummaryEl:', !!deliverySummaryEl);
+    console.log('- mediaSummaryEl:', !!mediaSummaryEl);
+    console.log('- channelSummaryEl:', !!channelSummaryEl);
+    console.log('- productCatalogTableBody:', !!productCatalogTableBody);
+    console.log('- productSearchInput:', !!productSearchInput);
+    
     renderDeliverySummary();
     hydrateMediaSummary();
     renderShippingOptions();
-    renderProducts();
+    renderProductCatalog();
     computeTotals();
     syncShippingForm();
+    console.log('🔄 Calling loadProductCatalog...');
     loadProductCatalog();
+    
+    // Force load product catalog immediately
+    setTimeout(function() {
+      console.log('🔄 Force loading product catalog immediately...');
+      if (!catalogState.loaded && !catalogState.loading) {
+        loadProductCatalog({ force: true });
+      }
+    }, 100);
+    
+    // Force render product catalog immediately after load
+    setTimeout(function() {
+      console.log('🔄 Force rendering product catalog after delay...');
+      renderProductCatalog();
+    }, 500);
+    
+    // Additional force load and render after 1 second to ensure product catalog loads
+    setTimeout(function() {
+      console.log('🔄 Force loading product catalog after 1 second...');
+      loadProductCatalog({ force: true });
+      setTimeout(function() {
+        console.log('🔄 Force rendering after load...');
+        renderProductCatalog();
+      }, 500);
+    }, 1000);
+    
+    // Final force render after 3 seconds to ensure everything is loaded
+    setTimeout(function() {
+      console.log('🔄 Final force render after 3 seconds...');
+      renderProductCatalog();
+    }, 3000);
+    
+    // Debug: Check what's in sessionStorage
+    console.log('🔍 All sessionStorage keys:', Object.keys(sessionStorage));
+    console.log('🔍 Delivery key exists:', sessionStorage.getItem(deliveryKey) !== null);
+    console.log('🔍 Media key exists:', sessionStorage.getItem(mediaSelectionKey) !== null);
+    
+    // Check if we have data from previous steps
+    const deliveryData = sessionStorage.getItem(deliveryKey);
+    const mediaData = sessionStorage.getItem(mediaSelectionKey);
+    
+    console.log('🔍 Checking sessionStorage keys:');
+    console.log('- deliveryKey:', deliveryKey);
+    console.log('- mediaSelectionKey:', mediaSelectionKey);
+    console.log('- All sessionStorage keys:', Object.keys(sessionStorage));
+    
+      if (!deliveryData) {
+        console.warn('⚠️ No delivery data found in sessionStorage. Please complete step 2 first.');
+        console.log('🔍 Available keys:', Object.keys(sessionStorage));
+        // Show message in UI
+        if (deliverySummaryEl) {
+          deliverySummaryEl.innerHTML = '<div class="text-warning">⚠️ กรุณาไปที่ขั้นตอนที่ 2 เพื่อเลือกข้อมูลจัดส่ง</div>';
+        }
+      } else {
+        console.log('✅ Delivery data found:', deliveryData);
+      }
+      
+      if (!mediaData) {
+        console.warn('⚠️ No media/channel data found in sessionStorage. Please complete step 3 first.');
+        console.log('🔍 Available keys:', Object.keys(sessionStorage));
+        // Show message in UI
+        if (mediaSummaryEl) mediaSummaryEl.textContent = '⚠️ กรุณาไปที่ขั้นตอนที่ 3';
+        if (channelSummaryEl) channelSummaryEl.textContent = '⚠️ กรุณาไปที่ขั้นตอนที่ 3';
+      } else {
+        console.log('✅ Media/Channel data found:', mediaData);
+      }
   })();
 </script>
 
