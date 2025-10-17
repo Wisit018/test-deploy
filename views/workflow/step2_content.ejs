@@ -64,66 +64,140 @@
         <form class="row g-3" data-delivery-form>
           <input type="hidden" name="id" data-delivery-id>
           <div class="col-12 col-md-6">
-            <label class="form-label">ผู้รับ *</label>
-            <input type="text" name="deliverto" class="form-control" required maxlength="150">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">ผู้รับ *</label>
+              </div>
+              <div class="col-8">
+                <input type="text" name="deliverto" class="form-control" required maxlength="150">
+              </div>
+            </div>
           </div>
           <div class="col-12 col-md-6">
-            <label class="form-label">โทรศัพท์ *</label>
-            <input type="tel" name="appttel" class="form-control" required maxlength="20">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">โทรศัพท์ *</label>
+              </div>
+              <div class="col-8">
+                <input type="tel" name="appttel" class="form-control" required maxlength="20">
+              </div>
+            </div>
           </div>
 
           <div class="col-12">
-            <label class="form-label">ที่อยู่บรรทัดหลัก</label>
-            <textarea name="addr2" class="form-control" rows="2" maxlength="255"></textarea>
+            <div class="row g-2">
+              <div class="col-2">
+                <label class="form-label">ที่อยู่</label>
+              </div>
+              <div class="col-10">
+                <textarea name="address_combined" class="form-control" rows="3" maxlength="510" placeholder="กรอกที่อยู่ทั้งหมด"></textarea>
+                <input type="hidden" name="addr2" data-addr2>
+                <input type="hidden" name="addr3" data-addr3>
+              </div>
+            </div>
           </div>
-          <div class="col-12">
-            <label class="form-label">ที่อยู่บรรทัดเพิ่มเติม</label>
-            <textarea name="addr3" class="form-control" rows="2" maxlength="255"></textarea>
+
+          <div class="col-12 col-md-3">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">บ้านเลขที่</label>
+              </div>
+              <div class="col-8">
+                <input type="text" name="homenum1" class="form-control" maxlength="50">
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">หมู่บ้าน</label>
+              </div>
+              <div class="col-8">
+                <input type="text" name="mooban1" class="form-control" maxlength="100">
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">ซอย</label>
+              </div>
+              <div class="col-8">
+                <input type="text" name="soi1" class="form-control" maxlength="100">
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">ถนน</label>
+              </div>
+              <div class="col-8">
+                <input type="text" name="road1" class="form-control" maxlength="100">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-3">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">แขวง / ตำบล</label>
+              </div>
+              <div class="col-8">
+                <input type="text" name="kwang1" class="form-control" maxlength="100">
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">เขต / อำเภอ</label>
+              </div>
+              <div class="col-8">
+                <input type="text" name="kate1" class="form-control" maxlength="100">
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">จังหวัด</label>
+              </div>
+              <div class="col-8">
+                <input type="text" name="province1" class="form-control" maxlength="100">
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">รหัสไปรษณีย์</label>
+              </div>
+              <div class="col-8">
+                <input type="tel" name="zipcode1" class="form-control" maxlength="10" inputmode="numeric">
+              </div>
+            </div>
           </div>
 
           <div class="col-12 col-md-6">
-            <label class="form-label">บ้านเลขที่</label>
-            <input type="text" name="homenum1" class="form-control" maxlength="50">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">วันที่จัดส่ง</label>
+              </div>
+              <div class="col-8">
+                <input type="date" name="day" class="form-control">
+              </div>
+            </div>
           </div>
           <div class="col-12 col-md-6">
-            <label class="form-label">หมู่บ้าน / หมู่ที่</label>
-            <input type="text" name="mooban1" class="form-control" maxlength="100">
-          </div>
-
-          <div class="col-12 col-md-6">
-            <label class="form-label">ซอย</label>
-            <input type="text" name="soi1" class="form-control" maxlength="100">
-          </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label">ถนน</label>
-            <input type="text" name="road1" class="form-control" maxlength="100">
-          </div>
-
-          <div class="col-12 col-md-6">
-            <label class="form-label">แขวง / ตำบล</label>
-            <input type="text" name="kwang1" class="form-control" maxlength="100">
-          </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label">เขต / อำเภอ</label>
-            <input type="text" name="kate1" class="form-control" maxlength="100">
-          </div>
-
-          <div class="col-12 col-md-6">
-            <label class="form-label">จังหวัด</label>
-            <input type="text" name="province1" class="form-control" maxlength="100">
-          </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label">รหัสไปรษณีย์</label>
-            <input type="tel" name="zipcode1" class="form-control" maxlength="10" inputmode="numeric">
-          </div>
-
-          <div class="col-12 col-md-6">
-            <label class="form-label">วันที่จัดส่ง</label>
-            <input type="date" name="day" class="form-control">
-          </div>
-          <div class="col-12 col-md-6">
-            <label class="form-label">เวลาจัดส่ง</label>
-            <input type="time" name="timein" class="form-control">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">เวลาจัดส่ง</label>
+              </div>
+              <div class="col-8">
+                <input type="time" name="timein" class="form-control">
+              </div>
+            </div>
           </div>
 
           <div class="col-12 d-flex justify-content-between gap-2">
@@ -431,6 +505,15 @@
       // Debug: Log the record data to see what we're working with
       console.log('Populating form with record:', record);
       
+      // Handle combined address field
+      const addr2 = record.addr2 || '';
+      const addr3 = record.addr3 || '';
+      const combinedAddress = [addr2, addr3].filter(Boolean).join('\n');
+      const addressCombinedField = form.querySelector('[name="address_combined"]');
+      if (addressCombinedField) {
+        addressCombinedField.value = combinedAddress;
+      }
+      
       // Populate all form fields including customer data
       Object.keys(record).forEach((key) => {
         const input = form.elements[key];
@@ -629,12 +712,24 @@
       submitBtn?.setAttribute('disabled', 'disabled');
       feedback?.classList.add('d-none');
 
+      // Handle combined address field - split into addr2 and addr3
+      const addressCombinedField = form.querySelector('[name="address_combined"]');
+      const addr2Field = form.querySelector('[name="addr2"]');
+      const addr3Field = form.querySelector('[name="addr3"]');
+      
+      if (addressCombinedField && addr2Field && addr3Field) {
+        const combinedAddress = addressCombinedField.value.trim();
+        const lines = combinedAddress.split('\n');
+        addr2Field.value = lines[0] || '';
+        addr3Field.value = lines[1] || '';
+      }
+
       const formData = new FormData(form);
       const payload = {};
       Array.from(form.elements).forEach((el) => {
         if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement)) return;
         const name = el.name;
-        if (!name || name === 'id') return;
+        if (!name || name === 'id' || name === 'address_combined') return;
         const value = formData.get(name);
         if (value == null) return;
         const trimmed = typeof value === 'string' ? value.trim() : value;
