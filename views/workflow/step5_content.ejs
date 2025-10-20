@@ -19,9 +19,9 @@
     <div class="card">
       <div class="card-header">วิธีชำระเงิน</div>
       <div class="card-body">
-        <form class="row g-3" data-step5-payment-form>
+        <form data-step5-payment-form>
           
-          <div class="col-12">
+          <div class="mb-3">
             <label class="form-label">ประเภทการชำระเงิน</label>
             <div class="table-responsive" style="max-height: 300px; overflow-y: auto;" data-step5-finance-options>
               <table class="table table-sm table-hover align-middle mb-0">
@@ -44,49 +44,139 @@
             <div class="form-text text-muted" data-step5-finance-status>ยังไม่ได้เลือก</div>
           </div>
           
+          <!-- Payment Details Display -->
+          <div class="payment-details" data-payment-details>
+            <!-- Payment Method Group -->
+            <div class="row mb-2 gx-2">
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">วิธีชำระเงิน:</label>
+              </div>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-payment-method value="">
+              </div>
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">การเงิน:</label>
+              </div>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-finance-group value="">
+              </div>
+            </div>
+            
+            <!-- Bank Group: Bank + Branch on one line, Account + Reference on next line -->
+            <div class="row mb-2 gx-2">
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">ธนาคาร:</label>
+              </div>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-bank-info value="">
+              </div>
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">สาขา:</label>
+              </div>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-bank-branch value="">
+              </div>
+            </div>
+            
+            <div class="row mb-2 gx-2">
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">เลขที่ บ/ช:</label>
+              </div>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-bank-account value="">
+              </div>
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">อ้างอิง:</label>
+              </div>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-bank-ref value="">
+              </div>
+            </div>
+            
+            <!-- Group divider -->
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid rgba(0,0,0,.25);">
+            
+            <!-- Credit Card Group -->
+            <div class="row mb-2 gx-2">
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">บัตรเครดิต:</label>
+              </div>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-credit-card value="0">
+              </div>
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">เลขที่บัตร:</label>
+              </div>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-card-number value="">
+              </div>
+            </div>
+            
+            <div class="row mb-2 gx-2">
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">หมดอายุ เดือน/ปี:</label>
+              </div>
+              <div class="col-sm-3">
+                <div class="d-flex gap-2">
+                  <input type="text" class="form-control" readonly data-exp-month style="width: 60px;" value="">
+                  <span class="align-self-center">/</span>
+                  <input type="text" class="form-control" readonly data-exp-year style="width: 60px;" value="">
+                </div>
+              </div>
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">รหัส 3 ตัว:</label>
+              </div>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-cvv style="width: 80px;" value="">
+              </div>
+            </div>
+            
+            <div class="row mb-2 gx-2">
+              <div class="col-sm-3">
+                <label class="form-label fw-semibold">อ้างอิง:</label>
+          </div>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" readonly data-card-ref value="">
+          </div>
+          </div>
 
-          <div class="col-12 col-lg-4">
-            <label class="form-label">ธนาคาร</label>
-            <input type="text" class="form-control" name="bankCode" placeholder="เช่น 003" data-auto-bankcode>
+            <!-- Group divider -->
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid rgba(0,0,0,.25);">
+            
+            <!-- Customer Bank Group -->
+            <div class="row mb-2 gx-2">
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">ธ. ของลูกค้า:</label>
           </div>
-          <div class="col-12 col-lg-4">
-            <label class="form-label">สาขา</label>
-            <input type="text" class="form-control" name="bankBranch" placeholder="เช่น สุรวงศ์" data-auto-bankbranch>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-customer-bank value="">
           </div>
-          <div class="col-12 col-lg-4">
-            <label class="form-label">เลขที่บัญชี</label>
-            <input type="text" class="form-control" name="bankAccount" placeholder="เช่น 125-0-03676-1" data-auto-bankaccount>
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">สาขา:</label>
           </div>
-
-          <div class="col-12 col-lg-4">
-            <label class="form-label">บัตรเครดิต</label>
-            <input type="text" class="form-control" name="creditIssuer" placeholder="ชื่อธนาคาร/ผู้ออกบัตร">
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-customer-branch value="">
           </div>
-          <div class="col-12 col-lg-4">
-            <label class="form-label">เลขที่บัตร</label>
-            <input type="text" class="form-control" name="creditNo" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="23">
-          </div>
-          <div class="col-6 col-lg-2">
-            <label class="form-label">หมดอายุ เดือน</label>
-            <input type="text" class="form-control" name="expMonth" placeholder="MM" maxlength="2">
-          </div>
-          <div class="col-6 col-lg-2">
-            <label class="form-label">หมดอายุ ปี</label>
-            <input type="text" class="form-control" name="expYear" placeholder="YY" maxlength="2">
-          </div>
-          <div class="col-12 col-lg-2">
-            <label class="form-label">รหัส 3 ตัว</label>
-            <input type="password" class="form-control" name="cvv" placeholder="CVV" maxlength="3">
           </div>
 
-          <div class="col-12">
-            <label class="form-label">หมายเหตุเพิ่มเติม</label>
-            <textarea class="form-control" rows="2" name="remark" placeholder="รายละเอียดอื่น ๆ"></textarea>
+            <div class="row mb-2">
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">เลขที่ บ/ช:</label>
+              </div>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-customer-account value="">
+              </div>
+              <div class="col-auto pe-2">
+                <label class="form-label fw-semibold">อ้างอิง:</label>
+              </div>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" readonly data-customer-ref value="">
+              </div>
+            </div>
           </div>
         </form>
       </div>
-      <div class="card-footer d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <div class="text-muted small">ตรวจสอบข้อมูลให้ถูกต้องก่อนกด Finish</div>
+      <div class="card-footer d-flex justify-content-end align-items-center flex-wrap gap-2">
         <div class="d-flex gap-2">
           <a class="btn btn-outline-secondary" href="/workflow/step4?customerId=<%= customerId %>">ย้อนกลับ</a>
           <button type="button" class="btn btn-success" data-step5-finish disabled>Finish</button>
@@ -106,9 +196,23 @@
     const financeOptions = document.querySelector('[data-step5-finance-options]');
     const financeTable = document.querySelector('[data-step5-finance-table]');
     const financeStatus = document.querySelector('[data-step5-finance-status]');
-    const autoBankCode = document.querySelector('[data-auto-bankcode]');
-    const autoBankBranch = document.querySelector('[data-auto-bankbranch]');
-    const autoBankAccount = document.querySelector('[data-auto-bankaccount]');
+    const paymentDetails = document.querySelector('[data-payment-details]');
+    const paymentMethod = document.querySelector('[data-payment-method]');
+    const financeGroup = document.querySelector('[data-finance-group]');
+    const bankInfo = document.querySelector('[data-bank-info]');
+    const bankBranch = document.querySelector('[data-bank-branch]');
+    const bankAccount = document.querySelector('[data-bank-account]');
+    const bankRef = document.querySelector('[data-bank-ref]');
+    const creditCard = document.querySelector('[data-credit-card]');
+    const cardNumber = document.querySelector('[data-card-number]');
+    const expMonth = document.querySelector('[data-exp-month]');
+    const expYear = document.querySelector('[data-exp-year]');
+    const cvv = document.querySelector('[data-cvv]');
+    const cardRef = document.querySelector('[data-card-ref]');
+    const customerBank = document.querySelector('[data-customer-bank]');
+    const customerBranch = document.querySelector('[data-customer-branch]');
+    const customerAccount = document.querySelector('[data-customer-account]');
+    const customerRef = document.querySelector('[data-customer-ref]');
     
     let financeOptionsData = [];
     let selectedFinance = null;
@@ -563,10 +667,81 @@
             bankac: financeData.bankac
           }));
           
-          // Auto-fill bank details
-          if (autoBankCode) autoBankCode.value = financeData.bankno || '';
-          if (autoBankBranch) autoBankBranch.value = financeData.bankbr || '';
-          if (autoBankAccount) autoBankAccount.value = financeData.bankac || '';
+          // Show payment details
+          if (paymentDetails) {
+            // Update payment method (financetype + financedes)
+            if (paymentMethod) {
+              paymentMethod.value = `${financeData.financetype} ${financeData.financedes}`;
+            }
+            
+            // Update finance group (fingrpdesc)
+            if (financeGroup) {
+              financeGroup.value = financeData.fingrpdesc || '';
+            }
+            
+            // Update bank info (bankno + bankna)
+            if (bankInfo) {
+              const bankInfoText = [financeData.bankno, financeData.bankna].filter(Boolean).join(' ');
+              bankInfo.value = bankInfoText || '';
+            }
+            
+            // Update bank branch
+            if (bankBranch) {
+              bankBranch.value = financeData.bankbr || '';
+            }
+            
+            // Update bank account
+            if (bankAccount) {
+              bankAccount.value = financeData.bankac || '';
+            }
+            
+            // Update bank reference (empty for now)
+            if (bankRef) {
+              bankRef.value = '';
+            }
+            
+            // Update credit card info
+            if (creditCard) {
+              creditCard.value = '0';
+            }
+            
+            if (cardNumber) {
+              cardNumber.value = '';
+            }
+            
+            if (expMonth) {
+              expMonth.value = '';
+            }
+            
+            if (expYear) {
+              expYear.value = '';
+            }
+            
+            if (cvv) {
+              cvv.value = '';
+            }
+            
+            if (cardRef) {
+              cardRef.value = '';
+            }
+            
+            // Update customer bank info
+            if (customerBank) {
+              customerBank.value = '';
+            }
+            
+            if (customerBranch) {
+              customerBranch.value = '';
+            }
+            
+            if (customerAccount) {
+              customerAccount.value = '';
+            }
+            
+            if (customerRef) {
+              customerRef.value = '';
+            }
+          }
           
           // Enable finish button
           if (finishBtn) finishBtn.removeAttribute('disabled');
