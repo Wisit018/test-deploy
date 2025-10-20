@@ -7,27 +7,39 @@
   </div>
 
 <div class="row g-3 mb-4">
-  <div class="col-12 col-xl-4">
-    <div class="card h-100">
+  <div class="col-12">
+    <div class="card">
       <div class="card-header">สรุปรายการสินค้าและค่าจัดส่ง</div>
-      <div class="card-body small" data-step5-order-summary>
+      <div class="card-body small py-2" data-step5-order-summary style="padding-top: 0.5rem !important;">
         <div class="text-muted">กำลังโหลดข้อมูลจากขั้นตอนที่ 4...</div>
       </div>
     </div>
   </div>
-  <div class="col-12 col-xl-8">
-    <div class="card h-100">
+  <div class="col-12">
+    <div class="card">
       <div class="card-header">วิธีชำระเงิน</div>
       <div class="card-body">
         <form class="row g-3" data-step5-payment-form>
           
-          <div class="col-12 col-lg-6">
+          <div class="col-12">
             <label class="form-label">ประเภทการชำระเงิน</label>
-            <div class="d-flex gap-2 align-items-center">
-              <button type="button" class="btn btn-outline-primary" data-step5-finance-toggle>กดเลือก</button>
-              <select class="form-select d-none" name="payType" data-step5-finance-select required>
-                <option value="" selected disabled>เลือกวิธีชำระเงิน</option>
-              </select>
+            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;" data-step5-finance-options>
+              <table class="table table-sm table-hover align-middle mb-0">
+                <thead class="table-light sticky-top">
+                  <tr>
+                    <th style="width:42px"></th>
+                    <th style="width:80px">Financetyp</th>
+                    <th>Financedes</th>
+                    <th style="width:100px">Fingrptype</th>
+                    <th>Fingrpdesc</th>
+                  </tr>
+                </thead>
+                <tbody data-step5-finance-table>
+                  <tr>
+                    <td colspan="5" class="text-center text-muted py-3">กำลังโหลดข้อมูลการชำระเงิน...</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             <div class="form-text text-muted" data-step5-finance-status>ยังไม่ได้เลือก</div>
           </div>
@@ -91,12 +103,15 @@
     const summaryEl = document.querySelector('[data-step5-order-summary]');
     
     const paymentForm = document.querySelector('[data-step5-payment-form]');
-    const financeToggleBtn = document.querySelector('[data-step5-finance-toggle]');
-    const financeSelect = document.querySelector('[data-step5-finance-select]');
+    const financeOptions = document.querySelector('[data-step5-finance-options]');
+    const financeTable = document.querySelector('[data-step5-finance-table]');
     const financeStatus = document.querySelector('[data-step5-finance-status]');
     const autoBankCode = document.querySelector('[data-auto-bankcode]');
     const autoBankBranch = document.querySelector('[data-auto-bankbranch]');
     const autoBankAccount = document.querySelector('[data-auto-bankaccount]');
+    
+    let financeOptionsData = [];
+    let selectedFinance = null;
 
     function format(num){
       const n = Number(num) || 0;
@@ -120,12 +135,12 @@
       const total = Math.max(subtotal - discount + shipping, 0);
 
       const lines = [
-        '<dl class="row mb-0">',
-        '<dt class="col-sm-5">จำนวนสินค้า</dt><dd class="col-sm-7">' + state.products.length + ' รายการ</dd>',
-        '<dt class="col-sm-5">ยอดรวมสินค้า</dt><dd class="col-sm-7">' + format(subtotal) + '</dd>',
-        '<dt class="col-sm-5">ส่วนลดรวม</dt><dd class="col-sm-7">' + format(discount) + '</dd>',
-        '<dt class="col-sm-5">ค่าจัดส่ง</dt><dd class="col-sm-7">' + format(shipping) + '</dd>',
-        '<dt class="col-sm-5">ยอดสุทธิ</dt><dd class="col-sm-7 fw-semibold">' + format(total) + '</dd>',
+        '<dl class="row mb-0" style="margin-bottom: 0 !important;">',
+        '<dt class="col-sm-3" style="margin-bottom: 0.25rem !important;">จำนวนสินค้า</dt><dd class="col-sm-9" style="margin-bottom: 0.25rem !important;">' + state.products.length + ' รายการ</dd>',
+        '<dt class="col-sm-3" style="margin-bottom: 0.25rem !important;">ยอดรวมสินค้า</dt><dd class="col-sm-9" style="margin-bottom: 0.25rem !important;">' + format(subtotal) + '</dd>',
+        '<dt class="col-sm-3" style="margin-bottom: 0.25rem !important;">ส่วนลดรวม</dt><dd class="col-sm-9" style="margin-bottom: 0.25rem !important;">' + format(discount) + '</dd>',
+        '<dt class="col-sm-3" style="margin-bottom: 0.25rem !important;">ค่าจัดส่ง</dt><dd class="col-sm-9" style="margin-bottom: 0.25rem !important;">' + format(shipping) + '</dd>',
+        '<dt class="col-sm-3" style="margin-bottom: 0.25rem !important;">ยอดสุทธิ</dt><dd class="col-sm-9 fw-semibold" style="margin-bottom: 0.25rem !important;">' + format(total) + '</dd>',
         '</dl>'
       ];
       summaryEl.innerHTML = lines.join('');
@@ -422,64 +437,166 @@
 
     async function loadFinanceOptions(){
       try {
+        console.log('🔄 Loading finance options...');
         const res = await fetch('/workflow/api/finance-options');
         if (!res.ok) throw new Error(await res.text() || 'โหลดข้อมูลล้มเหลว');
         const rows = await res.json();
-        const selectOptions = ['<option value="" disabled selected>เลือกวิธีชำระเงิน</option>'];
-        rows.forEach(function(r){
-          const type = (r.financetype ?? '');
-          const des = (r.financedes ? String(r.financedes).replace(/&/g,'&amp;').replace(/</g,'&lt;') : '-');
-          const gtype = (r.fingrptype ?? '');
-          const gdesc = (r.fingrpdesc ? String(r.fingrpdesc).replace(/&/g,'&amp;').replace(/</g,'&lt;') : '-');
-          const bankno = r.bankno || '';
-          const bankna = r.bankna || r.bankname || '';
-          const bankbr = r.bankbr || r.bankbranch || '';
-          const bankac = r.bankac || r.accountno || '';
-          const optionText = [String(type || '-'), des].filter(Boolean).join(' - ');
-          const optionData = {
-            t: String(type),
-            d: des,
-            gt: String(gtype || ''),
-            bno: String(bankno || ''),
-            bna: String(bankna || ''),
-            bbr: String(bankbr || ''),
-            bac: String(bankac || ''),
-          };
-          selectOptions.push('<option value="'+ String(type) +'" data-meta="'+ encodeURIComponent(JSON.stringify(optionData)) +'">'+ optionText +'</option>');
-        });
-        if (financeSelect) {
-          financeSelect.innerHTML = selectOptions.join('');
-          financeSelect.disabled = false;
-        }
+        console.log('📊 Finance options loaded:', rows.length, 'items');
+        console.log('📊 First few items:', rows.slice(0, 3));
+        financeOptionsData = rows;
+        renderFinanceTable();
       } catch(err){
         if (financeStatus) financeStatus.textContent = err && err.message ? err.message : 'โหลดข้อมูลล้มเหลว';
+        if (financeTable) {
+          financeTable.innerHTML = '<tr><td colspan="5" class="text-center text-danger py-3">' + (err && err.message ? err.message : 'โหลดข้อมูลล้มเหลว') + '</td></tr>';
+        }
       }
     }
-
-    if (financeToggleBtn && financeSelect) {
-      financeToggleBtn.addEventListener('click', function(){
-        const isHidden = financeSelect.classList.contains('d-none');
-        financeSelect.classList.toggle('d-none', !isHidden);
-        if (isHidden) financeSelect.focus();
+    
+    function renderFinanceTable() {
+      if (!financeTable) {
+        console.log('❌ financeTable not found');
+        return;
+      }
+      
+      console.log('🎨 Rendering finance table with', financeOptionsData.length, 'items');
+      
+      if (!financeOptionsData.length) {
+        financeTable.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-3">ไม่มีข้อมูลการชำระเงิน</td></tr>';
+        return;
+      }
+      
+      console.log('📊 Finance options data:', financeOptionsData);
+      console.log('📊 First item financetype:', financeOptionsData[0]?.financetype);
+      
+      let rowsHtml = '';
+      financeOptionsData.forEach(function(r){
+        console.log('📦 Processing finance item:', r);
+        console.log('📦 financetype value:', r.financetype, 'type:', typeof r.financetype);
+        const financetyp = (r.financetype !== null && r.financetype !== undefined) ? String(r.financetype) : '-';
+        const financedes = (r.financedes ? String(r.financedes) : '-');
+        const fingrptype = (r.fingrptype ?? '');
+        const fingrpdesc = (r.fingrpdesc ? String(r.fingrpdesc) : '-');
+        
+        // Use actual fingrptype and fingrpdesc from database
+        const displayFingrptype = String(fingrptype || '-');
+        const displayFingrpdesc = String(fingrpdesc || '-');
+        
+        const isSelected = selectedFinance && selectedFinance.financetype === financetyp;
+        const selectedIcon = isSelected ? '▶' : '';
+        const selectedClass = isSelected ? 'table-active' : '';
+        
+        const optionData = {
+          financetype: String(financetyp),
+          financedes: financedes,
+          fingrptype: String(fingrptype || ''),
+          fingrpdesc: fingrpdesc,
+          bankno: (r.bankno ? String(r.bankno) : ''),
+          bankna: (r.bankna ? String(r.bankna) : ''),
+          bankbr: (r.bankbr ? String(r.bankbr) : ''),
+          bankac: (r.bankac ? String(r.bankac) : ''),
+        };
+        
+        rowsHtml += '<tr class="' + selectedClass + '" data-finance-option="' + escapeHtml(String(financetyp)) + '" data-finance-data="' + encodeURIComponent(JSON.stringify(optionData)) + '" style="cursor: pointer;">';
+        rowsHtml += '<td>' + selectedIcon + '</td>';
+        rowsHtml += '<td>' + escapeHtml(financetyp) + '</td>';
+        rowsHtml += '<td>' + escapeHtml(financedes) + '</td>';
+        rowsHtml += '<td>' + escapeHtml(displayFingrptype) + '</td>';
+        rowsHtml += '<td>' + escapeHtml(displayFingrpdesc) + '</td>';
+        rowsHtml += '</tr>';
       });
-      financeSelect.addEventListener('change', function(){
-        const selected = financeSelect.options[financeSelect.selectedIndex];
-        const metaRaw = selected ? selected.getAttribute('data-meta') : '';
-        let meta = null;
-        try { meta = metaRaw ? JSON.parse(decodeURIComponent(metaRaw)) : null; } catch(e) { meta = null; }
-        if (meta) {
-          if (financeStatus) financeStatus.textContent = meta.d || 'เลือกแล้ว';
-          sessionStorage.setItem('workflow.paymentSelection', JSON.stringify({ financetype: meta.t, fingrptype: meta.gt, financedes: meta.d }));
-          if (autoBankCode) autoBankCode.value = meta.bno || '';
-          if (autoBankBranch) autoBankBranch.value = meta.bbr || '';
-          if (autoBankAccount) autoBankAccount.value = meta.bac || '';
+      
+      financeTable.innerHTML = rowsHtml;
+    }
+
+    // Add escapeHtml function
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    // Add event listener for finance table clicks using event delegation
+    if (financeTable) {
+      console.log('🔧 Adding click listener to finance table');
+      financeTable.addEventListener('click', function(event) {
+        console.log('🖱️ Finance table clicked:', event.target);
+        
+        // Find the closest row with data-finance-option
+        let target = event.target.closest('tr[data-finance-option]');
+        if (!target) {
+          // If not found, try to find from parent elements
+          target = event.target.closest('[data-finance-option]');
+        }
+        
+        console.log('🎯 Closest finance option:', target);
+        if (!target) {
+          console.log('❌ No finance option found');
+          return;
+        }
+        
+        const financeDataRaw = target.getAttribute('data-finance-data');
+        console.log('📊 Finance data raw:', financeDataRaw);
+        if (!financeDataRaw) {
+          console.log('❌ No finance data found');
+          return;
+        }
+        
+        try {
+          const decodedData = decodeURIComponent(financeDataRaw);
+          console.log('📊 Decoded data:', decodedData);
+          const financeData = JSON.parse(decodedData);
+          selectedFinance = financeData;
+          
+          // Update status
+          if (financeStatus) financeStatus.textContent = financeData.financedes || 'เลือกแล้ว';
+          
+          // Save to session storage
+          sessionStorage.setItem('workflow.paymentSelection', JSON.stringify({ 
+            financetype: financeData.financetype, 
+            financedes: financeData.financedes,
+            fingrptype: financeData.fingrptype,
+            fingrpdesc: financeData.fingrpdesc,
+            bankno: financeData.bankno,
+            bankna: financeData.bankna,
+            bankbr: financeData.bankbr,
+            bankac: financeData.bankac
+          }));
+          
+          // Auto-fill bank details
+          if (autoBankCode) autoBankCode.value = financeData.bankno || '';
+          if (autoBankBranch) autoBankBranch.value = financeData.bankbr || '';
+          if (autoBankAccount) autoBankAccount.value = financeData.bankac || '';
+          
+          // Enable finish button
           if (finishBtn) finishBtn.removeAttribute('disabled');
+          
+          // Update table row selection without re-rendering entire table
+          const allRows = financeTable.querySelectorAll('tr[data-finance-option]');
+          allRows.forEach(row => {
+            row.classList.remove('table-active');
+            const iconCell = row.querySelector('td:first-child');
+            if (iconCell) iconCell.textContent = '';
+          });
+          
+          // Highlight selected row
+          target.classList.add('table-active');
+          const selectedIconCell = target.querySelector('td:first-child');
+          if (selectedIconCell) selectedIconCell.textContent = '▶';
+          
+        } catch (err) {
+          console.error('Error parsing finance data:', err);
         }
       });
     }
 
     renderSummary();
     loadFinanceOptions();
+    
+    // Debug: Check if elements exist
+    console.log('🔍 Debug - financeTable exists:', !!financeTable);
+    console.log('🔍 Debug - financeOptions exists:', !!financeOptions);
+    console.log('🔍 Debug - financeStatus exists:', !!financeStatus);
   })();
 </script>
 

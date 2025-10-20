@@ -518,7 +518,7 @@ router.delete('/api/channel-options/:id', async (req, res, next) => {
 router.get('/api/finance-options', async (req, res, next) => {
   try {
     if (!financeTable) {
-      return res.status(500).json({ error: 'ตารางข้อมูลการเงินยังไม่พร้อมใช้งาน' });
+      return res.status(500).json({ error: 'ตารางข้อมูลการชำระเงินยังไม่พร้อมใช้งาน' });
     }
     const fields = [
       'id',
@@ -529,14 +529,7 @@ router.get('/api/finance-options', async (req, res, next) => {
       'bankno',
       'bankna',
       'bankbr',
-      'bankac',
-      'bankcode',
-      'bankname',
-      'bankbranch',
-      'accountno',
-      'accountname',
-      'financecode',
-      'financedetail'
+      'bankac'
     ];
     const sql = 'SELECT ' + fields.join(', ') + ' FROM `' + financeTable.tableName + '` ORDER BY COALESCE(`financetype`, 0) ASC, `id` ASC';
     const [rows] = await pool.query(sql);
