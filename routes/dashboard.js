@@ -11,44 +11,9 @@ const deliveriesTable = legacyTables.find((t) => t.key === 'deliveries');
 router.get('/', async (req, res, next) => {
   try {
     // Get deliveries data from legacy_deliveries table
-    const fields = [
-      'id',
-      'delivernum',
-      'workdate',
-      'worktime',
-      'operator',
-      'customerid',
-      'salerepid',
-      'prename',
-      'firstname',
-      'lastname',
-      'datadesc',
-      'mediadesc',
-      'channeldes',
-      'paydesc',
-      'shipdesc',
-      'title',
-      'price',
-      'qty',
-      'amount',
-      'total',
-      'apptday',
-      'apptdate',
-      'appttime',
-      'apptperson',
-      'appttel',
-      'apptaddr',
-      'emailaddr',
-      'symptom',
-      'urgency',
-      'mooban2',
-      'followupdays',
-      'remark1',
-      'remark2'
-    ];
-    
+    // Get ALL fields for CSV export (EgDeliver9 format)
     const [rows] = await pool.query(
-      `SELECT ${fields.join(', ')} FROM \`${deliveriesTable.tableName}\` ORDER BY id DESC LIMIT 100`
+      `SELECT * FROM \`${deliveriesTable.tableName}\` ORDER BY id DESC LIMIT 100`
     );
     
     // Count purchase frequency for each customer
@@ -99,43 +64,9 @@ router.get('/api/data', async (req, res, next) => {
     const limit = parseInt(req.query.limit) || 100;
     const offset = parseInt(req.query.offset) || 0;
     
-    const fields = [
-      'id',
-      'delivernum',
-      'workdate',
-      'worktime',
-      'operator',
-      'customerid',
-      'prename',
-      'firstname',
-      'lastname',
-      'datadesc',
-      'mediadesc',
-      'channeldes',
-      'paydesc',
-      'shipdesc',
-      'title',
-      'price',
-      'qty',
-      'amount',
-      'total',
-      'apptday',
-      'apptdate',
-      'appttime',
-      'apptperson',
-      'appttel',
-      'apptaddr',
-      'emailaddr',
-      'symptom',
-      'urgency',
-      'mooban2',
-      'followupdays',
-      'remark1',
-      'remark2'
-    ];
-    
+    // Get ALL fields for CSV export (EgDeliver9 format)
     const [rows] = await pool.query(
-      `SELECT ${fields.join(', ')} FROM \`${deliveriesTable.tableName}\` ORDER BY id DESC LIMIT ? OFFSET ?`,
+      `SELECT * FROM \`${deliveriesTable.tableName}\` ORDER BY id DESC LIMIT ? OFFSET ?`,
       [limit, offset]
     );
     
@@ -176,22 +107,9 @@ router.get('/api/related-deliveries', async (req, res, next) => {
       });
     }
     
-    const fields = [
-      'id',
-      'delivernum',
-      'workdate',
-      'worktime',
-      'operator',
-      'datadesc',
-      'code',
-      'title',
-      'price',
-      'qty',
-      'total'
-    ];
-    
+    // Get ALL fields for complete data
     const [rows] = await pool.query(
-      `SELECT ${fields.join(', ')} FROM \`${deliveriesTable.tableName}\` WHERE delivernum = ? ORDER BY id ASC`,
+      `SELECT * FROM \`${deliveriesTable.tableName}\` WHERE delivernum = ? ORDER BY id ASC`,
       [delivernum]
     );
     
