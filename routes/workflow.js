@@ -904,7 +904,17 @@ router.post('/api/save-workflow', async (req, res, next) => {
       editflag: false,
       cnflag: false,
       emailaddr: customerData.email || '', // เก็บข้อมูลจาก อีเมล จากหน้า step 1/5
-      followup: 0 // เก็บค่า 0
+      followup: 0, // เก็บค่า 0
+      followupdays: (() => {
+        // เก็บค่าจาก Step 3: ติดตามผลใน X วัน
+        const days = mediaChannelData.followUpDays;
+        if (days !== null && days !== undefined && days !== '') {
+          return Number(days) || null;
+        }
+        return null;
+      })(), // จำนวนวันติดตามผล จาก Step 3
+      symptom: productData.shipping.symptom || '', // อาการ/หมายเหตุ จาก Step 4
+      urgency: productData.shipping.urgency || 'normal' // ระดับความเร่งด่วน จาก Step 4 (normal, booster, maintain)
     };
 
     // Insert into legacy_deliveries

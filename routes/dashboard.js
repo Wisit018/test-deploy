@@ -18,6 +18,7 @@ router.get('/', async (req, res, next) => {
       'worktime',
       'operator',
       'customerid',
+      'salerepid',
       'prename',
       'firstname',
       'lastname',
@@ -37,12 +38,36 @@ router.get('/', async (req, res, next) => {
       'apptperson',
       'appttel',
       'apptaddr',
-      'emailaddr'
+      'emailaddr',
+      'symptom',
+      'urgency',
+      'mooban2',
+      'followupdays',
+      'remark1',
+      'remark2'
     ];
     
     const [rows] = await pool.query(
       `SELECT ${fields.join(', ')} FROM \`${deliveriesTable.tableName}\` ORDER BY id DESC LIMIT 100`
     );
+    
+    // Count purchase frequency for each customer
+    const [purchaseCounts] = await pool.query(
+      `SELECT customerid, COUNT(*) as purchase_count 
+       FROM \`${deliveriesTable.tableName}\` 
+       GROUP BY customerid`
+    );
+    
+    // Create a map for quick lookup
+    const purchaseCountMap = {};
+    purchaseCounts.forEach(row => {
+      purchaseCountMap[row.customerid] = row.purchase_count;
+    });
+    
+    // Add purchase count to each row
+    rows.forEach(row => {
+      row.purchase_count = purchaseCountMap[row.customerid] || 0;
+    });
     
     // Calculate summary statistics
     const totalRecords = rows.length;
@@ -100,7 +125,13 @@ router.get('/api/data', async (req, res, next) => {
       'apptperson',
       'appttel',
       'apptaddr',
-      'emailaddr'
+      'emailaddr',
+      'symptom',
+      'urgency',
+      'mooban2',
+      'followupdays',
+      'remark1',
+      'remark2'
     ];
     
     const [rows] = await pool.query(
@@ -152,6 +183,7 @@ router.get('/api/related-deliveries', async (req, res, next) => {
       'worktime',
       'operator',
       'datadesc',
+      'code',
       'title',
       'price',
       'qty',
@@ -194,6 +226,66 @@ router.get('/api/all-deliveries', async (req, res, next) => {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch all deliveries',
+      message: err.message
+    });
+  }
+});
+
+// API endpoint for customer details by customerid
+router.get('/api/customer-details', async (req, res, next) => {
+  try {
+    const { customerid } = req.query;
+    
+    if (!customerid) {
+      return res.status(400).json({
+        success: false,
+        error: 'customerid parameter is required'
+      });
+    }
+    
+    // Get customer table reference
+    const customersTable = legacyTables.find((t) => t.key === 'customers');
+    
+    if (!customersTable) {
+      return res.status(500).json({
+        success: false,
+        error: 'Customer table not found'
+      });
+    }
+    
+    const fields = [
+      'customerid',
+      'sex',
+      'age',
+      'weight',
+      'height',
+      'sickness1',
+      'sickness2',
+      'lineid'
+    ];
+    
+    const [rows] = await pool.query(
+      `SELECT ${fields.join(', ')} FROM \`${customersTable.tableName}\` WHERE customerid = ? LIMIT 1`,
+      [customerid]
+    );
+    
+    if (rows.length === 0) {
+      return res.json({
+        success: true,
+        data: null,
+        message: 'Customer not found'
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: rows[0]
+    });
+  } catch (err) {
+    console.error('Customer details API error:', err);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch customer details',
       message: err.message
     });
   }

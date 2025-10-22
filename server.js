@@ -9,6 +9,7 @@ const pool = require('./db');
 const { ensureLegacyTables, legacyTables } = require('./lib/legacy/tableManager');
 const { ensureAuthTables } = require('./lib/auth/usersTable');
 const { seedOptionTablesFromDbf } = require('./lib/legacy/optionSeeder');
+const { migrateAddNewFields } = require('./lib/legacy/migrateAddNewFields');
 const productsRouter = require('./routes/products');
 const authRouter = require('./routes/auth');
 const customersRouter = require('./routes/customers');
@@ -362,11 +363,22 @@ app.use('/dashboard', requireAuth, dashboardRouter);
 // Basic error handler
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  console.error(err);
+  console.error('=== ERROR HANDLER ===');
+  console.error('Error:', err);
+  console.error('Error message:', err.message);
+  console.error('Error stack:', err.stack);
+  console.error('Request URL:', req.url);
+  console.error('Request method:', req.method);
+  console.error('=====================');
+  
   if (req.headers.accept && req.headers.accept.includes('application/json')) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ 
+      error: 'Internal Server Error',
+      message: err.message,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
   } else {
-    res.status(500).render('error', { error: err.message });
+    res.status(500).render('error', { error: err });
   }
 });
 
@@ -390,6 +402,9 @@ async function bootstrap() {
     console.log('📊 Initializing database tables...');
     await ensureLegacyTables(pool);
     await ensureAuthTables(pool);
+    
+    console.log('🔄 Running database migrations...');
+    await migrateAddNewFields(pool);
     
     console.log('🌱 Seeding option tables...');
     const optionSeedResults = await seedOptionTablesFromDbf(pool, console);
