@@ -888,6 +888,21 @@ function exportByDate() {
     
     alert('✅ ส่งออกข้อมูลสำเร็จ!\nพบ ' + filteredDeliveries.length + ' รายการ\nไฟล์: ' + filename);
 }
+
+// Download field mapping file
+function downloadFieldMapping() {
+    // Download CSV_EXPORT_MAPPING_SUMMARY.md
+    var link = document.createElement('a');
+    link.href = '/CSV_EXPORT_MAPPING_SUMMARY.md';
+    link.download = 'CSV_EXPORT_MAPPING_SUMMARY.md';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Show success message
+    alert('✅ กำลังดาวน์โหลดไฟล์\n📄 CSV_EXPORT_MAPPING_SUMMARY.md\n\nไฟล์นี้แสดงรายละเอียดครบถ้วนทั้ง 216 ฟิลด์');
+}
 </script>
 
 <div class="dashboard-container">
@@ -1082,6 +1097,11 @@ function exportByDate() {
             </div>
             <button id="exportByDateBtn" onclick="exportByDate()" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500;">
                 📅 ส่งออกรายการตามวันที่
+            </button>
+            
+            <!-- Field Mapping Info Button -->
+            <button id="fieldMappingBtn" onclick="downloadFieldMapping()" style="padding: 8px 16px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500; margin-left: 10px;">
+                📥 ดาวน์โหลดคำอธิบายฟิลด์ทั้งหมด (216 ฟิลด์)
             </button>
         </div>
     </div>

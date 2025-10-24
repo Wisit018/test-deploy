@@ -32,6 +32,23 @@ app.set('views', path.join(__dirname, 'views'));
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Serve CSV export mapping summary file
+app.get('/CSV_EXPORT_MAPPING_SUMMARY.md', (req, res) => {
+  const filePath = path.join(__dirname, 'CSV_EXPORT_MAPPING_SUMMARY.md');
+  
+  // Set headers to force download with correct content type
+  res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+  res.setHeader('Content-Disposition', 'attachment; filename="CSV_EXPORT_MAPPING_SUMMARY.md"');
+  
+  // Send file with error handling
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error('Error sending CSV_EXPORT_MAPPING_SUMMARY.md:', err);
+      res.status(404).send('File not found');
+    }
+  });
+});
+
 // Parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
