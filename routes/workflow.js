@@ -801,7 +801,7 @@ router.post('/api/save-workflow', async (req, res, next) => {
             appttime: deliveryData.timein || '16:00', // เวลาส่งจาก Step 2 หรือ 16:00 ถ้าไม่มีข้อมูล
       appttime1: '',
       appttime2: '',
-      apptperson: deliveryData.addr1 || '', // ชื่อ-นามสกุล จาก step 2
+      apptperson: deliveryData.deliverto || '', // ชื่อผู้รับ จาก step 2
       appttel: deliveryData.appttel || '', // โทรศัพท์ จาก step 2
       apptaddr: (() => {
         const parts = [];
