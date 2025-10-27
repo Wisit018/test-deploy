@@ -507,7 +507,8 @@
         if (!res.ok) throw new Error('ไม่สามารถโหลดข้อมูลจัดส่ง');
         const data = await res.json();
         state.customer = data.customer;
-        state.saved = Array.isArray(data.deliveries) ? data.deliveries.map((entry) => ({ ...entry, isDraft: false })) : [];
+        // ไม่ดึงข้อมูลประวัติการจัดส่งจาก database แล้ว
+        state.saved = [];
         state.drafts = [];
         state.deliveryDraftId = null;
         state.selectedId = null;
