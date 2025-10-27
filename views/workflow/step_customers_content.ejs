@@ -199,6 +199,7 @@
       selectedId: null,
       editingId: null,
       isSelecting: false, // Flag to prevent infinite loops
+      originalFormData: null, // เก็บข้อมูลเดิมของฟอร์มเพื่อตรวจสอบการเปลี่ยนแปลง
     };
 
     const customersApi = '<%= customersApi %>';
@@ -224,6 +225,29 @@
       summaryEl.textContent = text;
       summaryEl.classList.remove('text-muted', 'text-success');
       summaryEl.classList.add(variant === 'success' ? 'text-success' : 'text-muted');
+    }
+
+    function captureFormState() {
+      if (!form) return null;
+      const formData = new FormData(form);
+      const data = {};
+      Array.from(form.elements).forEach((el) => {
+        if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement)) return;
+        const name = el.name;
+        if (!name || name === 'id') return;
+        if (el.type === 'checkbox') {
+          data[name] = el.checked;
+        } else {
+          data[name] = formData.get(name) || '';
+        }
+      });
+      return JSON.stringify(data);
+    }
+
+    function hasFormChanged() {
+      if (!state.originalFormData) return false;
+      const currentData = captureFormState();
+      return state.originalFormData !== currentData;
     }
 
     function setFormMode(mode) {
@@ -254,13 +278,25 @@
         hideAddressField(field, { clearValue: true });
       });
       state.editingId = null;
+      state.originalFormData = null;
       setFormMode('create');
     }
 
     function renderCustomers() {
       if (!tableBody) return;
       if (!state.filtered.length) {
-        tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">ไม่พบลูกค้า</td></tr>';
+        const keyword = (searchInput?.value || '').trim();
+        // Check if keyword looks like a phone number (contains digits)
+        const hasDigits = /\d/.test(keyword);
+        const notFoundHtml = hasDigits && keyword ? 
+          `<tr><td colspan="5" class="text-center py-4">
+            <div class="text-muted">ไม่พบลูกค้า</div>
+            <div class="text-success small mt-1">
+              <i class="bi bi-check-circle me-1"></i>ข้อมูลเบอร์ "${keyword}" ถูกกรอกไว้ในฟอร์มด้านล่างแล้ว
+            </div>
+          </td></tr>` :
+          '<tr><td colspan="5" class="text-center text-muted py-4">ไม่พบลูกค้า</td></tr>';
+        tableBody.innerHTML = notFoundHtml;
         return;
       }
       tableBody.innerHTML = state.filtered
@@ -291,12 +327,25 @@
       if (!keyword) {
         state.filtered = [...state.customers];
       } else {
-      state.filtered = state.customers.filter((item) => {
-        const name = [item.firstname, item.lastname].filter(Boolean).join(' ').toLowerCase();
-        const phone = String(item.mobiletel || '').toLowerCase();
-        const code = String(item.customerid || '').toLowerCase();
-        return name.includes(keyword) || phone.includes(keyword) || code.includes(keyword);
+        state.filtered = state.customers.filter((item) => {
+          const name = [item.firstname, item.lastname].filter(Boolean).join(' ').toLowerCase();
+          const phone = String(item.mobiletel || '').toLowerCase();
+          const code = String(item.customerid || '').toLowerCase();
+          return name.includes(keyword) || phone.includes(keyword) || code.includes(keyword);
         });
+        
+        // Auto-fill form if no customers found and keyword has digits (likely a phone number)
+        if (state.filtered.length === 0 && /\d/.test(keyword) && form) {
+          resetForm();
+          const mobileInput = form.elements['mobiletel'];
+          const prenameInput = form.elements['prename'];
+          if (mobileInput) {
+            mobileInput.value = keyword;
+          }
+          if (prenameInput) {
+            prenameInput.value = 'คุณ';
+          }
+        }
       }
       renderCustomers();
     }
@@ -345,6 +394,9 @@
         loadCustomerForEdit(id).finally(() => {
           state.isSelecting = false;
         });
+      } else if (!id) {
+        // If no customer selected, reset original form data
+        state.originalFormData = null;
       }
       
       if (nextBtn) {
@@ -398,6 +450,11 @@
         }
       });
       updateAddressControls();
+      
+      // Capture form state after populating for change detection
+      setTimeout(() => {
+        state.originalFormData = captureFormState();
+      }, 100);
     }
 
     tableBody?.addEventListener('change', (event) => {
@@ -439,7 +496,93 @@
       applyFilter();
     });
 
-    nextBtn?.addEventListener('click', () => {
+    nextBtn?.addEventListener('click', async () => {
+      // ตรวจสอบว่ามีการแก้ไขฟอร์มที่ยังไม่ได้บันทึกหรือไม่
+      if (hasFormChanged()) {
+        // บันทึกอัตโนมัติก่อนไปขั้นตอนถัดไป
+        if (!form || !submitBtn) {
+          alert('ไม่สามารถบันทึกข้อมูลได้');
+          return;
+        }
+        
+        // แสดงสถานะกำลังบันทึก
+        const originalNextText = nextBtn.textContent;
+        nextBtn.textContent = 'กำลังบันทึก...';
+        nextBtn.setAttribute('disabled', 'disabled');
+        submitBtn.setAttribute('disabled', 'disabled');
+        
+        try {
+          const formData = new FormData(form);
+          const payload = {};
+          Array.from(form.elements).forEach((el) => {
+            if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement)) return;
+            const name = el.name;
+            if (!name) return;
+            if (name === 'id') return;
+            if (el.type === 'checkbox') {
+              payload[name] = el.checked ? 1 : 0;
+            } else {
+              const value = formData.get(name);
+              if (value == null) return;
+              const trimmed = typeof value === 'string' ? value.trim() : value;
+              payload[name] = trimmed === '' ? null : trimmed;
+            }
+          });
+
+          if (!payload.firstname || !payload.lastname || !payload.mobiletel) {
+            alert('กรุณากรอกข้อมูลชื่อ นามสกุล และเบอร์ติดต่อ');
+            nextBtn.textContent = originalNextText;
+            nextBtn.removeAttribute('disabled');
+            submitBtn.removeAttribute('disabled');
+            return;
+          }
+
+          let url = customersApi;
+          let method = 'POST';
+          if (state.editingId) {
+            url = `${customersApi}/${encodeURIComponent(state.editingId)}`;
+            method = 'PUT';
+          }
+          
+          const res = await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          
+          if (!res.ok) {
+            const message = await res.text();
+            throw new Error(message || 'บันทึกไม่สำเร็จ');
+          }
+          
+          const responseData = await res.json().catch(() => ({}));
+          
+          // Show success feedback briefly
+          if (feedback) {
+            feedback.classList.remove('d-none');
+            feedback.textContent = '✓ บันทึกข้อมูลอัตโนมัติแล้ว กำลังไปขั้นตอนถัดไป...';
+          }
+          
+          // Update selectedId if it's a new customer
+          if (!state.editingId && responseData && responseData.id) {
+            state.selectedId = responseData.id;
+          }
+          
+          // Update original form data after successful save
+          state.originalFormData = captureFormState();
+          
+          // Proceed to next step after brief delay
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+        } catch (err) {
+          alert(err.message || 'เกิดข้อผิดพลาดขณะบันทึกข้อมูล');
+          nextBtn.textContent = originalNextText;
+          nextBtn.removeAttribute('disabled');
+          submitBtn.removeAttribute('disabled');
+          return;
+        }
+      }
+      
       if (!state.selectedId) return;
       const url = `${nextStepUrl}?customerId=${encodeURIComponent(state.selectedId)}`;
       window.location.href = url;
@@ -516,6 +659,12 @@
         if (state.selectedId) {
           handleSelectionChange(state.selectedId);
         }
+        
+        // Update original form data after successful save
+        setTimeout(() => {
+          state.originalFormData = captureFormState();
+        }, 100);
+        
         resetForm();
       } catch (err) {
         alert(err.message || 'เกิดข้อผิดพลาดขณะบันทึกข้อมูล');

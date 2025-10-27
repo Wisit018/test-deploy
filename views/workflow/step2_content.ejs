@@ -239,6 +239,7 @@
       selectedId: null,
       editingId: null,
       editingSourceId: null,
+      originalFormData: null, // เก็บข้อมูลเดิมของฟอร์มเพื่อตรวจสอบการเปลี่ยนแปลง
     };
 
     const storageKeySelectedDelivery = 'workflow.selectedDelivery';
@@ -303,6 +304,25 @@
       }
     }
 
+    function captureFormState() {
+      if (!form) return null;
+      const formData = new FormData(form);
+      const data = {};
+      Array.from(form.elements).forEach((el) => {
+        if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement)) return;
+        const name = el.name;
+        if (!name || name === 'id') return;
+        data[name] = formData.get(name) || '';
+      });
+      return JSON.stringify(data);
+    }
+
+    function hasFormChanged() {
+      if (!state.originalFormData) return false;
+      const currentData = captureFormState();
+      return state.originalFormData !== currentData;
+    }
+
     function resetForm() {
       if (!form) return;
       form.reset();
@@ -310,6 +330,7 @@
       if (idInput) idInput.value = '';
       state.editingId = null;
       state.editingSourceId = null;
+      state.originalFormData = null;
       setFormMode('create');
     }
 
@@ -460,6 +481,9 @@
         setFormMode('edit');
         // Scroll to form
         window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+      } else if (!id) {
+        // If no item selected, reset original form data
+        state.originalFormData = null;
       }
       
       if (!nextBtn) {
@@ -543,6 +567,11 @@
           }
         }
       });
+      
+      // Capture form state after populating for change detection
+      setTimeout(() => {
+        state.originalFormData = captureFormState();
+      }, 100);
       
       // Auto-fill customer data from legacy_customers when editing
       console.log('Customer data fields:', {
@@ -690,7 +719,94 @@
     cancelBtn?.addEventListener('click', resetForm);
     newDeliveryBtn?.addEventListener('click', resetForm);
 
-    nextBtn?.addEventListener('click', () => {
+    nextBtn?.addEventListener('click', async () => {
+      // ตรวจสอบว่ามีการแก้ไขฟอร์มที่ยังไม่ได้บันทึกหรือไม่
+      if (hasFormChanged()) {
+        // บันทึกอัตโนมัติก่อนไปขั้นตอนถัดไป
+        if (!form || !submitBtn) {
+          alert('ไม่สามารถบันทึกข้อมูลได้');
+          return;
+        }
+        
+        // แสดงสถานะกำลังบันทึก
+        const originalNextText = nextBtn.textContent;
+        nextBtn.textContent = 'กำลังบันทึก...';
+        nextBtn.setAttribute('disabled', 'disabled');
+        submitBtn.setAttribute('disabled', 'disabled');
+        
+        try {
+          // Handle combined address field - split into addr2 and addr3
+          const addressCombinedField = form.querySelector('[name="address_combined"]');
+          const addr2Field = form.querySelector('[name="addr2"]');
+          const addr3Field = form.querySelector('[name="addr3"]');
+          
+          if (addressCombinedField && addr2Field && addr3Field) {
+            const combinedAddress = addressCombinedField.value.trim();
+            const lines = combinedAddress.split('\n');
+            addr2Field.value = lines[0] || '';
+            addr3Field.value = lines[1] || '';
+          }
+
+          const formData = new FormData(form);
+          const payload = {};
+          Array.from(form.elements).forEach((el) => {
+            if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement)) return;
+            const name = el.name;
+            if (!name || name === 'id' || name === 'address_combined') return;
+            const value = formData.get(name);
+            if (value == null) return;
+            const trimmed = typeof value === 'string' ? value.trim() : value;
+            payload[name] = trimmed === '' ? null : trimmed;
+          });
+
+          if (!payload.deliverto || !payload.appttel) {
+            alert('กรุณากรอกข้อมูลผู้รับ และเบอร์ติดต่อ');
+            nextBtn.textContent = originalNextText;
+            nextBtn.removeAttribute('disabled');
+            submitBtn.removeAttribute('disabled');
+            return;
+          }
+
+          const draftId = state.editingId || `draft-${Date.now()}`;
+          const draft = {
+            ...payload,
+            id: draftId,
+            isDraft: true,
+            day: payload.day || new Date().toISOString().slice(0, 10),
+            timein: payload.timein || new Date().toTimeString().slice(0, 5),
+            sourceId: state.editingSourceId || null,
+          };
+
+          const existingIndex = state.drafts.findIndex((d) => String(d.id) === String(draftId));
+          if (existingIndex >= 0) {
+            state.drafts[existingIndex] = draft;
+          } else {
+            state.drafts.unshift(draft);
+          }
+          state.deliveryDraftId = draft.id;
+          state.selectedId = draft.id;
+          
+          // Update form state after save
+          state.originalFormData = captureFormState();
+          
+          // Show success feedback briefly
+          if (feedback) {
+            feedback.classList.remove('d-none');
+            feedback.textContent = '✓ บันทึกข้อมูลอัตโนมัติแล้ว กำลังไปขั้นตอนถัดไป...';
+          }
+          
+          // Proceed to next step after brief delay
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+        } catch (err) {
+          alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + (err.message || ''));
+          nextBtn.textContent = originalNextText;
+          nextBtn.removeAttribute('disabled');
+          submitBtn.removeAttribute('disabled');
+          return;
+        }
+      }
+      
       if (!state.selectedId) {
         alert('กรุณาเลือกรายการจัดส่ง');
         return;
@@ -769,6 +885,12 @@
       applyFilter();
       // Update customer preview after form submission
       renderCustomerInfo();
+      
+      // Update original form data after successful save
+      setTimeout(() => {
+        state.originalFormData = captureFormState();
+      }, 100);
+      
       submitBtn?.removeAttribute('disabled');
     });
 

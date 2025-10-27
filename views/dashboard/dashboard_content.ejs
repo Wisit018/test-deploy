@@ -947,7 +947,7 @@ function downloadFieldMapping() {
                             <td><span class="badge-small <%= 'badge-' + (String(delivery.mediadesc || 'default').replace(/\s/g, '').toUpperCase()) %>"><%= delivery.delivernum || '' %></span></td>
                             <td><strong><%= delivery.salerepid || '' %></strong></td>
                             <td><%= (delivery.prename || '') %> <%= (delivery.firstname || '') %> <%= (delivery.lastname || '') %></td>
-                            <td><%= delivery.apptdate || '' %></td>
+                            <td><%= delivery.apptdate ? new Date(delivery.apptdate).toString().split(' GMT')[0] : '' %></td>
                             <td style="text-align: center;"><%= delivery.purchase_count || 0 %></td>
                             <td><%= delivery.mediadesc || '' %></td>
                             <td style="text-align: right;"><%= parseFloat(delivery.total || 0).toFixed(2) %></td>
