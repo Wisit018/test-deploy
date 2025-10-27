@@ -548,192 +548,297 @@ function escapeCSVField(field) {
 // Convert delivery data to CSV row (EgDeliver9 format)
 function deliveryToCSVRow(delivery) {
     var fields = [
-        formatDateToDDMMYYYY(delivery.workdate),        // WORKDATE
-        delivery.worktime || '',                         // WORKTIME
-        delivery.operator || '',                         // OPERATOR
-        delivery.chkminute || '',                        // CHKMINUTE
-        delivery.delivernum || '',                       // DELIVERNUM
-        delivery.tohomenum || '',                        // TOHOMENUM
-        delivery.timein || '',                           // TIMEIN
-        delivery.timeout || '',                          // TIMEOUT
-        delivery.buy || '',                              // BUY
-        delivery.datatype || '',                         // DATATYPE
-        delivery.datadesc || '',                         // DATADESC
-        delivery.processtyp || '',                       // PROCESSTYP
-        delivery.processdes || '',                       // PROCESSDES
-        delivery.mediatype || '',                        // MEDIATYPE
-        delivery.mediadesc || '',                        // MEDIADESC
-        delivery.channel || '',                          // CHANNEL
-        delivery.channeldes || '',                       // CHANNELDES
-        delivery.paytype || '',                          // PAYTYPE
-        delivery.paydesc || '',                          // PAYDESC
-        delivery.paytype1 || '',                         // PAYTYPE1
-        delivery.subpay1 || '',                          // SUBPAY1
-        delivery.subpay2 || '',                          // SUBPAY2
-        delivery.payment || '',                          // PAYMENT
-        formatDateToDDMMYYYY(delivery.payday),          // PAYDAY
-        delivery.cusbankno || '',                        // CUSBANKNO
-        delivery.cusbankna || '',                        // CUSBANKNA
-        delivery.cusbankbr || '',                        // CUSBANKBR
-        delivery.cusbankac || '',                        // CUSBANKAC
-        delivery.cusbankref || '',                       // CUSBANKREF
-        delivery.credit || '',                           // CREDIT
-        delivery.credittype || '',                       // CREDITTYPE
-        delivery.creditdesc || '',                       // CREDITDESC
-        delivery.creditno || '',                         // CREDITNO
-        delivery.creditexpm || '',                       // CREDITEXPM
-        delivery.creditexpy || '',                       // CREDITEXPY
-        delivery.creditref || '',                        // CREDITREF
-        delivery.last3digit || '',                       // LAST3DIGIT
-        delivery.bankno || '',                           // BANKNO
-        delivery.bankna || '',                           // BANKNA
-        delivery.bankbr || '',                           // BANKBR
-        delivery.bankac || '',                           // BANKAC
-        delivery.bankref || '',                          // BANKREF
-        delivery.shiptype || '',                         // SHIPTYPE
-        delivery.shipdesc || '',                         // SHIPDESC
-        delivery.customerid || '',                       // CUSTOMERID
-        delivery.salerepid || '',                        // SALEREPID
-        delivery.prename || '',                          // PRENAME
-        delivery.firstname || '',                        // FIRSTNAME
-        delivery.lastname || '',                         // LASTNAME
-        delivery.code || '',                             // CODE
-        delivery.title || '',                            // TITLE
-        delivery.price || '',                            // PRICE
-        delivery.qty || '',                              // QTY
-        delivery.amount || '',                           // AMOUNT
-        delivery.discount || '',                         // DISCOUNT
-        delivery.total || '',                            // TOTAL
-        delivery.mooban2 || '',                          // MOOBAN2 (Keyword)
-        delivery.apptday || '',                          // APPTDAY
-        formatDateToDDMMYYYY(delivery.apptdate),        // APPTDATE
-        delivery.appttime || '',                         // APPTTIME
-        delivery.appttime1 || '',                        // APPTTIME1
-        delivery.appttime2 || '',                        // APPTTIME2
-        delivery.apptperson || '',                       // APPTPERSON
-        delivery.appttel || '',                          // APPTTEL
-        delivery.apptaddr || '',                         // APPTADDR
-        delivery.apptaddr1 || '',                        // APPTADDR1
-        delivery.apptaddr2 || '',                        // APPTADDR2
-        delivery.apptkwang || '',                        // APPTKWANG
-        delivery.apptkate || '',                         // APPTKATE
-        delivery.appttumbon || '',                       // APPTTUMBON
-        delivery.apptampur || '',                        // APPTAMPUR
-        delivery.apptprov || '',                         // APPTPROV
-        delivery.apptzip || '',                          // APPTZIP
-        delivery.apptremk1 || '',                        // APPTREMK1
-        delivery.apptremk2 || '',                        // APPTREMK2
-        delivery.aftdelical || '',                       // AFTDELICAL
-        delivery.aftdeliti || '',                        // AFTDELITI
-        formatDateToDDMMYYYY(delivery.aftdelida),       // AFTDELIDA
-        delivery.autobrt9 || '',                         // AUTOBRT9
-        formatDateToDDMMYYYY(delivery.autobrt9da),      // AUTOBRT9DA
-        delivery.autobrt9ti || '',                       // AUTOBRT9TI
-        delivery.autobrt9by || '',                       // AUTOBRT9BY
-        delivery.deliver || '',                          // DELIVER
-        delivery.deliverid || '',                        // DELIVERID
-        formatDateToDDMMYYYY(delivery.deliverda),       // DELIVERDA
-        delivery.deliverti || '',                        // DELIVERTI
-        delivery.deliverby || '',                        // DELIVERBY
-        delivery.receive || '',                          // RECEIVE
-        formatDateToDDMMYYYY(delivery.receiveda),       // RECEIVEDA
-        delivery.receiveti || '',                        // RECEIVETI
-        delivery.receiveby || '',                        // RECEIVEBY
-        delivery.update || '',                           // UPDATE
-        formatDateToDDMMYYYY(delivery.updateda),        // UPDATEDA
-        delivery.updateti || '',                         // UPDATETI
-        delivery.updateby || '',                         // UPDATEBY
-        delivery.finance || '',                          // FINANCE
-        delivery.financetyp || '',                       // FINANCETYP
-        delivery.financedes || '',                       // FINANCEDES
-        formatDateToDDMMYYYY(delivery.financeda),       // FINANCEDA
-        delivery.financeti || '',                        // FINANCETI
-        delivery.financeby || '',                        // FINANCEBY
-        delivery.prnorder || '',                         // PRNORDER
-        formatDateToDDMMYYYY(delivery.prnorddate),      // PRNORDDATE
-        delivery.prnordtime || '',                       // PRNORDTIME
-        delivery.prnpick || '',                          // PRNPICK
-        formatDateToDDMMYYYY(delivery.prnpicdate),      // PRNPICDATE
-        delivery.prnpictime || '',                       // PRNPICTIME
-        delivery.prnsticker || '',                       // PRNSTICKER
-        formatDateToDDMMYYYY(delivery.prnstidate),      // PRNSTIDATE
-        delivery.prnstitime || '',                       // PRNSTITIME
-        delivery.prnfinan || '',                         // PRNFINAN
-        formatDateToDDMMYYYY(delivery.prnfindate),      // PRNFINDATE
-        delivery.prnfintime || '',                       // PRNFINTIME
-        delivery.payflag || '',                          // PAYFLAG
-        formatDateToDDMMYYYY(delivery.paydate),         // PAYDATE
-        delivery.paytime || '',                          // PAYTIME
-        delivery.delvflag || '',                         // DELVFLAG
-        formatDateToDDMMYYYY(delivery.delvdate),        // DELVDATE
-        delivery.delvtime || '',                         // DELVTIME
-        delivery.taxinv || '',                           // TAXINV
-        delivery.transfer || '',                         // TRANSFER
-        delivery.scanflag || '',                         // SCANFLAG
-        formatDateToDDMMYYYY(delivery.scandate),        // SCANDATE
-        delivery.scantime || '',                         // SCANTIME
-        delivery.scanby || '',                           // SCANBY
-        delivery.feed || '',                             // FEED
-        delivery.feedno || '',                           // FEEDNO
-        delivery.feedback || '',                         // FEEDBACK
-        delivery.feeddesc || '',                         // FEEDDESC
-        formatDateToDDMMYYYY(delivery.feeddate),        // FEEDDATE
-        delivery.feedtime || '',                         // FEEDTIME
-        delivery.feedid || '',                           // FEEDID
-        delivery.feedmemo || '',                         // FEEDMEMO
-        delivery.weightloss || '',                       // WEIGHTLOSS
-        delivery.weight || '',                           // WEIGHT
-        delivery.remark1 || '',                          // REMARK1
-        delivery.remark2 || '',                          // REMARK2
-        delivery.statusid || '',                         // STATUSID
-        delivery.statusdesc || '',                       // STATUSDESC
-        delivery.finish || '',                           // FINISH
-        delivery.mapstat || '',                          // MAPSTAT
-        delivery.uniqueid || '',                         // UNIQUEID
-        delivery.accprint || '',                         // ACCPRINT
-        formatDateToDDMMYYYY(delivery.accprintd),       // ACCPRINTD
-        delivery.accprintt || '',                        // ACCPRINTT
-        delivery.nkprint || '',                          // NKPRINT
-        formatDateToDDMMYYYY(delivery.nkprintd),        // NKPRINTD
-        delivery.nkprintt || '',                         // NKPRINTT
-        formatDateToDDMMYYYY(delivery.routedate),       // ROUTEDATE
-        delivery.editno || '',                           // EDITNO
-        delivery.editflag || '',                         // EDITFLAG
-        delivery.cnflag || '',                           // CNFLAG
-        delivery.emailaddr || '',                        // EMAILADDR
-        delivery.followup || '',                         // FOLLOWUP
-        delivery.followupdays || '',                     // FOLLOWUPDAYS
-        delivery.symptom || '',                          // SYMPTOM
-        delivery.urgency || ''                           // URGENCY
+        // 1-8: Work Information
+        formatDateToDDMMYYYY(delivery.workdate),        // 1. WORKDATE
+        delivery.worktime || '',                         // 2. WORKTIME
+        delivery.operator || '',                         // 3. OPERATOR
+        delivery.chkminute || '',                        // 4. CHKMINUTE
+        delivery.delivernum || '',                       // 5. DELIVERNUM
+        delivery.tohomenum || '',                        // 6. TOHOMENUM
+        delivery.timein || '',                           // 7. TIMEIN
+        delivery.timeout || '',                          // 8. TIMEOUT
+        
+        // 9-17: Type & Media
+        delivery.buy || '',                              // 9. BUY
+        delivery.datatype || '',                         // 10. DATATYPE
+        delivery.datadesc || '',                         // 11. DATADESC
+        delivery.processtyp || '',                       // 12. PROCESSTYP
+        delivery.processdes || '',                       // 13. PROCESSDES
+        delivery.mediatype || '',                        // 14. MEDIATYPE
+        delivery.mediadesc || '',                        // 15. MEDIADESC
+        delivery.channel || '',                          // 16. CHANNEL
+        delivery.channeldes || '',                       // 17. CHANNELDES
+        
+        // 18-42: Payment Information
+        delivery.paytype || '',                          // 18. PAYTYPE
+        delivery.paydesc || '',                          // 19. PAYDESC
+        delivery.paytype1 || '',                         // 20. PAYTYPE1
+        delivery.subpay1 || '',                          // 21. SUBPAY1
+        delivery.subpay2 || '',                          // 22. SUBPAY2
+        delivery.payment || '',                          // 23. PAYMENT
+        formatDateToDDMMYYYY(delivery.payday),          // 24. PAYDAY
+        delivery.cusbankno || '',                        // 25. CUSBANKNO
+        delivery.cusbankna || '',                        // 26. CUSBANKNA
+        delivery.cusbankbr || '',                        // 27. CUSBANKBR
+        delivery.cusbankac || '',                        // 28. CUSBANKAC
+        delivery.cusbankref || '',                       // 29. CUSBANKREF
+        delivery.credit || '',                           // 30. CREDIT
+        delivery.credittype || '',                       // 31. CREDITTYPE
+        delivery.creditdesc || '',                       // 32. CREDITDESC
+        delivery.creditno || '',                         // 33. CREDITNO
+        delivery.creditexpm || '',                       // 34. CREDITEXPM
+        delivery.creditexpy || '',                       // 35. CREDITEXPY
+        delivery.creditref || '',                        // 36. CREDITREF
+        delivery.last3digit || '',                       // 37. LAST3DIGIT
+        delivery.bankno || '',                           // 38. BANKNO
+        delivery.bankna || '',                           // 39. BANKNA
+        delivery.bankbr || '',                           // 40. BANKBR
+        delivery.bankac || '',                           // 41. BANKAC
+        delivery.bankref || '',                          // 42. BANKREF
+        
+        // 43-57: Shipping & Personnel
+        delivery.shiptype || '',                         // 43. SHIPTYPE
+        delivery.shipdesc || '',                         // 44. SHIPDESC
+        delivery.deliverto || '',                        // 45. DELIVERTO
+        delivery.userid || '',                           // 46. USERID
+        delivery.username || '',                         // 47. USERNAME
+        delivery.salerepid || '',                        // 48. SALEREPID
+        delivery.salename || '',                         // 49. SALENAME
+        delivery.ring || '',                             // 50. RING
+        delivery.ringdesc || '',                         // 51. RINGDESC
+        delivery.routerun || '',                         // 52. ROUTERUN
+        delivery.routeno || '',                          // 53. ROUTENO
+        delivery.routedesc || '',                        // 54. ROUTEDESC
+        delivery.routedist || '',                        // 55. ROUTEDIST
+        delivery.routetimes || '',                       // 56. ROUTETIMES
+        delivery.milesp2p || '',                         // 57. MILESP2P
+        
+        // 58-64: Messenger & Date
+        delivery.timesp2p || '',                         // 58. TIMESP2P
+        delivery.msnid || '',                            // 59. MSNID
+        delivery.msnname || '',                          // 60. MSNNAME
+        delivery.handtimes || '',                        // 61. HANDTIMES
+        delivery.day || '',                              // 62. DAY
+        formatDateToDDMMYYYY(delivery.date),            // 63. DATE
+        delivery.source || '',                           // 64. SOURCE
+        
+        // 65-77: Product Information
+        delivery.code || '',                             // 65. CODE
+        delivery.prdgroup || '',                         // 66. PRDGROUP
+        delivery.title || '',                            // 67. TITLE
+        delivery.cost || '',                             // 68. COST
+        delivery.price || '',                            // 69. PRICE
+        delivery.salprice || '',                         // 70. SALPRICE
+        delivery.qty || '',                              // 71. QTY
+        delivery.amount || '',                           // 72. AMOUNT
+        delivery.postfee || '',                          // 73. POSTFEE
+        delivery.total || '',                            // 74. TOTAL
+        delivery.freecode || '',                         // 75. FREECODE
+        delivery.dscamt || '',                           // 76. DSCAMT
+        delivery.transno || '',                          // 77. TRANSNO
+        
+        // 78-118: Customer Information (41 fields)
+        delivery.customerid || '',                       // 78. CUSTOMERID
+        delivery.memcode || '',                          // 79. MEMCODE
+        delivery.prename || '',                          // 80. PRENAME
+        delivery.firstname || '',                        // 81. FIRSTNAME
+        delivery.lastname || '',                         // 82. LASTNAME
+        delivery.addr1 || '',                            // 83. ADDR1
+        delivery.addr2 || '',                            // 84. ADDR2
+        delivery.homenum1 || '',                         // 85. HOMENUM1
+        delivery.homenum2 || '',                         // 86. HOMENUM2
+        delivery.precomnam1 || '',                       // 87. PRECOMNAM1
+        delivery.precomnam2 || '',                       // 88. PRECOMNAM2
+        delivery.comname1 || '',                         // 89. COMNAME1
+        delivery.comname2 || '',                         // 90. COMNAME2
+        delivery.lstcomnam1 || '',                       // 91. LSTCOMNAM1
+        delivery.lstcomnam2 || '',                       // 92. LSTCOMNAM2
+        delivery.building1 || '',                        // 93. BUILDING1
+        delivery.building2 || '',                        // 94. BUILDING2
+        delivery.floor1 || '',                           // 95. FLOOR1
+        delivery.floor2 || '',                           // 96. FLOOR2
+        delivery.room1 || '',                            // 97. ROOM1
+        delivery.room2 || '',                            // 98. ROOM2
+        delivery.soi1 || '',                             // 99. SOI1
+        delivery.soi2 || '',                             // 100. SOI2
+        delivery.road1 || '',                            // 101. ROAD1
+        delivery.road2 || '',                            // 102. ROAD2
+        delivery.kate1 || '',                            // 103. KATE1
+        delivery.kate2 || '',                            // 104. KATE2
+        delivery.kwang1 || '',                           // 105. KWANG1
+        delivery.kwang2 || '',                           // 106. KWANG2
+        delivery.mooban1 || '',                          // 107. MOOBAN1
+        delivery.mooban2 || '',                          // 108. MOOBAN2 (Keyword)
+        delivery.tumbon1 || '',                          // 109. TUMBON1
+        delivery.tumbon2 || '',                          // 110. TUMBON2
+        delivery.ampur1 || '',                           // 111. AMPUR1
+        delivery.ampur2 || '',                           // 112. AMPUR2
+        delivery.province1 || '',                        // 113. PROVINCE1
+        delivery.province2 || '',                        // 114. PROVINCE2
+        delivery.zipcode1 || '',                         // 115. ZIPCODE1
+        delivery.zipcode2 || '',                         // 116. ZIPCODE2
+        delivery.province || '',                         // 117. PROVINCE
+        delivery.zipcode || '',                          // 118. ZIPCODE
+        
+        // 119-137: Appointment Information (19 fields)
+        delivery.beforeaft || '',                        // 119. BEFOREAFT
+        delivery.apptday || '',                          // 120. APPTDAY
+        formatDateToDDMMYYYY(delivery.apptdate),        // 121. APPTDATE
+        delivery.appttime || '',                         // 122. APPTTIME
+        delivery.appttime1 || '',                        // 123. APPTTIME1
+        delivery.appttime2 || '',                        // 124. APPTTIME2
+        delivery.apptperson || '',                       // 125. APPTPERSON
+        delivery.appttel || '',                          // 126. APPTTEL
+        delivery.apptaddr || '',                         // 127. APPTADDR
+        delivery.apptaddr1 || '',                        // 128. APPTADDR1
+        delivery.apptaddr2 || '',                        // 129. APPTADDR2
+        delivery.apptkwang || '',                        // 130. APPTKWANG
+        delivery.apptkate || '',                         // 131. APPTKATE
+        delivery.appttumbon || '',                       // 132. APPTTUMBON
+        delivery.apptampur || '',                        // 133. APPTAMPUR
+        delivery.apptprov || '',                         // 134. APPTPROV
+        delivery.apptzip || '',                          // 135. APPTZIP
+        delivery.apptremk1 || '',                        // 136. APPTREMK1
+        delivery.apptremk2 || '',                        // 137. APPTREMK2
+        
+        // 138-202: Status Flags (65 fields)
+        delivery.aftdelical || '',                       // 138. AFTDELICAL
+        delivery.aftdeliti || '',                        // 139. AFTDELITI
+        formatDateToDDMMYYYY(delivery.aftdelida),       // 140. AFTDELIDA
+        delivery.autobrt9 || '',                         // 141. AUTOBRT9
+        formatDateToDDMMYYYY(delivery.autobrt9da),      // 142. AUTOBRT9DA
+        delivery.autobrt9ti || '',                       // 143. AUTOBRT9TI
+        delivery.autobrt9by || '',                       // 144. AUTOBRT9BY
+        delivery.deliver || '',                          // 145. DELIVER
+        delivery.deliverid || '',                        // 146. DELIVERID
+        formatDateToDDMMYYYY(delivery.deliverda),       // 147. DELIVERDA
+        delivery.deliverti || '',                        // 148. DELIVERTI
+        delivery.deliverby || '',                        // 149. DELIVERBY
+        delivery.receive || '',                          // 150. RECEIVE
+        formatDateToDDMMYYYY(delivery.receiveda),       // 151. RECEIVEDA
+        delivery.receiveti || '',                        // 152. RECEIVETI
+        delivery.receiveby || '',                        // 153. RECEIVEBY
+        delivery.update || '',                           // 154. UPDATE
+        formatDateToDDMMYYYY(delivery.updateda),        // 155. UPDATEDA
+        delivery.updateti || '',                         // 156. UPDATETI
+        delivery.updateby || '',                         // 157. UPDATEBY
+        delivery.finance || '',                          // 158. FINANCE
+        delivery.financetyp || '',                       // 159. FINANCETYP
+        delivery.financedes || '',                       // 160. FINANCEDES
+        formatDateToDDMMYYYY(delivery.financeda),       // 161. FINANCEDA
+        delivery.financeti || '',                        // 162. FINANCETI
+        delivery.financeby || '',                        // 163. FINANCEBY
+        delivery.prnorder || '',                         // 164. PRNORDER
+        formatDateToDDMMYYYY(delivery.prnorddate),      // 165. PRNORDDATE
+        delivery.prnordtime || '',                       // 166. PRNORDTIME
+        delivery.prnpick || '',                          // 167. PRNPICK
+        formatDateToDDMMYYYY(delivery.prnpicdate),      // 168. PRNPICDATE
+        delivery.prnpictime || '',                       // 169. PRNPICTIME
+        delivery.prnsticker || '',                       // 170. PRNSTICKER
+        formatDateToDDMMYYYY(delivery.prnstidate),      // 171. PRNSTIDATE
+        delivery.prnstitime || '',                       // 172. PRNSTITIME
+        delivery.prnfinan || '',                         // 173. PRNFINAN
+        formatDateToDDMMYYYY(delivery.prnfindate),      // 174. PRNFINDATE
+        delivery.prnfintime || '',                       // 175. PRNFINTIME
+        delivery.payflag || '',                          // 176. PAYFLAG
+        formatDateToDDMMYYYY(delivery.paydate),         // 177. PAYDATE
+        delivery.paytime || '',                          // 178. PAYTIME
+        delivery.delvflag || '',                         // 179. DELVFLAG
+        formatDateToDDMMYYYY(delivery.delvdate),        // 180. DELVDATE
+        delivery.delvtime || '',                         // 181. DELVTIME
+        delivery.taxinv || '',                           // 182. TAXINV
+        delivery.transfer || '',                         // 183. TRANSFER
+        delivery.scanflag || '',                         // 184. SCANFLAG
+        formatDateToDDMMYYYY(delivery.scandate),        // 185. SCANDATE
+        delivery.scantime || '',                         // 186. SCANTIME
+        delivery.scanby || '',                           // 187. SCANBY
+        delivery.feed || '',                             // 188. FEED
+        delivery.feedno || '',                           // 189. FEEDNO
+        delivery.feedback || '',                         // 190. FEEDBACK
+        delivery.feeddesc || '',                         // 191. FEEDDESC
+        formatDateToDDMMYYYY(delivery.feeddate),        // 192. FEEDDATE
+        delivery.feedtime || '',                         // 193. FEEDTIME
+        delivery.feedid || '',                           // 194. FEEDID
+        delivery.feedmemo || '',                         // 195. FEEDMEMO
+        delivery.weightloss || '',                       // 196. WEIGHTLOSS
+        delivery.weight || '',                           // 197. WEIGHT
+        delivery.remark1 || '',                          // 198. REMARK1
+        delivery.remark2 || '',                          // 199. REMARK2
+        delivery.statusid || '',                         // 200. STATUSID
+        delivery.statusdesc || '',                       // 201. STATUSDESC
+        delivery.finish || '',                           // 202. FINISH
+        
+        // 203-216: System & Additional (14 fields)
+        delivery.mapstat || '',                          // 203. MAPSTAT
+        delivery.uniqueid || '',                         // 204. UNIQUEID
+        delivery.accprint || '',                         // 205. ACCPRINT
+        formatDateToDDMMYYYY(delivery.accprintd),       // 206. ACCPRINTD
+        delivery.accprintt || '',                        // 207. ACCPRINTT
+        delivery.nkprint || '',                          // 208. NKPRINT
+        formatDateToDDMMYYYY(delivery.nkprintd),        // 209. NKPRINTD
+        delivery.nkprintt || '',                         // 210. NKPRINTT
+        formatDateToDDMMYYYY(delivery.routedate),       // 211. ROUTEDATE
+        delivery.editno || '',                           // 212. EDITNO
+        delivery.editflag || '',                         // 213. EDITFLAG
+        delivery.cnflag || '',                           // 214. CNFLAG
+        delivery.emailaddr || '',                        // 215. EMAILADDR
+        delivery.followup || ''                          // 216. FOLLOWUP
     ];
     
     return fields.map(escapeCSVField).join(',');
 }
 
-// Generate CSV header (EgDeliver9 format)
+// Generate CSV header (EgDeliver9 format) - 216 fields
 function getCSVHeader() {
     var headers = [
+        // 1-8: Work Information
         'WORKDATE', 'WORKTIME', 'OPERATOR', 'CHKMINUTE', 'DELIVERNUM', 'TOHOMENUM', 'TIMEIN', 'TIMEOUT',
-        'BUY', 'DATATYPE', 'DATADESC', 'PROCESSTYP', 'PROCESSDES', 'MEDIATYPE', 'MEDIADESC', 'CHANNEL',
-        'CHANNELDES', 'PAYTYPE', 'PAYDESC', 'PAYTYPE1', 'SUBPAY1', 'SUBPAY2', 'PAYMENT', 'PAYDAY',
-        'CUSBANKNO', 'CUSBANKNA', 'CUSBANKBR', 'CUSBANKAC', 'CUSBANKREF', 'CREDIT', 'CREDITTYPE',
-        'CREDITDESC', 'CREDITNO', 'CREDITEXPM', 'CREDITEXPY', 'CREDITREF', 'LAST3DIGIT', 'BANKNO',
-        'BANKNA', 'BANKBR', 'BANKAC', 'BANKREF', 'SHIPTYPE', 'SHIPDESC', 'CUSTOMERID', 'SALEREPID',
-        'PRENAME', 'FIRSTNAME', 'LASTNAME', 'CODE', 'TITLE', 'PRICE', 'QTY', 'AMOUNT', 'DISCOUNT',
-        'TOTAL', 'MOOBAN2', 'APPTDAY', 'APPTDATE', 'APPTTIME', 'APPTTIME1', 'APPTTIME2', 'APPTPERSON',
-        'APPTTEL', 'APPTADDR', 'APPTADDR1', 'APPTADDR2', 'APPTKWANG', 'APPTKATE', 'APPTTUMBON',
-        'APPTAMPUR', 'APPTPROV', 'APPTZIP', 'APPTREMK1', 'APPTREMK2', 'AFTDELICAL', 'AFTDELITI',
-        'AFTDELIDA', 'AUTOBRT9', 'AUTOBRT9DA', 'AUTOBRT9TI', 'AUTOBRT9BY', 'DELIVER', 'DELIVERID',
-        'DELIVERDA', 'DELIVERTI', 'DELIVERBY', 'RECEIVE', 'RECEIVEDA', 'RECEIVETI', 'RECEIVEBY',
-        'UPDATE', 'UPDATEDA', 'UPDATETI', 'UPDATEBY', 'FINANCE', 'FINANCETYP', 'FINANCEDES',
-        'FINANCEDA', 'FINANCETI', 'FINANCEBY', 'PRNORDER', 'PRNORDDATE', 'PRNORDTIME', 'PRNPICK',
-        'PRNPICDATE', 'PRNPICTIME', 'PRNSTICKER', 'PRNSTIDATE', 'PRNSTITIME', 'PRNFINAN',
-        'PRNFINDATE', 'PRNFINTIME', 'PAYFLAG', 'PAYDATE', 'PAYTIME', 'DELVFLAG', 'DELVDATE',
-        'DELVTIME', 'TAXINV', 'TRANSFER', 'SCANFLAG', 'SCANDATE', 'SCANTIME', 'SCANBY', 'FEED',
-        'FEEDNO', 'FEEDBACK', 'FEEDDESC', 'FEEDDATE', 'FEEDTIME', 'FEEDID', 'FEEDMEMO', 'WEIGHTLOSS',
-        'WEIGHT', 'REMARK1', 'REMARK2', 'STATUSID', 'STATUSDESC', 'FINISH', 'MAPSTAT', 'UNIQUEID',
-        'ACCPRINT', 'ACCPRINTD', 'ACCPRINTT', 'NKPRINT', 'NKPRINTD', 'NKPRINTT', 'ROUTEDATE',
-        'EDITNO', 'EDITFLAG', 'CNFLAG', 'EMAILADDR', 'FOLLOWUP', 'FOLLOWUPDAYS', 'SYMPTOM', 'URGENCY'
+        // 9-17: Type & Media
+        'BUY', 'DATATYPE', 'DATADESC', 'PROCESSTYP', 'PROCESSDES', 'MEDIATYPE', 'MEDIADESC', 'CHANNEL', 'CHANNELDES',
+        // 18-42: Payment Information
+        'PAYTYPE', 'PAYDESC', 'PAYTYPE1', 'SUBPAY1', 'SUBPAY2', 'PAYMENT', 'PAYDAY',
+        'CUSBANKNO', 'CUSBANKNA', 'CUSBANKBR', 'CUSBANKAC', 'CUSBANKREF', 
+        'CREDIT', 'CREDITTYPE', 'CREDITDESC', 'CREDITNO', 'CREDITEXPM', 'CREDITEXPY', 'CREDITREF', 'LAST3DIGIT',
+        'BANKNO', 'BANKNA', 'BANKBR', 'BANKAC', 'BANKREF',
+        // 43-57: Shipping & Personnel
+        'SHIPTYPE', 'SHIPDESC', 'DELIVERTO', 'USERID', 'USERNAME', 'SALEREPID', 'SALENAME', 
+        'RING', 'RINGDESC', 'ROUTERUN', 'ROUTENO', 'ROUTEDESC', 'ROUTEDIST', 'ROUTETIMES', 'MILESP2P',
+        // 58-64: Messenger & Date
+        'TIMESP2P', 'MSNID', 'MSNNAME', 'HANDTIMES', 'DAY', 'DATE', 'SOURCE',
+        // 65-77: Product Information
+        'CODE', 'PRDGROUP', 'TITLE', 'COST', 'PRICE', 'SALPRICE', 'QTY', 'AMOUNT', 'POSTFEE', 'TOTAL', 'FREECODE', 'DSCAMT', 'TRANSNO',
+        // 78-118: Customer Information (41 fields)
+        'CUSTOMERID', 'MEMCODE', 'PRENAME', 'FIRSTNAME', 'LASTNAME', 'ADDR1', 'ADDR2', 
+        'HOMENUM1', 'HOMENUM2', 
+        'PRECOMNAM1', 'PRECOMNAM2', 'COMNAME1', 'COMNAME2', 'LSTCOMNAM1', 'LSTCOMNAM2',
+        'BUILDING1', 'BUILDING2', 'FLOOR1', 'FLOOR2', 'ROOM1', 'ROOM2',
+        'SOI1', 'SOI2', 'ROAD1', 'ROAD2', 'KATE1', 'KATE2', 'KWANG1', 'KWANG2', 
+        'MOOBAN1', 'MOOBAN2', 'TUMBON1', 'TUMBON2', 'AMPUR1', 'AMPUR2', 
+        'PROVINCE1', 'PROVINCE2', 'ZIPCODE1', 'ZIPCODE2', 'PROVINCE', 'ZIPCODE',
+        // 119-137: Appointment Information (19 fields)
+        'BEFOREAFT', 'APPTDAY', 'APPTDATE', 'APPTTIME', 'APPTTIME1', 'APPTTIME2', 'APPTPERSON', 'APPTTEL',
+        'APPTADDR', 'APPTADDR1', 'APPTADDR2', 'APPTKWANG', 'APPTKATE', 'APPTTUMBON', 'APPTAMPUR', 'APPTPROV', 'APPTZIP',
+        'APPTREMK1', 'APPTREMK2',
+        // 138-202: Status Flags (65 fields)
+        'AFTDELICAL', 'AFTDELITI', 'AFTDELIDA',
+        'AUTOBRT9', 'AUTOBRT9DA', 'AUTOBRT9TI', 'AUTOBRT9BY',
+        'DELIVER', 'DELIVERID', 'DELIVERDA', 'DELIVERTI', 'DELIVERBY',
+        'RECEIVE', 'RECEIVEDA', 'RECEIVETI', 'RECEIVEBY',
+        'UPDATE', 'UPDATEDA', 'UPDATETI', 'UPDATEBY',
+        'FINANCE', 'FINANCETYP', 'FINANCEDES', 'FINANCEDA', 'FINANCETI', 'FINANCEBY',
+        'PRNORDER', 'PRNORDDATE', 'PRNORDTIME',
+        'PRNPICK', 'PRNPICDATE', 'PRNPICTIME',
+        'PRNSTICKER', 'PRNSTIDATE', 'PRNSTITIME',
+        'PRNFINAN', 'PRNFINDATE', 'PRNFINTIME',
+        'PAYFLAG', 'PAYDATE', 'PAYTIME',
+        'DELVFLAG', 'DELVDATE', 'DELVTIME',
+        'TAXINV', 'TRANSFER',
+        'SCANFLAG', 'SCANDATE', 'SCANTIME', 'SCANBY',
+        'FEED', 'FEEDNO', 'FEEDBACK', 'FEEDDESC', 'FEEDDATE', 'FEEDTIME', 'FEEDID', 'FEEDMEMO',
+        'WEIGHTLOSS', 'WEIGHT', 'REMARK1', 'REMARK2', 'STATUSID', 'STATUSDESC', 'FINISH',
+        // 203-216: System & Additional (14 fields)
+        'MAPSTAT', 'UNIQUEID', 'ACCPRINT', 'ACCPRINTD', 'ACCPRINTT', 'NKPRINT', 'NKPRINTD', 'NKPRINTT',
+        'ROUTEDATE', 'EDITNO', 'EDITFLAG', 'CNFLAG', 'EMAILADDR', 'FOLLOWUP'
     ];
     
     return headers.map(escapeCSVField).join(',');
