@@ -62,6 +62,7 @@ const allowedDeliveryFields = new Set([
   'addr2',
   'homenum1',
   'mooban1',
+  'building1',
   'soi1',
   'road1',
   'kwang1',
