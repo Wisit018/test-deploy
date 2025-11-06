@@ -119,6 +119,9 @@
         background: #252525;
         border-top-color: #1e1e1e;
       }
+      [data-bs-theme="dark"] #sidebar-sales-rep-message {
+        color: #e0e0e0;
+      }
     </style>
     <script>
       // Early theme apply to avoid flash
@@ -203,14 +206,16 @@
         <!-- Sales Rep Section -->
         <div class="sales-rep-section">
           <label class="form-label small fw-bold mb-2">พนักงานขาย</label>
-          <select class="form-select form-select-sm" id="sidebar-sales-rep" data-sales-rep-select>
+          <input type="text" class="form-control form-control-sm mb-2" id="sidebar-sales-rep-search" placeholder="ค้นหารหัสพนักงาน" autocomplete="off">
+          <select class="form-select form-select-sm mb-1" id="sidebar-sales-rep" data-sales-rep-select>
             <option value="">— เลือกพนักงานขาย —</option>
             <% if (typeof salesRepOptions !== 'undefined' && salesRepOptions) { %>
               <% salesRepOptions.forEach(function(rep){ %>
-                <option value="<%= rep.value %>"><%= rep.label %></option>
+                <option value="<%= rep.value %>" data-pn-id="<%= rep.value %>"><%= rep.label %></option>
               <% }); %>
             <% } %>
           </select>
+          <div id="sidebar-sales-rep-message" class="small" style="min-height: 18px;"></div>
         </div>
       </div>
 
@@ -250,7 +255,181 @@
       // Sales Rep synchronization
       (function() {
         const sidebarSelect = document.getElementById('sidebar-sales-rep');
+        const searchInput = document.getElementById('sidebar-sales-rep-search');
+        const messageEl = document.getElementById('sidebar-sales-rep-message');
         const formSelect = document.querySelector('select[name="salerepid"]');
+        
+        // Function to show message
+        function showMessage(text, type = 'info') {
+          if (!messageEl) return;
+          messageEl.textContent = text;
+          messageEl.className = 'small';
+          if (type === 'success') {
+            messageEl.style.color = '#28a745';
+          } else if (type === 'error') {
+            messageEl.style.color = '#dc3545';
+          } else {
+            messageEl.style.color = '#6c757d';
+          }
+        }
+        
+        // Function to clear message
+        function clearMessage() {
+          if (messageEl) {
+            messageEl.textContent = '';
+            messageEl.className = 'small';
+          }
+        }
+        
+        // Store all original options for filtering
+        let allOptions = [];
+        function initializeOptions() {
+          if (sidebarSelect) {
+            allOptions = Array.from(sidebarSelect.options).map(opt => ({
+              value: opt.value,
+              text: opt.textContent,
+              element: opt.cloneNode(true)
+            }));
+          }
+        }
+        
+        // Initialize options when DOM is ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initializeOptions);
+        } else {
+          initializeOptions();
+        }
+        
+        // Filter function for sales rep search
+        function filterSalesRepOptions(keyword, autoSelect = false) {
+          if (!sidebarSelect) return;
+          
+          // Re-initialize options if empty
+          if (allOptions.length === 0) {
+            initializeOptions();
+          }
+          
+          // Save current selected value before filtering
+          const currentSelectedValue = sidebarSelect.value;
+          const savedSalesRep = localStorage.getItem('selectedSalesRep');
+          
+          const searchTerm = keyword.trim().toLowerCase();
+          
+          // Clear all options except the first one (placeholder)
+          sidebarSelect.innerHTML = '<option value="">— เลือกพนักงานขาย —</option>';
+          
+          const filteredOptions = [];
+          
+          if (!searchTerm) {
+            // If no search term, show all options
+            allOptions.forEach(opt => {
+              if (opt.value) {
+                sidebarSelect.appendChild(opt.element.cloneNode(true));
+                filteredOptions.push(opt);
+              }
+            });
+          } else {
+            // Filter options by pn_id (รหัสพนักงาน)
+            allOptions.forEach(opt => {
+              if (opt.value && String(opt.value).toLowerCase().includes(searchTerm)) {
+                sidebarSelect.appendChild(opt.element.cloneNode(true));
+                filteredOptions.push(opt);
+              }
+            });
+          }
+          
+          // Show message based on search results
+          if (!searchTerm) {
+            // No search term, clear message
+            clearMessage();
+          } else if (filteredOptions.length === 0) {
+            // No results found
+            showMessage('ไม่พบรหัสพนักงาน', 'error');
+          } else {
+            // Results found, but don't show message yet (wait for selection)
+            clearMessage();
+          }
+          
+          // Auto-select if only one result found and autoSelect is true
+          if (autoSelect && filteredOptions.length === 1) {
+            const selectedOption = filteredOptions[0];
+            sidebarSelect.value = selectedOption.value;
+            // Save to localStorage and sync
+            localStorage.setItem('selectedSalesRep', selectedOption.value);
+            if (formSelect) {
+              formSelect.value = selectedOption.value;
+              formSelect.dispatchEvent(new Event('change'));
+            }
+            // Show success message
+            showMessage('ค้นหาสำเร็จ', 'success');
+            // Clear search input after auto-select to show all options
+            if (searchInput) {
+              searchInput.value = '';
+              // Use setTimeout to clear message and filter
+              setTimeout(() => {
+                clearMessage();
+                filterSalesRepOptions('', false);
+              }, 2000);
+            }
+          } else {
+            // Restore selected value if it still exists in filtered options
+            const valueToRestore = currentSelectedValue || savedSalesRep;
+            if (valueToRestore && Array.from(sidebarSelect.options).some(opt => opt.value === valueToRestore)) {
+              sidebarSelect.value = valueToRestore;
+            } else {
+              sidebarSelect.value = '';
+            }
+          }
+        }
+        
+        // Search input event listener
+        if (searchInput) {
+          let searchTimeout;
+          searchInput.addEventListener('input', function() {
+            const searchValue = this.value;
+            
+            // Clear previous timeout
+            clearTimeout(searchTimeout);
+            
+            // Debounce search to avoid too many updates
+            searchTimeout = setTimeout(() => {
+              // Auto-select if exactly one match
+              filterSalesRepOptions(searchValue, true);
+            }, 300);
+          });
+          
+          // Handle select change - ensure selected value is visible
+          if (sidebarSelect) {
+            sidebarSelect.addEventListener('change', function() {
+              if (this.value) {
+                // Save to localStorage
+                localStorage.setItem('selectedSalesRep', this.value);
+                
+                // Sync to form if exists
+                if (formSelect) {
+                  formSelect.value = this.value;
+                  formSelect.dispatchEvent(new Event('change'));
+                }
+                
+                // Show success message if search was performed
+                if (searchInput && searchInput.value) {
+                  showMessage('ค้นหาสำเร็จ', 'success');
+                  searchInput.value = '';
+                  // Clear message after 2 seconds
+                  setTimeout(() => {
+                    clearMessage();
+                    filterSalesRepOptions('', false);
+                  }, 2000);
+                } else {
+                  // Clear message if no search was performed
+                  clearMessage();
+                }
+              } else {
+                clearMessage();
+              }
+            });
+          }
+        }
         
         // Clear localStorage when starting new workflow (step1)
         if (window.location.pathname === '/workflow' || window.location.pathname === '/workflow/') {
@@ -265,17 +444,6 @@
           if (savedSalesRep) {
             sidebarSelect.value = savedSalesRep;
           }
-          
-          // Save to localStorage when sidebar changes
-          sidebarSelect.addEventListener('change', function() {
-            localStorage.setItem('selectedSalesRep', this.value);
-            
-            // Sync to form if exists
-            if (formSelect) {
-              formSelect.value = this.value;
-              formSelect.dispatchEvent(new Event('change'));
-            }
-          });
         }
         
         if (formSelect) {

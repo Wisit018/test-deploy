@@ -110,10 +110,20 @@
           <div class="col-12 col-md-3">
             <div class="row g-2">
               <div class="col-4">
-                <label class="form-label">หมู่บ้าน</label>
+                <label class="form-label">หมู่</label>
               </div>
               <div class="col-8">
                 <input type="text" name="mooban1" class="form-control" maxlength="100">
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="row g-2">
+              <div class="col-4">
+                <label class="form-label">อาคาร</label>
+              </div>
+              <div class="col-8">
+                <input type="text" name="building1" class="form-control" maxlength="100">
               </div>
             </div>
           </div>
@@ -178,8 +188,7 @@
               </div>
             </div>
           </div>
-
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-4">
             <div class="row g-2">
               <div class="col-4">
                 <label class="form-label">วันที่จัดส่ง</label>
@@ -189,7 +198,7 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-5">
             <div class="row g-2">
               <div class="col-4">
                 <label class="form-label">เวลาจัดส่ง</label>
@@ -470,6 +479,9 @@
       state.selectedId = id;
       const item = id ? getCombinedList().find((d) => String(d.id) === String(id)) : null;
       
+      // Update table to reflect selection (radio button checked state)
+      applyFilter();
+      
       // Update customer preview with selected delivery data
       renderCustomerInfo();
       
@@ -515,6 +527,7 @@
         state.editingId = null;
         state.editingSourceId = null;
         renderCustomerInfo();
+        // สร้าง draft ใหม่จากข้อมูลลูกค้าทุกครั้งเมื่อเข้าหน้า step 2
         createDraftFromCustomer();
       } catch (err) {
         if (preview) preview.innerHTML = `<div class="text-danger">${err.message || 'เกิดข้อผิดพลาดในการโหลดข้อมูลลูกค้า'}</div>`;
@@ -907,6 +920,7 @@
         addr3: state.customer.addr3 || '', // ที่อยู่บรรทัดเพิ่มเติม - ดึงจาก addr3
         homenum1: state.customer.homenum1 || state.customer.homenum || '',
         mooban1: state.customer.mooban1 || state.customer.moo || '',
+        building1: state.customer.building1 || state.customer.building || '',
         soi1: state.customer.soi1 || state.customer.soi || '',
         road1: state.customer.road1 || state.customer.road || '',
         kwang1: state.customer.kwang1 || state.customer.kwang || '',
@@ -934,15 +948,12 @@
         state.drafts.unshift(draft);
         state.deliveryDraftId = draft.id;
       }
-      applyFilter();
+      // handleSelect จะเรียก applyFilter() เพื่ออัพเดทตารางและ populate form
       if (state.deliveryDraftId) {
         handleSelect(state.deliveryDraftId);
-        // Also populate the form with the draft data
-        const draft = state.drafts.find((d) => String(d.id) === String(state.deliveryDraftId));
-        if (draft) {
-          console.log('Populating form with draft data:', draft);
-          populateForm(draft);
-        }
+      } else {
+        // ถ้าไม่มี deliveryDraftId ให้ render table อย่างเดียว
+        applyFilter();
       }
     }
 
